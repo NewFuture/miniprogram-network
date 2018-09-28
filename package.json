@@ -1,0 +1,26 @@
+{
+  "name": "miniprogram-fetch",
+  "version": "1.0.0",
+  "description": "Fetch API polyfill for Wechat MiniProgram",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewFuture/miniprogram-fetch.git"
+  },
+  "keywords": [
+    "miniprogram",
+    "request",
+    "promise",
+    "fetch",
+    "小程序组件"
+  ],
+  "author": "NewFuture",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/NewFuture/miniprogram-fetch/issues"
+  },
+  "homepage": "https://github.com/NewFuture/miniprogram-fetch#readme"
+}

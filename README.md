@@ -1,2 +1,2 @@
 # miniprogram-fetch
-Http Fetch polyfill for Wechat MiniProgram
+Fetch API polyfill for Wechat MiniProgram
