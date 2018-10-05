@@ -1,3 +1,8 @@
+import {WxQueue} from './WxQueue';
+
+//@ts-ignore
+const RequestMQ = new WxQueue(wx.request);
+
 /**
  * fetch 封装
  * @see https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API
@@ -31,55 +36,10 @@ export function fetch(url: RequestInfo, init?: RequestInit): Promise<Response> {
         };
         param.fail = reject;
         param.complete = init['complete'];
-        RequestMQ.request(param);
+        RequestMQ.push(param);
     })
 }
 
-
-/**
- * Request 请求队列管理
- */
-const RequestMQ = {
-    map: {},
-    mq: [],
-    running: [],
-    MAX_REQUEST: 10,
-    push(param) {
-        param.t = new Date().getTime();
-        while ((this.mq.indexOf(param.t) > -1 || this.running.indexOf(param.t) > -1)) {
-            param.t += Math.random() * 10 >> 0;
-        }
-        this.mq.push(param.t);
-        this.map[param.t] = param;
-    },
-    next() {
-        let me = this;
-
-        if (this.mq.length === 0)
-            return;
-
-        if (this.running.length < this.MAX_REQUEST - 1) {
-            let newone = this.mq.shift();
-            let obj = this.map[newone];
-            let oldComplete = obj.complete;
-            obj.complete = (...args) => {
-                me.running.splice(me.running.indexOf(obj.t), 1);
-                delete me.map[obj.t];
-                oldComplete && oldComplete.apply(obj, args);
-                me.next();
-            }
-            this.running.push(obj.t);
-            //@ts-ignore
-            return wx.request(obj);
-        }
-    },
-    request(obj) {
-        obj = obj || {};
-        obj = (typeof (obj) === 'string') ? { url: obj } : obj;
-        this.push(obj);
-        return this.next();
-    }
-};
 
 class wxHttpResponse implements Response {
     headers: Headers;
