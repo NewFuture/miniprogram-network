@@ -4,6 +4,10 @@
  * @example var rq = new WxQueue(wx.requst);
  */
 export class WxQueue {
+    /**
+     *  队列最大长度
+     */
+    public readonly MAX: number;
 
     /**
      * 待完成队列
@@ -14,16 +18,11 @@ export class WxQueue {
      * 当前队列任务数
      */
     private taskNum = 0;
-    
-    /**
-     *  队列最大长度
-     */
-    private MAX: number;
-    
+
     /**
      * Wx的原始操作
      */
-    private operator: WxOperator;
+    private readonly operator: WxOperator;
 
     /**
      * 创建Wx操作队列
@@ -59,14 +58,13 @@ export class WxQueue {
     }
 };
 
-
 /**
- * 小程序操作类型声明
+ * 小程序操作方法
  */
 type WxOperator = (WxOperatorOptions) => void | any;
 
 /**
- * 微信操作参数声明
+ * 微信操作参数声明 
  */
 interface WxOperatorOptions {
     complete?: Function;
