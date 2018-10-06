@@ -1,5 +1,7 @@
 import {WxQueue} from './WxQueue';
 
+/// <reference types="dom">
+
 //@ts-ignore
 const RequestMQ = new WxQueue(wx.request);
 
@@ -72,7 +74,22 @@ class wxHttpResponse implements Response {
         throw new Error("Method not implemented.");
     }
     formData(): Promise<FormData> {
-        throw new Error("Method not implemented.");
+        return new Promise((resolve,reject)=>{
+            let data = this.body;
+            try {
+                if(typeof data === "string"){
+                    data = JSON.parse(data);
+                }
+                const formData = new FormData();
+                for (let key in data) {
+                    formData.append(key,data[key]);            
+                }
+                resolve(formData);
+                this.bodyUsed=true;   
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
     /**
      * to json as promise
