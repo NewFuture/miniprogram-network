@@ -7,7 +7,7 @@ export class WxQueue {
     /**
      *  队列最大长度
      */
-    public readonly MAX: number;
+    readonly MAX: number;
 
     /**
      * 待完成队列
@@ -22,7 +22,7 @@ export class WxQueue {
     /**
      * Wx的原始操作
      */
-    private readonly operator: WxOperator;
+    private operator: WxOperator;
 
     /**
      * 创建Wx操作队列
@@ -69,3 +69,5 @@ type WxOperator = (WxOperatorOptions) => void | any;
 interface WxOperatorOptions {
     complete?: Function;
 }
+
+export default WxQueue;

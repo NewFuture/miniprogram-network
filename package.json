@@ -4,6 +4,7 @@
   "description": "Fetch API polyfill for Wechat MiniProgram",
   "main": "dist/index.js",
   "scripts": {
+    "tsc": "tsc -h",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram-fetch/issues"
   },
-  "homepage": "https://github.com/NewFuture/miniprogram-fetch#readme"
+  "homepage": "https://github.com/NewFuture/miniprogram-fetch#readme",
+  "devDependencies": {
+    "lerna": "^3.4.1",
+    "typescript": "^3.1.1"
+  }
 }

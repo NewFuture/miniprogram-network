@@ -1,4 +1,4 @@
-import {WxQueue} from './WxQueue';
+import {WxQueue} from "miniprogram-queue";
 
 /// <reference types="dom">
 
