@@ -63,6 +63,10 @@ export class WxQueue {
                 this.next();
             }
             const task = this.operator(taskOptions);
+            // task progress polyfill
+            if(taskOptions.progress&&task.onProgressUpdate){
+                task.onProgressUpdate(taskOptions.progress)
+            }
             this.TaskMap.set(taskid, task);
             return task;
         }
@@ -95,6 +99,7 @@ type WxOperator = (WxOperatorOptions) => any;
  * 微信操作参数声明 
  */
 interface WxOperatorOptions {
+    progress?: Function;
     complete?: Function;
 }
 

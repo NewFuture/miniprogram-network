@@ -1,0 +1,29 @@
+{
+  "name": "miniprogram-queue",
+  "version": "1.0.0",
+  "description": "Queue Management for Wechat MiniProgram",
+  "main": "queue.js",
+  "scripts": {
+    "build":"tsc queue.ts --target es6 --outDir dist -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "miniprogram",
+    "request",
+    "upload",
+    "download"
+  ],
+  "author": "NewFuture",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewFuture/miniprogram.git"
+  },
+  "devDependencies": {
+    "typescript": "^3.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/NewFuture/miniprogram/issues"
+  },
+  "homepage": "https://github.com/NewFuture/miniprogram/"
+}
