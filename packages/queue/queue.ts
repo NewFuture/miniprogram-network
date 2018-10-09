@@ -10,21 +10,25 @@ export class WxQueue {
     readonly MAX: number;
 
     /**
-     * 待完成队列
-     */
-    private todo: Array<WxOperatorOptions> = [];
-
-    /**
-     * 当前队列任务数
+     * 任务ID计数器
      */
     private taskid = 0;
 
-    private TaskMap = new Map<Number,Task>();
+    /**
+     * 待完成队列
+     */
+    private readonly todo: Array<[number, WxOperatorOptions]> = [];
+
+
+    /**
+     * 正在运行的任务
+     */
+    private readonly TaskMap = new Map<Number, Task>();
 
     /**
      * Wx的原始操作
      */
-    private operator: WxOperator;
+    private readonly operator: WxOperator;
 
     /**
      * 创建Wx操作队列
@@ -40,32 +44,45 @@ export class WxQueue {
      * 向队列中添加操作
      * @param param 微信操作
      */
-    public push(param: WxOperatorOptions): void {
-        this.todo.push(param);
-        return this.next();
+    public push(param: WxOperatorOptions): Task {
+        this.todo.push([++this.taskid, param]);
+        return this.next() || { abort:()=>this.abort(this.taskid)};
     }
 
-    private next() {
+    /**
+     * do next task
+     * return Undefined and do nothing when queue is full。
+     */
+    private next(): Task {
         if (this.todo.length > 0 && this.TaskMap.size < this.MAX) {
-            const taskOptions = this.todo.shift();
+            const [taskid, taskOptions] = this.todo.shift();
             const oldComplete = taskOptions.complete;
-            const taskid = ++this.taskid;
             taskOptions.complete = (...args) => {
                 this.TaskMap.delete(taskid);
                 oldComplete && oldComplete.apply(taskOptions, args);
                 this.next();
             }
             const task = this.operator(taskOptions);
-            this.TaskMap.set(taskid,task);
+            this.TaskMap.set(taskid, task);
             return task;
-        }
-        else{
-
         }
     }
 
-    private delete(taskid:number){
-        
+    /**
+     * stop and remove a task
+     * @param taskid - the id of task to abort
+     */
+    private abort(taskid: number) {
+        const index = this.todo.findIndex(v => v[0] === taskid);
+        if (index >= 0) {
+            const completeCallback = this.todo[index][1].complete;
+            // call back complete.
+            completeCallback && completeCallback();
+            this.todo.splice(index, 1);
+        } else if(this.TaskMap.has(taskid)){
+            this.TaskMap.get(taskid).abort();
+            this.TaskMap.delete(taskid);
+        }
     }
 };
 
@@ -81,8 +98,8 @@ interface WxOperatorOptions {
     complete?: Function;
 }
 
-interface Task{
+interface Task {
     /** 取消操作 */
-    abort?:Function;
+    abort?: Function;
 }
 export default WxQueue;
