@@ -17,7 +17,9 @@ export class WxQueue {
     /**
      * 当前队列任务数
      */
-    private taskNum = 0;
+    private taskid = 0;
+
+    private TaskMap = new Map<Number,Task>();
 
     /**
      * Wx的原始操作
@@ -44,24 +46,33 @@ export class WxQueue {
     }
 
     private next() {
-        if (this.todo.length > 0 && this.taskNum < this.MAX) {
-            const task = this.todo.shift();
-            const oldComplete = task.complete;
-            task.complete = (...args) => {
-                --this.taskNum;
-                oldComplete && oldComplete.apply(task, args);
+        if (this.todo.length > 0 && this.TaskMap.size < this.MAX) {
+            const taskOptions = this.todo.shift();
+            const oldComplete = taskOptions.complete;
+            const taskid = ++this.taskid;
+            taskOptions.complete = (...args) => {
+                this.TaskMap.delete(taskid);
+                oldComplete && oldComplete.apply(taskOptions, args);
                 this.next();
             }
-            ++this.taskNum;
-            return this.operator(task);
+            const task = this.operator(taskOptions);
+            this.TaskMap.set(taskid,task);
+            return task;
         }
+        else{
+
+        }
+    }
+
+    private delete(taskid:number){
+        
     }
 };
 
 /**
  * 小程序操作方法
  */
-type WxOperator = (WxOperatorOptions) => void | any;
+type WxOperator = (WxOperatorOptions) => any;
 
 /**
  * 微信操作参数声明 
@@ -70,4 +81,8 @@ interface WxOperatorOptions {
     complete?: Function;
 }
 
+interface Task{
+    /** 取消操作 */
+    abort?:Function;
+}
 export default WxQueue;
