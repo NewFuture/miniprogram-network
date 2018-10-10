@@ -1,22 +1,23 @@
 
-export function promisify<T>(func: (...args: any[]) => any, context?: any, callbackIndex = 0): ((...args: any[]) => Promise<T>) {
-    return (...args: any[]) => new Promise((resolve, reject) => {
-        let { success, fail, complete, ...arg } = (args[callbackIndex] || {}) as any
+interface WxAsyncOptions {
+    success?: Function,
+    fail?: Function,
+    complete?: Function,
+    [propName: string]: any
+}
 
-        args[callbackIndex] = {
-            ...arg,
-            success: (res: any) => {
-                resolve(res)
-                if (success) success(res)
-            },
-            fail: (err: any) => {
-                reject(err)
-                if (fail) fail(err)
-            },
-            complete
+export function promisify<T>(func: (WxAsyncOptions) => any): ((WxAsyncOptions) => Promise<T>) {
+    return (options: WxAsyncOptions) => new Promise((resolve, reject) => {
+        options.success = (res: any) => {
+            options.success && options.success(res);
+            resolve(res);
+        }
+        options.fail = (err: any) => {
+            options.fail && options.fail(err);
+            reject(err);
         }
 
-        func.call(context, ...args)
+        func(options);
     })
 }
 
@@ -24,29 +25,22 @@ interface ICancellablePromise<T> extends Promise<T> {
     cancel?(callback?: () => T): void
 }
 
-export function promisifyCancel<T>(func: (...args: any[]) => any, context?: any, callbackIndex = 0): ((...args: any[]) => ICancellablePromise<T>) {
-    return (...args: any[]) => {
+export function promisifyCancel<T>(func: (options: WxAsyncOptions) => any): ((options: WxAsyncOptions) => ICancellablePromise<T>) {
+    return (options: WxAsyncOptions) => {
         const p: ICancellablePromise<T> = new Promise((resolve, reject) => {
-            let { success, fail, complete, ...arg } = (args[callbackIndex] || {}) as any
-
-            args[callbackIndex] = {
-                ...arg,
-                success: (res: any) => {
-                    resolve(res)
-                    if (success) success(res)
-                },
-                fail: (err: any) => {
-                    reject(err)
-                    if (fail) fail(err)
-                },
-                complete
+            options.success = (res: any) => {
+                options.success && options.success(res);
+                resolve(res);
             }
-
-            const task = func.call(context, ...args);
+            options.fail = (err: any) => {
+                options.fail && options.fail(err);
+                reject(err);
+            }
+            const task = func(options);
 
             p.cancel = () => {
+                resolve = null;
                 reject = null;
-                fail = null;
                 task.abort();
             }
         })
