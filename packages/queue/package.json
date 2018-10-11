@@ -2,9 +2,10 @@
   "name": "miniprogram-queue",
   "version": "1.0.0",
   "description": "Queue Management for Wechat MiniProgram",
-  "main": "queue.js",
+  "main": "dist/index.js",
+  "typings":"dist/index.d.ts",
   "scripts": {
-    "build":"tsc queue.ts --target es6 --outDir dist -d",
+    "build":"tsc index.ts --target es6 --outDir dist -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
