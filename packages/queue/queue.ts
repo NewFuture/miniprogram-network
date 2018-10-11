@@ -107,4 +107,5 @@ interface Task {
     /** 取消操作 */
     abort?: Function;
 }
+
 export default WxQueue;
