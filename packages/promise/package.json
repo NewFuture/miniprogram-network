@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-promise",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "promise for Wechat MiniProgram",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
