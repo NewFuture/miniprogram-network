@@ -1,5 +1,5 @@
 {
-  "name": "miniprogram-fetch",
+  "name": "miniprogram-untils",
   "version": "1.0.0",
   "description": "Fetch API polyfill for Wechat MiniProgram",
   "main": "dist/index.js",
