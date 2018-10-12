@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "publish": "lerna publish",
+    "init": "lerna exec -- rm -rf node_modules package-lock.json && lerna bootstrap",
+    "build": "lerna run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

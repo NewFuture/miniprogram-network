@@ -1,25 +1,21 @@
 {
-  "name": "miniprogram-fetch",
-  "version": "0.1.0",
-  "description": "Fetch API polyfill for Wechat MiniProgram",
-  "main": "dist/fetch.js",
-  "typings": "dist/fetch.d.ts",
-  "scripts": {
-    "build": "tsc fetch.ts --target es6 --outDir dist -d",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "miniprogram",
-    "request",
-    "promise",
-    "fetch"
-  ],
-  "dependencies": {
-    "miniprogram-queue": "^0.1.0"
-  },
-  "author": "NewFuture",
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "typescript": "^3.1.1"
-  }
+	"name": "miniprogram-fetch",
+	"version": "0.2.0",
+	"description": "Fetch API polyfill for Wechat MiniProgram",
+	"main": "dist/fetch.js",
+	"typings": "dist/fetch.d.ts",
+	"keywords": [
+		"miniprogram",
+		"request",
+		"promise",
+		"fetch"
+	],
+	"dependencies": {
+		"miniprogram-queue": "*"
+	},
+	"author": "NewFuture",
+	"license": "Apache-2.0",
+	"devDependencies": {
+		"typescript": "^3.1.1"
+	}
 }

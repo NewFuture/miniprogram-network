@@ -1,0 +1,33 @@
+{
+  "name": "miniprogram-promise",
+  "version": "0.0.1",
+  "description": "promise for Wechat MiniProgram",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc index.ts --target es6 --outDir dist -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "miniprogram",
+    "request",
+    "upload",
+    "download"
+  ],
+  "author": "NewFuture",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewFuture/miniprogram.git"
+  },
+  "devDependencies": {
+    "typescript": "^3.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/NewFuture/miniprogram/issues"
+  },
+  "homepage": "https://github.com/NewFuture/miniprogram/"
+}
