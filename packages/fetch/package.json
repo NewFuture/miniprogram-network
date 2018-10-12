@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-fetch",
-  "version": "1.0.0",
+  "version": "0.1.0-alpha.0",
   "description": "Fetch API polyfill for Wechat MiniProgram",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "fetch"
   ],
   "dependencies": {
-    "miniprogram-queue": "*"
+    "miniprogram-queue": "^0.1.0-alpha.0"
   },
   "author": "NewFuture",
   "license": "Apache-2.0",
