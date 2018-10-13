@@ -46,7 +46,10 @@ export class WxQueue {
      */
     public push(param: WxOperatorOptions): Task {
         this.todo.push([++this.taskid, param]);
-        return this.next() || { abort:()=>this.abort(this.taskid)};
+        return this.next() || {
+            abort: () => this.abort(this.taskid),
+            onProgressUpdate: (callback) => this.progress(this.taskid, callback),
+        };
     }
 
     /**
@@ -64,7 +67,7 @@ export class WxQueue {
             }
             const task = this.operator(taskOptions);
             // task progress polyfill
-            if(taskOptions.progress&&task.onProgressUpdate){
+            if (taskOptions.progress && task.onProgressUpdate) {
                 task.onProgressUpdate(taskOptions.progress)
             }
             this.TaskMap.set(taskid, task);
@@ -83,9 +86,24 @@ export class WxQueue {
             // call back complete.
             completeCallback && completeCallback();
             this.todo.splice(index, 1);
-        } else if(this.TaskMap.has(taskid)){
+        } else if (this.TaskMap.has(taskid)) {
             this.TaskMap.get(taskid).abort();
             this.TaskMap.delete(taskid);
+        }
+    }
+
+    /**
+     * progress update callback
+     * https://developers.weixin.qq.com/miniprogram/dev/api/network/download/DownloadTask.onProgressUpdate.html
+     * @param taskid 
+     * @param callback 回调操作
+     */
+    private progress(taskid, callback: Function) {
+        const result = this.todo.find(v => v[0] === taskid);
+        if (result) {
+            result[1].progress = callback;
+        } else if (this.TaskMap.has(taskid)) {
+            this.TaskMap.get(taskid).onProgressUpdate(callback);
         }
     }
 };
@@ -106,6 +124,8 @@ interface WxOperatorOptions {
 interface Task {
     /** 取消操作 */
     abort?: Function;
+    /** 进更新 */
+    onProgressUpdate?: Function;
 }
 
 export default WxQueue;
