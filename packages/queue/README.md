@@ -8,8 +8,8 @@
 Features:
 
 * [x] 可自动注入/手动管理
-* [x] [支持取消操作(`abort`)](#abort)
-* [x] [支持进度回调](#progress)
+* [x] [支持取消操作(`abort`)](#abort-取消操作)
+* [x] [支持进度回调](#progress-进度支持)
 
 ## Install(安装)
 
@@ -52,7 +52,7 @@ let task = requestQueue.push({
 
 ### 参数
 
-与官网API参数兼荣
+与官网API参数兼容
 
 * [request](https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html)
 * [downloadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html)
@@ -60,7 +60,7 @@ let task = requestQueue.push({
 
 同时 `downloadFile` 和 `uploadFile` 支持通过[process 参数](#progress) 之间设置进度回调
 
-## Abort (取消操作) {#abort}
+## Abort (取消操作)
 
 所有操作返回一个`Task`对象，可取消操作
 
@@ -78,7 +78,7 @@ var task = queue.push(obj);
 task.abort();
 ```
 
-## Progress (进度支持) {#progress}
+## Progress (进度支持)
 
 * `DownloadTask.onProgressUpdate(function callback)`
 * `UploadTask.onProgressUpdate(function callback)`
