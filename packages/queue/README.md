@@ -1,4 +1,4 @@
-# miniprogram-queue
+# miniprogram-queue [![npm version](https://badge.fury.io/js/miniprogram-queue.svg)](https://npmjs.com/package/miniprogram-queue)
 
 > Queue Package for MiniProgram API
 >

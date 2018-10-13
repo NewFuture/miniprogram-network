@@ -4,6 +4,9 @@
 	"description": "Fetch API polyfill for Wechat MiniProgram",
 	"main": "dist/fetch.js",
 	"typings": "dist/fetch.d.ts",
+	"scripts": {
+		"build": "tsc fetch.ts --moduleResolution node --target es6 --outDir dist -d"
+	  },
 	"keywords": [
 		"miniprogram",
 		"request",
