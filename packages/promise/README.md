@@ -7,8 +7,21 @@
 * [x] finally Promise (支持Finally)
 * [x] cancelable/abort (可取消的Promise)
 
+## Usage
+
+```js
+import {cancelablePromisify} from 'miniprogram-promise';
+
+request = cancelablePromisify(wx.request);
+
+request({url:'xxx'})
+    .then((res)=>{/**/})
+    .catch((errr)=>{})
+    .finally(()=>{});
 
 
+request({url:'xxx'}).then().cancel()
+```
 
 ## inspired by
 * [minapp-wx](https://github.com/wx-minapp/minapp-wx)

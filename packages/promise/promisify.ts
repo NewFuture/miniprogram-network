@@ -1,3 +1,4 @@
+import { CancelablePromise } from "./CancelablePromise";
 
 interface WxAsyncOptions {
     success?: Function,
@@ -6,7 +7,11 @@ interface WxAsyncOptions {
     [propName: string]: any
 }
 
-export function promisify<T>(func: (WxAsyncOptions) => any): ((WxAsyncOptions) => Promise<T>) {
+/**
+ * Promisify wx function
+ * @param func wx.function
+ */
+export function promisify<T>(func: (o: WxAsyncOptions) => any): ((o: WxAsyncOptions) => Promise<T>) {
     return (options: WxAsyncOptions) => new Promise((resolve, reject) => {
         options.success = (res: any) => {
             options.success && options.success(res);
@@ -16,34 +21,26 @@ export function promisify<T>(func: (WxAsyncOptions) => any): ((WxAsyncOptions) =
             options.fail && options.fail(err);
             reject(err);
         }
-
         func(options);
     })
 }
 
-interface ICancellablePromise<T> extends Promise<T> {
-    cancel?(callback?: () => T): void
+/**
+ * Promisify wx function as CancelablePromisify
+ * @param func wx.function
+ */
+export function cancelablePromisify<T>(func: (o: WxAsyncOptions) => any): ((o: WxAsyncOptions) => CancelablePromise<T>) {
+    return (options: WxAsyncOptions) => new CancelablePromise<T>((resolve, reject) => {
+        options.success = (res: any) => {
+            options.success && options.success(res);
+            resolve(res);
+        }
+        options.fail = (err: any) => {
+            options.fail && options.fail(err);
+            reject(err);
+        }
+        return func(options)
+    }, (task) => task.abort());
 }
 
-export function promisifyCancel<T>(func: (options: WxAsyncOptions) => any): ((options: WxAsyncOptions) => ICancellablePromise<T>) {
-    return (options: WxAsyncOptions) => {
-        const p: ICancellablePromise<T> = new Promise((resolve, reject) => {
-            options.success = (res: any) => {
-                options.success && options.success(res);
-                resolve(res);
-            }
-            options.fail = (err: any) => {
-                options.fail && options.fail(err);
-                reject(err);
-            }
-            const task = func(options);
-
-            p.cancel = () => {
-                resolve = null;
-                reject = null;
-                task.abort();
-            }
-        })
-        return p;
-    }
-}
+export {CancelablePromise}

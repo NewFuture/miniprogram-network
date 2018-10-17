@@ -1,5 +1,5 @@
 import "./Promise.finally";
-import { promisify, promisifyCancel } from "./promisify";
+import { promisify, cancelablePromisify, CancelablePromise } from "./promisify";
 
 declare var wx: {
     request: Function;
@@ -20,7 +20,7 @@ function apply() {
         } else if (/^on|^create|^pause|Sync$|Manager$/.test(key) || NOPROMIS_API.indexOf(key) >= 0 && key !== 'createBLEConnection') {
             continue;
         } else if (CANCELABLE_API.indexOf(key) >= 0) {
-            func = promisifyCancel(wx[key]);
+            func = cancelablePromisify(wx[key]);
         } else {
             func = promisify(wx[key]);
         }
@@ -36,5 +36,6 @@ function apply() {
 export {
     apply,
     promisify,
-    promisifyCancel
+    cancelablePromisify,
+    CancelablePromise
 }
