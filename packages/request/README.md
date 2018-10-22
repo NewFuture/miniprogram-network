@@ -5,3 +5,17 @@
 > 小程序请求封装
 
 
+Features
+
+* [] Promise
+* [] Cancelable
+* [] queue
+* [] Configuration
+    * [] BaseUri
+    * [] Retry
+    * [] Authentication
+    * [] ...
+* []  Interceptors & Hooks in Lifecycle
+    * [] transform request data
+    * [] transform response data
+* [] Lifecycle Listeners
