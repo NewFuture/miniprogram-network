@@ -7,15 +7,24 @@
 
 Features
 
-* [] Promise
-* [] Cancelable
-* [] queue
-* [] Configuration
-    * [] BaseUri
-    * [] Retry
-    * [] Authentication
-    * [] ...
-* []  Interceptors & Hooks in Lifecycle
-    * [] transform request data
-    * [] transform response data
-* [] Lifecycle Listeners
+* [ ] Promise
+* [ ] Cancelable
+* [ ] Queue
+* [ ] Retry when network failure
+* [ ] Configuration
+    * [ ] BaseUri
+    * [ ] Authentication
+    * [ ] ...
+* [ ] Interceptors in Lifecycle (only one,modify data or status)
+    * [ ] transform request data
+    * [ ] transform response data
+    * [ ] isSuccessful?
+* [ ] Listeners
+    * [ ] On Send (before request data send & after request data transformed)
+    * [ ] On Response (after request response data transformed)
+    * [ ] On resolved (before `then` of Promise)
+    * [ ] On rejected (before `catch` of Promise)
+    * [ ] On abort
+    * [ ] On complete
+    * [ ] On retry
+    * [ ] On Progress?
