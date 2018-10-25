@@ -10,6 +10,9 @@ Features
 * [ ] Promise
 * [ ] Cancelable
 * [ ] Queue
+* [ ] Wx request params
+    * [ ] timeout
+    * [ ] datatype
 * [ ] Retry when network failure
 * [ ] Configuration
     * [ ] BaseUri
@@ -18,7 +21,6 @@ Features
 * [ ] Interceptors in Lifecycle (only one,modify data or status)
     * [ ] transform request data
     * [ ] transform response data
-    * [ ] isSuccessful?
 * [ ] Listeners
     * [ ] On Send (before request data send & after request data transformed)
     * [ ] On Response (after request response data transformed)
@@ -26,5 +28,4 @@ Features
     * [ ] On rejected (before `catch` of Promise)
     * [ ] On abort
     * [ ] On complete
-    * [ ] On retry
-    * [ ] On Progress?
+* [ ] On Progress?
