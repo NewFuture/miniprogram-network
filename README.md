@@ -1,6 +1,6 @@
  # miniprogram
 
-小程序基础库封装
+小程序基础库封装 [**Experimental(尚未经过生产环境测试)**]
 
 ## Packages
 
