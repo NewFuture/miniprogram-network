@@ -123,7 +123,7 @@ interface WxOperatorOptions {
 
 interface Task {
     /** 取消操作 */
-    abort?: Function;
+    abort: Function;
     /** 进更新 */
     onProgressUpdate?: Function;
 }
