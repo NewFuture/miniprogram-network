@@ -125,7 +125,5 @@ interface Task {
     /** 取消操作 */
     abort: Function;
     /** 进更新 */
-    onProgressUpdate?: Function;
+    onProgressUpdate: Function;
 }
-
-export default WxQueue;
