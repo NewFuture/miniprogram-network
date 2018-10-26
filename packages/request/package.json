@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-request",
-  "version": "0.0.2",
+  "version": "0.0.3-alpha.0",
   "description": "A better Request package for MiniProgram API",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
