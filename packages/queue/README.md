@@ -8,8 +8,9 @@
 Features:
 
 * [x] 可自动注入/手动管理
-* [x] [支持取消操作(`abort`)](#abort-取消操作)
-* [x] [支持进度回调](#progress-进度支持)
+* [x] [取消操作(`abort`)](#abort-取消操作)
+* [x] [进度回调](#progress-进度支持)
+* [x] [插队](#jump-插队)
 
 ## Install(安装)
 
@@ -59,6 +60,13 @@ let task = requestQueue.push({
 * [uploadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html) 
 
 同时 `downloadFile` 和 `uploadFile` 支持通过[process 参数](#progress) 之间设置进度回调
+
+### jump (插队)
+
+```js
+//第二个参数为true时优先级最高
+requestQueue.push(param,true);
+```
 
 ## Abort (取消操作)
 

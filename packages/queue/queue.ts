@@ -43,12 +43,20 @@ export class WxQueue {
     /**
      * 向队列中添加操作
      * @param param 微信操作
+     * @param jump 是否插队
      */
-    public push(param: WxOperatorOptions): Task {
-        this.todo.push([++this.taskid, param]);
+    public push(param: WxOperatorOptions, jump: boolean = false): Task {
+        const id = ++this.taskid;
+        if (jump) {
+            //插队
+            this.todo.unshift([id, param]);
+        } else {
+            this.todo.push([id, param]);
+        }
+
         return this.next() || {
-            abort: () => this.abort(this.taskid),
-            onProgressUpdate: (callback) => this.progress(this.taskid, callback),
+            abort: () => this.abort(id),
+            onProgressUpdate: (callback) => this.progress(id, callback),
         };
     }
 
