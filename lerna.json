@@ -1,6 +1,9 @@
 {
   "packages": [
-    "packages/*"
+    "queue",
+    "promise",
+    "request",
+    "fetch"
   ],
   "command":{
     "bootstrap": {
