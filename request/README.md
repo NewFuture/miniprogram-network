@@ -11,17 +11,18 @@ Features
 * [ ] Cancelable
 * [ ] Queue
 * [ ] Wx request params
-    * [ ] timeout
-    * [ ] datatype
+    * [ ] responseType
+    * [ ] ~~dataType~~ merged into `responseType`
+    * [ ] ~~timeout~~ not supported for each request
 * [ ] Retry when network failure
 * [ ] Configuration
-    * [ ] BaseUri
-    * [ ] Authentication
-    * [ ] ...
+    * [ ] baseUri
+    * [ ] authentication
+    * [ ] responseType
 * [ ] Interceptors in Lifecycle (only one,modify data or status)
     * [ ] transform request data
     * [ ] transform response data
-* [ ] Listeners
+* [ ] Global Listeners
     * [ ] On Send (before request data send & after request data transformed)
     * [ ] On Response (after request response data transformed)
     * [ ] On resolved (before `then` of Promise)
