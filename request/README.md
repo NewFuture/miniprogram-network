@@ -5,19 +5,19 @@
 > 小程序请求封装
 
 
-Features
+### Features
   
 * [ ] Promise
 * [ ] Cancelable
 * [ ] Queue
 * [ ] Wx request params
     * [ ] responseType
-    * [ ] ~~dataType~~ merged into `responseType`
-    * [ ] ~~timeout~~ not supported for each request
+    * [ ] ~~dataType~~ (merged into `responseType`)
+    * [ ] ~~timeout~~ (not supported for each request)
 * [ ] Retry when network failure
 * [ ] Configuration
     * [ ] baseUri
-    * [ ] authentication
+    * [ ] authentication?
     * [ ] responseType
 * [ ] Interceptors in Lifecycle (only one,modify data or status)
     * [ ] transform request data
@@ -30,12 +30,15 @@ Features
     * [ ] On abort
     * [ ] On complete
 * [ ] On Progress?
-* [ ] pause/resume
+* [ ] ~~pause/resume~~ (promise/async instead)
+
+### API
+* request
+* create
+*
 
 
 
-
-
-### LifeCircle
+## LifeCircle
 
 ![Request Life Circle](https://user-images.githubusercontent.com/6290356/47618036-485c5780-db09-11e8-8db8-57d106883607.png)
