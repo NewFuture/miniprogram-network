@@ -1,12 +1,16 @@
-import { BaseConfiguration, Configuration } from "./Configuration";
+import { WxQueue } from 'miniprogram-queue';
+import { promisify } from 'miniprogram-promise';
+import { initConfiguration, FullConfiguration, RequestData, TransformConfiguration, WxParam } from "./Configuration";
 import { ListenerEvents } from "./Liseteners";
+const RequestQueue = new WxQueue(wx.request);
+const WxRequest = promisify(RequestQueue.push);
 
 export class Http {
 
     /**
      * 默认全局配置
      */
-    public static defaults: BaseConfiguration = {
+    public defaults: initConfiguration = {
         /**
         * 重试一次
         */
@@ -16,39 +20,60 @@ export class Http {
     /**
      * 全局Listeners
      */
-    public static listeners: ListenerEvents = new ListenerEvents;
+    public listeners: ListenerEvents = new ListenerEvents;
 
-    public static create(config?: BaseConfiguration): Http {
-        return new Http();
+    /**
+     * 
+     * @param config 
+     */
+    public constructor(config?: initConfiguration) {
+        if (config) {
+            this.defaults = config;
+        }
     }
 
-    public static request<T>(method: string, action: string, data?: any, config?: BaseConfiguration): Promise<T>;
-    public static request<T>(config: Configuration): Promise<T>;
-    public static request<T>(config): Promise<T> {
+    public create(config?: initConfiguration): Http {
+        return new Http(config);
+    }
+
+    public request<T>(method: string, action: string, data?: any, config?: initConfiguration): Promise<T>;
+    public request<T>(config: FullConfiguration): Promise<T>;
+    public request<T>(): Promise<T> {
         return new Promise<T>(() => { });
     }
 
-    public static get<T>(action: string, data?: any, config?: BaseConfiguration): Promise<T> {
-        return new Promise<T>(() => { });
+    public get<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+        return this.request<T>('GET', action, data, config);
     }
 
-    public static post<T>(action: string, data?: any, config?: BaseConfiguration): Promise<T> {
-        return new Promise<T>(() => { });
+    public post<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+        return this.request<T>('POST', action, data, config);
     }
 
-    public static put<T>(action: string, data?: any, config?: BaseConfiguration): Promise<T> {
-        return new Promise<T>(() => { });
+    public put<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+        return this.request<T>('PUT', action, data, config);
     }
 
-    public static delete<T>(action: string, data?: any, config?: BaseConfiguration): Promise<T> {
-        return new Promise<T>(() => { });
+    public delete<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+        return this.request<T>('DELETE', action, data, config);
     }
 
-    public static head<T>(action: string, data?: any, config?: BaseConfiguration): Promise<T> {
-        return new Promise<T>(() => { });
+    public head<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+        return this.request<T>('HEAD', action, data, config);
     }
 
-    public static options<T>(action: string, data?: any, config?: BaseConfiguration): Promise<T> {
-        return new Promise<T>(() => { });
+    public options<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+        return this.request<T>('OPTIONS', action, data, config);
     }
+
+    private send<T>(requestData: RequestData, transform: TransformConfiguration) {
+        const wxdata = transform.transformRequest(requestData.data);
+        return Promise
+        .resolve(wxdata)
+        .then((param)=>{
+            param.success=()
+        })
+        .then(transform.transformResponse)
+    }
+
 };

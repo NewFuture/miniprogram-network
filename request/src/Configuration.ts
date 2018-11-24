@@ -1,19 +1,17 @@
+import { transform } from "typescript";
 
-/**
- * Request Configuration
- */
-export interface BaseConfiguration {
+export interface RequestConfiguration {
     /**
-     * 请求的相对根目录
-     * Base URL for request
-     */
+    * 请求的相对根目录
+    * Base URL for request
+    */
     baseURL?: string;
 
     /**
     * 自定义头 
     * user defined headers
     */
-    headers?: KeyValuePair;
+    headers?: KeyRawValuePair;
 
     /**
      * URL Path
@@ -24,7 +22,7 @@ export interface BaseConfiguration {
      *  param = {ID: 12345}
      * request url will be /1234/status
      */
-    params?: KeyValuePair,
+    params?: KeyRawValuePair,
 
     /**
     * 重试次数 
@@ -42,30 +40,15 @@ export interface BaseConfiguration {
     //  */
     // auth?: string | AuthFunction;
 
-    /**
-     * 修改数据或者头;返回 wx.request参数
-     * 异步返回promise
-     * You may modify the data or headers object before it is sent.
-     */
-    transformRequest?: TransformRequest;
-
-    /**
-     * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
-     * 异步返回Promise
-     * allows changes to the response data to be made before it is passed to then/catch
-     *  @example `res=>res.data`
-     */
-    transformResponse?: TransformResponse;
-
     // /**
     //  * allows handling of progress events
     //  */
     // onprogress?: (ProgressParam) => any;
 
     cancelToken?: Function;
-};
+}
 
-export interface Configuration extends BaseConfiguration {
+export interface RequestData extends RequestConfiguration {
     /**
     * 请求方法
     * HTTP request mthod: GET POST ...
@@ -86,10 +69,43 @@ export interface Configuration extends BaseConfiguration {
     data?: any;
 }
 
+
+export interface TransformConfiguration {
+
+    /**
+     * 修改数据或者头;返回 wx.request参数
+     * 异步返回promise
+     * You may modify the data or headers object before it is sent.
+     */
+    transformRequest?: TransformRequest;
+
+    /**
+     * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
+     * 异步返回Promise
+     * allows changes to the response data to be made before it is passed to then/catch
+     *  @example `res=>res.data`
+     */
+    transformResponse?: TransformResponse;
+}
+
+/**
+ * Request Configuration
+ */
+export interface initConfiguration extends RequestConfiguration, TransformConfiguration {
+
+};
+
+
+
+
+export interface FullConfiguration extends RequestConfiguration, TransformConfiguration {
+
+}
+
 /**
  * KeyValuePair
  */
-export interface KeyValuePair {
+export interface KeyRawValuePair {
     [key: string]: string | number | boolean;
 };
 
@@ -97,12 +113,12 @@ export interface KeyValuePair {
  * 请求参数预处理,
  * 输入配置; 返回 WxParam | Promise<WxParam>
  */
-export type TransformRequest = (config: Configuration) => WxParam | Promise<WxParam>;
+export type TransformRequest = (config: RequestData) => WxParam | Promise<WxParam>;
 /**
  * 相应数据数据预处理
  * 输入原始返回信息;返回数据或者包含数据的Promise
  */
-export type TransformResponse = (res: WxResponse, config: Configuration) => any | Promise<any>
+export type TransformResponse = (res: WxResponse, config: FullConfiguration) => any | Promise<any>
 // interface TransformResponse<T> (res: WxResponse, config: Configuration) => T | Promise<T>
 
 // /**
@@ -115,7 +131,7 @@ export type TransformResponse = (res: WxResponse, config: Configuration) => any 
 /**
  * 微信请求参数
  */
-interface WxParam {
+export interface WxParam {
     /**
      * 开发者服务器接口地址
      */
@@ -127,7 +143,7 @@ interface WxParam {
     /**
      * 设置请求的 header，header 中不能设置 Referer。
      */
-    header?: KeyValuePair
+    header?: KeyRawValuePair
     /**
      * （需大写）有效值：OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
      *
@@ -166,7 +182,7 @@ type WxResponse = {
      *
      * @since 1.2.0
      */
-    header: KeyValuePair
+    header: KeyRawValuePair
 }
 
 // type ProgressParam = {

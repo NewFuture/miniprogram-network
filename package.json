@@ -7,7 +7,7 @@
     "publish": "npm run build && lerna publish",
     "init": "npm run rm:module && lerna bootstrap",
     "build": "lerna run build",
-    "rm:module":"lerna exec -- rm -rf node_modules package-lock.json",
+    "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
