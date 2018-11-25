@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "es6",
+        "strict": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "esModuleInterop": true,
+        "typeRoots": [
+            "node_modules/miniprogram-api-typings"
+        ]
+    },
+    "include": [
+        "*.ts",
+        "**/*.ts"
+    ]
+}

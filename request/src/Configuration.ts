@@ -1,4 +1,3 @@
-import { transform } from "typescript";
 
 export interface RequestConfiguration {
     /**
@@ -40,35 +39,8 @@ export interface RequestConfiguration {
     //  */
     // auth?: string | AuthFunction;
 
-    // /**
-    //  * allows handling of progress events
-    //  */
-    // onprogress?: (ProgressParam) => any;
-
     cancelToken?: Function;
 }
-
-export interface RequestData extends RequestConfiguration {
-    /**
-    * 请求方法
-    * HTTP request mthod: GET POST ...
-    */
-    method?: string;
-
-    /**
-     * 请求数据
-     * reqeust data
-     *  * **data 数据说明：**
-     *
-     * 最终发送给服务器的数据是 String 类型，如果传入的 data 不是 String 类型，会被转换成 String 。转换规则如下：
-     *
-     * *   对于 `GET` 方法的数据，会将数据转换成 query string（encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
-     * *   对于 `POST` 方法且 `header['content-type']` 为 `application/json` 的数据，会对数据进行 JSON 序列化
-     * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
-     */
-    data?: any;
-}
-
 
 export interface TransformConfiguration {
 
@@ -98,6 +70,32 @@ export interface initConfiguration extends RequestConfiguration, TransformConfig
 
 
 
+export interface RequestData extends RequestConfiguration {
+    /**
+    * 请求方法
+    * HTTP request mthod: GET POST ...
+    */
+    method?: string;
+
+    /**
+     * 请求数据
+     * reqeust data
+     *  * **data 数据说明：**
+     *
+     * 最终发送给服务器的数据是 String 类型，如果传入的 data 不是 String 类型，会被转换成 String 。转换规则如下：
+     *
+     * *   对于 `GET` 方法的数据，会将数据转换成 query string（encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
+     * *   对于 `POST` 方法且 `header['content-type']` 为 `application/json` 的数据，会对数据进行 JSON 序列化
+     * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
+     */
+    data?: any;
+
+    // /**
+    //  * allows handling of progress events
+    //  */
+    // onprogress?: (ProgressParam) => any;
+}
+
 export interface FullConfiguration extends RequestConfiguration, TransformConfiguration {
 
 }
@@ -113,13 +111,19 @@ export interface KeyRawValuePair {
  * 请求参数预处理,
  * 输入配置; 返回 WxParam | Promise<WxParam>
  */
-export type TransformRequest = (config: RequestData) => WxParam | Promise<WxParam>;
+export type TransformRequest = (data: RequestData, config?: FullConfiguration) => WxParam | PromiseLike<WxParam>;
+
 /**
  * 相应数据数据预处理
  * 输入原始返回信息;返回数据或者包含数据的Promise
  */
-export type TransformResponse = (res: WxResponse, config: FullConfiguration) => any | Promise<any>
-// interface TransformResponse<T> (res: WxResponse, config: Configuration) => T | Promise<T>
+export type TransformResponse = (res: wx.RequestSuccessCallbackResult, config: FullConfiguration) => any | Promise<any>
+
+/**
+ * 微信请求参数
+ * 不包含回调函数
+ */
+export type WxParam = Pick<wx.RequestOption, 'url' | 'data' | 'dataType' | 'header' | 'method' | 'responseType'>
 
 // /**
 //  * 认证回调，
@@ -128,62 +132,6 @@ export type TransformResponse = (res: WxResponse, config: FullConfiguration) => 
 //  */
 // export type AuthFunction = (config: Configuration) => string | Promise<string>;
 
-/**
- * 微信请求参数
- */
-export interface WxParam {
-    /**
-     * 开发者服务器接口地址
-     */
-    url: string
-    /**
-     * 请求的参数
-     */
-    data?: any | string | ArrayBuffer
-    /**
-     * 设置请求的 header，header 中不能设置 Referer。
-     */
-    header?: KeyRawValuePair
-    /**
-     * （需大写）有效值：OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-     *
-     * @default GET
-     */
-    method?: string
-    /**
-     * 如果设为json，会尝试对返回的数据做一次 JSON.parse
-     *
-     * @default json
-     */
-    dataType?: string
-    /**
-     * 设置响应的数据类型。合法值：text、arraybuffer
-     *
-     * @default text
-     * @since 1.7.0
-     */
-    responseType?: string
-}
-
-/**
- * 微信请求返回数据
- */
-type WxResponse = {
-    /**
-     * 开发者服务器返回的数据
-     */
-    data: any | string | ArrayBuffer
-    /**
-     * 开发者服务器返回的 HTTP 状态码
-     */
-    statusCode: number
-    /**
-     * 开发者服务器返回的 HTTP Response Header
-     *
-     * @since 1.2.0
-     */
-    header: KeyRawValuePair
-}
 
 // type ProgressParam = {
 //     /**
