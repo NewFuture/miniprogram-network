@@ -152,7 +152,7 @@ export interface KeyRawValuePair {
  * @param customize 自定义配置，未定义的将被默认配置覆盖
  * @param defaults 默认值
  */
-export function mergerConfiguration(customize: RequestOptions, defaults: RequestOptions): RequestOptions {
+export function mergerOptions(customize: RequestOptions, defaults: RequestOptions): RequestOptions {
     Object.keys(defaults).forEach(key => {
         if (!customize.hasOwnProperty(key)) {
             customize[key] = defaults[key]
