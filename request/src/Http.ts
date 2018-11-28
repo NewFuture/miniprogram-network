@@ -1,17 +1,27 @@
 import { WxQueue } from 'miniprogram-queue';
 import { promisify } from 'miniprogram-promise';
 
-import { initConfiguration, FullConfiguration, RequestData, TransformConfiguration, RequestConfiguration, WxParam } from "./Configuration";
+import { Configuration, RequestOptions, mergerOptions } from "./Configuration";
 import { ListenerEvents } from "./Liseteners";
+import { TransformRequest, defaultRequestTransformation, TransformResponse, defaultResponseTransformation, WxParam } from './Transform';
 const RequestQueue = new WxQueue(wx.request);
 const WxRequest = promisify(RequestQueue.push);
 
 export class Http {
 
     /**
+     * 默认数据转换函数
+     */
+    public static readonly RequestTransformation: TransformRequest = defaultRequestTransformation;
+    /**
+     * 默认输出数据转换函数
+     */
+    public static readonly ResponseTransformation: TransformResponse = defaultResponseTransformation;
+
+    /**
      * 默认全局配置
      */
-    public defaults: initConfiguration = {
+    public readonly defaults: Configuration = {
         /**
         * 重试一次
         */
@@ -21,59 +31,56 @@ export class Http {
     /**
      * 全局Listeners
      */
-    public listeners: ListenerEvents = new ListenerEvents;
-
-    public static defaultRequestTransformation;
-    public static defaultResponseTransformation;
+    public readonly listeners: ListenerEvents = new ListenerEvents;
 
 
     /**
      * 
      * @param config 
      */
-    public constructor(config?: initConfiguration) {
+    public constructor(config?: Configuration) {
         if (config) {
             this.defaults = config;
         }
     }
-    
 
-    public create(config?: initConfiguration): Http {
-        return new Http(config);
-    }
-
-    public request<T>(method: string, action: string, data?: any, config?: initConfiguration): Promise<T>;
-    public request<T>(config: FullConfiguration): Promise<T>;
+    public request<T>(method: string, action: string, data?: any, config?: Configuration): Promise<T>;
+    public request<T>(options: RequestOptions): Promise<T>;
     public request<T>(): Promise<T> {
-        const config: FullConfiguration = {};
-        return this.doRequest(config);
+        const arg_num = arguments.length;
+        const options: RequestOptions = arg_num == 1 ? arguments[0] : (arg_num === 4 ? arguments[3] : {});
+        if (arg_num > 1) {
+            options.method = arguments[0];
+            options.url = arguments[1];
+            if (arg_num > 2) {
+                options.data = arguments[2];
+            }
+        }
+        mergerOptions(options, this.defaults);
+        return this.doRequest(options);
     }
 
-    public get<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+    public get<T>(action: string, data?: any, config?: Configuration): Promise<T> {
         return this.request<T>('GET', action, data, config);
     }
 
-    public post<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+    public post<T>(action: string, data?: any, config?: Configuration): Promise<T> {
         return this.request<T>('POST', action, data, config);
     }
 
-    public put<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+    public put<T>(action: string, data?: any, config?: Configuration): Promise<T> {
         return this.request<T>('PUT', action, data, config);
     }
 
-    public delete<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+    public delete<T>(action: string, data?: any, config?: Configuration): Promise<T> {
         return this.request<T>('DELETE', action, data, config);
     }
 
-    public head<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
+    public head<T>(action: string, data?: any, config?: Configuration): Promise<T> {
         return this.request<T>('HEAD', action, data, config);
     }
 
-    public options<T>(action: string, data?: any, config?: initConfiguration): Promise<T> {
-        return this.request<T>('OPTIONS', action, data, config);
-    }
-
-    private doRequest<T>(config: FullConfiguration): Promise<T> {
+    private doRequest<T>(config: RequestOptions): Promise<T> {
         return this.beforeSend(config)
             .then(param => this.send<T>(param, config))
     }
@@ -82,9 +89,9 @@ export class Http {
      * 请求发送之前处理数据
      * @param config 
      */
-    private beforeSend(config: FullConfiguration): Promise<WxParam> {
+    private beforeSend(config: RequestOptions): Promise<WxParam> {
         this.listeners.onSend.forEach(f => f(config));
-        const data = config.transformRequest ? config.transformRequest(config) : Http.defaultRequestTransformation(config);
+        const data = config.transformRequest ? config.transformRequest(config) : Http.RequestTransformation(config);
         return Promise.resolve(data);
     }
 
@@ -93,7 +100,7 @@ export class Http {
      * @param requestOption 
      * @param requestConfig 
      */
-    private send<T>(requestOption: wx.RequestOption, requestConfig: FullConfiguration): Promise<T> {
+    private send<T>(requestOption: wx.RequestOption, requestConfig: RequestOptions): Promise<T> {
         requestOption.complete = (res: wx.GeneralCallbackResult) => {
             this.onComplete(res, requestConfig);
         }
@@ -115,9 +122,9 @@ export class Http {
      * @param res 
      * @param config 
      */
-    private onResponse<T>(res: wx.RequestSuccessCallbackResult, config: FullConfiguration): Promise<T> {
+    private onResponse<T>(res: wx.RequestSuccessCallbackResult, config: RequestOptions): Promise<T> {
         this.listeners.onResponse.forEach(f => f(res, config));
-        const result = config.transformResponse ? config.transformResponse(res, config) : Http.defaultResponseTransformation(res,config);
+        const result = config.transformResponse ? config.transformResponse(res, config) : Http.ResponseTransformation(res, config);
         return Promise.resolve(result).catch(reason => this.onFail(reason, config));
     }
 
@@ -126,7 +133,7 @@ export class Http {
      * @param res 
      * @param config 
      */
-    private onFail(res: wx.GeneralCallbackResult, config: FullConfiguration): Promise<wx.GeneralCallbackResult> {
+    private onFail(res: wx.GeneralCallbackResult, config: RequestOptions): Promise<wx.GeneralCallbackResult> {
         this.listeners.onRejected.forEach(f => f(res, config));
         return Promise.reject(res);
     }
@@ -136,7 +143,7 @@ export class Http {
      * @param res 
      * @param config 
      */
-    private onComplete(res: wx.GeneralCallbackResult, config: FullConfiguration) {
+    private onComplete(res: wx.GeneralCallbackResult, config: RequestOptions) {
         this.listeners.onComplete.forEach(f => f(res, config));
     }
 

@@ -1,7 +1,8 @@
 
+import { TransformRequest, TransformResponse } from './Transform'
 export interface RequestConfiguration {
     /**
-    * 请求的相对根目录
+    * 请求的根目录
     * Base URL for request
     */
     baseURL?: string;
@@ -63,19 +64,33 @@ export interface TransformConfiguration {
 /**
  * Request Configuration
  */
-export interface initConfiguration extends RequestConfiguration, TransformConfiguration {
+export interface Configuration extends RequestConfiguration, TransformConfiguration {
 
 };
 
 
 
 
-export interface RequestData extends RequestConfiguration {
+export interface BaseRequestOptions extends RequestConfiguration {
+    /**
+    * 请求的相对地址
+    * Base URL for request
+    */
+    url?: string;
+
     /**
     * 请求方法
     * HTTP request mthod: GET POST ...
     */
-    method?: string;
+    method?:
+    | 'OPTIONS'
+    | 'GET'
+    | 'HEAD'
+    | 'POST'
+    | 'PUT'
+    | 'DELETE'
+    | 'TRACE'
+    | 'CONNECT';
 
     /**
      * 请求数据
@@ -96,7 +111,7 @@ export interface RequestData extends RequestConfiguration {
     // onprogress?: (ProgressParam) => any;
 }
 
-export interface FullConfiguration extends RequestConfiguration, TransformConfiguration {
+export interface RequestOptions extends BaseRequestOptions, TransformConfiguration {
 
 }
 
@@ -107,23 +122,6 @@ export interface KeyRawValuePair {
     [key: string]: string | number | boolean;
 };
 
-/**
- * 请求参数预处理,
- * 输入配置; 返回 WxParam | Promise<WxParam>
- */
-export type TransformRequest = (data: RequestData, config?: FullConfiguration) => WxParam | PromiseLike<WxParam>;
-
-/**
- * 相应数据数据预处理
- * 输入原始返回信息;返回数据或者包含数据的Promise
- */
-export type TransformResponse = (res: wx.RequestSuccessCallbackResult, config: FullConfiguration) => any | Promise<any>
-
-/**
- * 微信请求参数
- * 不包含回调函数
- */
-export type WxParam = Pick<wx.RequestOption, 'url' | 'data' | 'dataType' | 'header' | 'method' | 'responseType'>
 
 // /**
 //  * 认证回调，
@@ -148,3 +146,17 @@ export type WxParam = Pick<wx.RequestOption, 'url' | 'data' | 'dataType' | 'head
 //      */
 //     totalBytesExpectedToSend?: number;
 // }
+
+/**
+ * 合并配置
+ * @param customize 自定义配置，未定义的将被默认配置覆盖
+ * @param defaults 默认值
+ */
+export function mergerConfiguration(customize: RequestOptions, defaults: RequestOptions): RequestOptions {
+    Object.keys(defaults).forEach(key => {
+        if (!customize.hasOwnProperty(key)) {
+            customize[key] = defaults[key]
+        }
+    })
+    return customize;
+}
