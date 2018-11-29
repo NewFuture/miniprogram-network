@@ -2,7 +2,7 @@ import { WxQueue } from 'miniprogram-queue';
 import { Configuration, RequestOptions, mergerOptions } from "./configuration";
 import { ListenerEvents } from './lisetener';
 import { TransformRequest, defaultRequestTransformation, TransformResponse, defaultResponseTransformation, WxParam } from './transform';
-const RequestQueue = new WxQueue(wx.request);
+const RequestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
 type WxRequest = (o: wx.RequestOption) => wx.RequestTask;
 export class Http {
@@ -39,9 +39,12 @@ export class Http {
      * 新建 Http实列
      * @param config 全局默认配置
      */
-    public constructor(config?: Configuration) {
+    public constructor(config?: Configuration, request?: WxRequest) {
         if (config) {
             this.defaults = config;
+        }
+        if (request) {
+            this.req = request;
         }
     }
 
@@ -173,7 +176,7 @@ export class Http {
             data.fail = (res: wx.GeneralCallbackResult) =>
                 options.retry-- > 0 ? this.send(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
 
-            const task = RequestQueue.push(data);
+            const task = this.req(data);
             cancelToken && cancelToken.promise.then(reason => task.abort());
         });
     }

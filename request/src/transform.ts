@@ -1,10 +1,10 @@
-import { BaseRequestOptions, RequestOptions, KeyRawValuePair } from './configuration';
+import { RequestData, RequestOptions, KeyRawValuePair } from './configuration';
 
 /**
  * 请求参数预处理,
  * 输入配置; 返回 WxParam | Promise<WxParam>
  */
-export type TransformRequest = (data: BaseRequestOptions) => WxParam | PromiseLike<WxParam>;
+export type TransformRequest = (data: RequestData) => WxParam | PromiseLike<WxParam>;
 
 /**
  * 相应数据数据预处理
@@ -31,7 +31,7 @@ function replaceParams(url: string, params: KeyRawValuePair): string {
  * 构建请求参数
  * @param data 
  */
-export function defaultRequestTransformation(data: BaseRequestOptions): WxParam {
+export function defaultRequestTransformation(data: RequestData): WxParam {
     const wxParam: WxParam = {
         url: data.baseURL + replaceParams(data.url, data.params),
         data: data.data,

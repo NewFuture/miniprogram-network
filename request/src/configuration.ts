@@ -71,7 +71,7 @@ export interface Configuration extends RequestConfiguration, TransformConfigurat
 
 
 
-export interface BaseRequestOptions extends RequestConfiguration {
+export interface RequestData extends RequestConfiguration {
     /**
     * 请求的相对地址
     * Base URL for request
@@ -117,7 +117,7 @@ export interface BaseRequestOptions extends RequestConfiguration {
     // onprogress?: (ProgressParam) => any;
 }
 
-export interface RequestOptions extends BaseRequestOptions, TransformConfiguration {
+export interface RequestOptions extends RequestData, TransformConfiguration {
 
 }
 
