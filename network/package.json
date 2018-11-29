@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-network",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.2-alpha.0",
   "description": "A better network package for MiniProgram API",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -20,8 +20,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NewFuture/miniprogram.git"
-  },
-  "dependencies": {
   },
   "devDependencies": {
     "miniprogram-api-typings": "^2.4.1",
