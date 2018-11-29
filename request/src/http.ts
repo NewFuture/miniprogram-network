@@ -1,6 +1,6 @@
 import { WxQueue } from 'miniprogram-queue';
 import { Configuration, RequestOptions, mergerOptions } from "./configuration";
-import { ListenerEvents } from './liseteners';
+import { ListenerEvents } from './lisetener';
 import { TransformRequest, defaultRequestTransformation, TransformResponse, defaultResponseTransformation, WxParam } from './transform';
 const RequestQueue = new WxQueue(wx.request);
 
