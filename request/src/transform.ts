@@ -1,4 +1,4 @@
-import { BaseRequestOptions, RequestOptions, KeyRawValuePair } from './Configuration';
+import { BaseRequestOptions, RequestOptions, KeyRawValuePair } from './configuration';
 
 /**
  * 请求参数预处理,

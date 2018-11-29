@@ -1,6 +1,6 @@
 
-import { TransformRequest, TransformResponse } from './Transform'
-import { CancelToken } from './CancelToken';
+import { TransformRequest, TransformResponse } from './transform'
+import { CancelToken } from './cancel-token';
 export interface RequestConfiguration {
     /**
     * 请求的根目录

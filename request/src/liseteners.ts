@@ -1,4 +1,4 @@
-import { RequestOptions } from "./Configuration";
+import { RequestOptions } from "./configuration";
 
 /**
  * 监听事件列表

@@ -1,4 +1,4 @@
-import "./Promise.finally";
+import "./promise.finally";
 import { promisify, cancelablePromisify, CancelablePromise } from "./promisify";
 
 declare var wx: {

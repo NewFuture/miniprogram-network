@@ -1,4 +1,4 @@
-import { CancelablePromise } from "./CancelablePromise";
+import { CancelablePromise } from "./cancelable-promise";
 
 interface WxAsyncOptions {
     success?: Function,
