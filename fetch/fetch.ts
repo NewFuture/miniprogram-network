@@ -1,4 +1,4 @@
-import {WxQueue} from "miniprogram-queue";
+import { WxQueue } from "miniprogram-queue";
 
 /// <reference types="dom">
 
@@ -74,18 +74,18 @@ class wxHttpResponse implements Response {
         throw new Error("Method not implemented.");
     }
     formData(): Promise<FormData> {
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             let data = this.body;
             try {
-                if(typeof data === "string"){
+                if (typeof data === "string") {
                     data = JSON.parse(data);
                 }
                 const formData = new FormData();
                 for (let key in data) {
-                    formData.append(key,data[key]);            
+                    formData.append(key, data[key]);
                 }
                 resolve(formData);
-                this.bodyUsed=true;   
+                this.bodyUsed = true;
             } catch (error) {
                 reject(error);
             }

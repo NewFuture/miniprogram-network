@@ -3,12 +3,15 @@
     "queue",
     "promise",
     "request",
-    "fetch"
+    "fetch",
+    "network"
   ],
-  "command":{
+  "command": {
     "bootstrap": {
       "ignore": "component-*",
-      "npmClientArgs": ["--no-package-lock"]      
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
     }
   },
   "version": "independent"

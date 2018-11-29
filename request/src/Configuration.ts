@@ -1,5 +1,6 @@
 
 import { TransformRequest, TransformResponse } from './Transform'
+import { CancelToken } from './CancelToken';
 export interface RequestConfiguration {
     /**
     * 请求的根目录
@@ -40,7 +41,6 @@ export interface RequestConfiguration {
     //  */
     // auth?: string | AuthFunction;
 
-    cancelToken?: Function;
 }
 
 export interface TransformConfiguration {
@@ -104,6 +104,12 @@ export interface BaseRequestOptions extends RequestConfiguration {
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
      */
     data?: any;
+
+
+    /**
+     * 取消操作
+     */
+    cancelToken?: CancelToken;
 
     // /**
     //  * allows handling of progress events

@@ -52,7 +52,6 @@ export function defaultRequestTransformation(data: BaseRequestOptions): WxParam 
  * @param config 
  */
 export function defaultResponseTransformation<T>(res: wx.RequestSuccessCallbackResult, config: RequestOptions): T {
-    if (config.url)
-        return res.data as any as T;
+    return res.data as any as T;
 }
 
