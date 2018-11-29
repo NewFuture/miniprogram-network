@@ -177,8 +177,22 @@ export class Http {
                 options.retry-- > 0 ? this.send(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
 
             const task = this.req(data);
-            cancelToken && cancelToken.promise.then(reason => task.abort());
+            if (cancelToken) {
+                cancelToken.promise.then(reason => {
+                    task.abort();
+                    this.onAbort(reason, options);
+                });
+            }
         });
+    }
+
+    /**
+     * 请求完成
+     * @param res 
+     * @param options 
+     */
+    private onAbort(reason: any, options: RequestOptions): void {
+        this.listeners.onComplete.forEach(f => f(reason, options));
     }
 
     /**

@@ -7,28 +7,29 @@
 
 ### Features
   
-* [ ] Promise
-* [ ] Cancelable
-* [ ] Queue
-* [ ] Wx request params
-    * [ ] responseType
+* [x] Promise
+* [x] Cancelable
+* [x] Queue
+* [x] Wx request option
+    * [x] responseType
+    * [x] headers
     * [ ] ~~dataType~~ (merged into `responseType`)
     * [ ] ~~timeout~~ (not supported for each request)
-* [ ] Retry when network failure
 * [ ] Configuration
-    * [ ] baseUri
+    * [x] baseUri
+    * [x] replace parameters
+    * [x] Retry when network failure
     * [ ] authentication?
-    * [ ] responseType
-* [ ] Interceptors in Lifecycle (only one,modify data or status)
-    * [ ] transform request data
-    * [ ] transform response data
-* [ ] Global Listeners
-    * [ ] On Send (before request data send & after request data transformed)
-    * [ ] On Response (after request response data transformed)
-    * [ ] On resolved (before `then` of Promise)
-    * [ ] On rejected (before `catch` of Promise)
-    * [ ] On abort
-    * [ ] On complete
+* [x] Interceptors in Lifecycle (only one,modify data or status)
+    * [x] transform request data
+    * [x] transform response data
+* [x] Global Listeners
+    * [x] On Send (before request data send & after request data transformed)
+    * [x] On Response (after request response data transformed)
+    * [x] On resolved (before `then` of Promise)
+    * [x] On rejected (before `catch` of Promise)
+    * [x] On abort
+    * [x] On complete
 * [ ] On Progress?
 * [ ] ~~pause/resume~~ (promise/async instead)
 
