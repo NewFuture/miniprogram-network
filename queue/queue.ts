@@ -1,9 +1,8 @@
-
 /**
  * 微信小程序操作队列封装管理
  * @example var rq = new WxQueue(wx.requst);
  */
-export class WxQueue {
+export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption, Ttask extends wx.RequestTask | wx.DownloadTask | wx.UploadTask>{
     /**
      *  队列最大长度
      */
@@ -17,25 +16,26 @@ export class WxQueue {
     /**
      * 待完成队列
      */
-    private readonly todo: Array<[number, WxOperatorOptions]> = [];
+    private readonly todo: Array<[number, Tparam & ExtraOptions]> = [];
 
 
     /**
      * 正在运行的任务
      */
-    private readonly TaskMap = new Map<Number, Task>();
+    private readonly TaskMap = new Map<Number, Ttask>();
 
     /**
-     * Wx的原始操作
+     * 小程序的原始操作
+     * 
      */
-    private readonly operator: WxOperator;
+    private readonly operator: (Tparam) => Ttask;
 
     /**
      * 创建Wx操作队列
      * @param wxFunc Wx操作函数
      * @param maxLength 最大队列长度，默认10
      */
-    constructor(wxFunc: WxOperator, maxLength: number = 10) {
+    constructor(wxFunc: (Tparam) => Ttask, maxLength: number = 10) {
         this.operator = wxFunc;
         this.MAX = maxLength || 10;
     }
@@ -43,11 +43,10 @@ export class WxQueue {
     /**
      * 向队列中添加操作
      * @param param 微信操作
-     * @param jump 是否插队
      */
-    public push(param: WxOperatorOptions, jump: boolean = false): Task {
+    public push(param: ExtraOptions & Tparam): Ttask {
         const id = ++this.taskid;
-        if (jump) {
+        if (param.jump) {
             //插队
             this.todo.unshift([id, param]);
         } else {
@@ -56,15 +55,16 @@ export class WxQueue {
 
         return this.next() || {
             abort: () => this.abort(id),
-            onProgressUpdate: (callback) => this.progress(id, callback),
-        };
+            onProgressUpdate: (callback) => this.onProgress(id, callback),
+            onHeadersReceived: (callback) => this.onHeaders(id, callback),
+        } as any;
     }
 
     /**
      * do next task
      * return Undefined and do nothing when queue is full。
      */
-    private next(): Task {
+    private next(): Ttask {
         if (this.todo.length > 0 && this.TaskMap.size < this.MAX) {
             const [taskid, taskOptions] = this.todo.shift();
             const oldComplete = taskOptions.complete;
@@ -75,12 +75,13 @@ export class WxQueue {
             }
             const task = this.operator(taskOptions);
             // task progress polyfill
-            if (taskOptions.progress && task.onProgressUpdate) {
-                task.onProgressUpdate(taskOptions.progress)
+            if (taskOptions.progress && (<wx.UploadTask>task).onProgressUpdate) {
+                (<wx.UploadTask>task).onProgressUpdate(taskOptions.progress as wx.UploadTaskOnProgressUpdateCallback)
             }
             this.TaskMap.set(taskid, task);
             return task;
         }
+        return undefined;
     }
 
     /**
@@ -92,7 +93,7 @@ export class WxQueue {
         if (index >= 0) {
             const completeCallback = this.todo[index][1].complete;
             // call back complete.
-            completeCallback && completeCallback();
+            completeCallback && completeCallback({ errMsg: "request:fail abort" });
             this.todo.splice(index, 1);
         } else if (this.TaskMap.has(taskid)) {
             this.TaskMap.get(taskid).abort();
@@ -106,32 +107,35 @@ export class WxQueue {
      * @param taskid 
      * @param callback 回调操作
      */
-    private progress(taskid, callback: Function) {
+    private onProgress(taskid: number, callback: ExtraOptions['progress']): void {
         const result = this.todo.find(v => v[0] === taskid);
         if (result) {
             result[1].progress = callback;
         } else if (this.TaskMap.has(taskid)) {
-            this.TaskMap.get(taskid).onProgressUpdate(callback);
+            (this.TaskMap.get(taskid) as wx.UploadTask).onProgressUpdate(callback as wx.UploadTaskOnProgressUpdateCallback);
+        }
+    }
+
+    private onHeaders(taskid: number, callback: wx.RequestTaskOnHeadersReceivedCallback) {
+        const result = this.todo.find(v => v[0] === taskid);
+        if (result) {
+            result[1].headersReceived = callback;
+        } else if (this.TaskMap.has(taskid)) {
+            this.TaskMap.get(taskid).onHeadersReceived(callback);
         }
     }
 };
 
 /**
- * 小程序操作方法
- */
-type WxOperator = (WxOperatorOptions) => any;
-
-/**
  * 微信操作参数声明 
  */
-interface WxOperatorOptions {
-    progress?: Function;
-    complete?: Function;
+interface ExtraOptions {
+    /**
+     * progress 回调
+     */
+    progress?: wx.UploadTaskOnProgressUpdateCallback | wx.DownloadTaskOnProgressUpdateCallback;
+    headersReceived?: wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback;
+    jump?: false
 }
 
-interface Task {
-    /** 取消操作 */
-    abort: Function;
-    /** 进更新 */
-    onProgressUpdate: Function;
-}
+// type Task = Partial<(wx.RequestTask & wx.DownloadTask & wx.UploadTask)>;

@@ -22,12 +22,9 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-queue": "^1.0.0-alpha.0"
+    "miniprogram-queue": "^2.0.0-alpha.0"
   },
-  "devDependencies": {
-    "miniprogram-api-typings": "^2.4.1",
-    "typescript": "^3.1.1"
-  },
+  "devDependencies": {},
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram/issues"
   },

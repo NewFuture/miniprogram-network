@@ -11,10 +11,6 @@
         "typeRoots": [
             "../node_modules/miniprogram-api-typings"
         ],
-        "lib": [
-            "es2015",
-            "es2015.promise"
-        ]
     },
     "include": [
         "*.ts",

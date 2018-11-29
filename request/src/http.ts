@@ -4,6 +4,7 @@ import { ListenerEvents } from './lisetener';
 import { TransformRequest, defaultRequestTransformation, TransformResponse, defaultResponseTransformation, WxParam } from './transform';
 const RequestQueue = new WxQueue(wx.request);
 
+type WxRequest = (o: wx.RequestOption) => wx.RequestTask;
 export class Http {
 
     /**
@@ -31,6 +32,8 @@ export class Http {
      */
     public readonly listeners: ListenerEvents = new ListenerEvents;
 
+
+    private readonly req: WxRequest = RequestQueue.push;
 
     /**
      * 新建 Http实列
