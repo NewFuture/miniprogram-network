@@ -1,7 +1,18 @@
 
 import { TransformRequest, TransformResponse } from './transform'
 import { CancelToken } from './cancel-token';
-export interface RequestConfiguration {
+
+/**
+ * KeyValuePair
+ */
+export interface KeyRawValuePair {
+    [key: string]: string | number | boolean;
+};
+
+/**
+ * 基本全局配置信息
+ */
+interface BaseRequestConfig {
     /**
     * 请求的根目录
     * Base URL for request
@@ -40,10 +51,12 @@ export interface RequestConfiguration {
     //  * auth setting
     //  */
     // auth?: string | AuthFunction;
-
 }
 
-export interface TransformConfiguration {
+/**
+ * 数据转换配置信息
+ */
+interface TransformConfig {
 
     /**
      * 修改数据或者头;返回 wx.request参数
@@ -62,21 +75,40 @@ export interface TransformConfiguration {
 }
 
 /**
- * Request Configuration
+ * 每个请求额外设置项
  */
-export interface Configuration extends RequestConfiguration, TransformConfiguration {
+interface ExtraRequestConfig extends BaseRequestConfig {
 
-};
+    /**
+     * 取消操作的 CancelToken 
+     */
+    cancelToken?: CancelToken;
 
+    // /**
+    //  * allows handling of progress events
+    //  */
+    // onprogress?: (ProgressParam) => any;
+}
 
+/**
+ * 全局配置参数
+ * Global Request Configuration
+ */
+export type Configuration = BaseRequestConfig & TransformConfig;
 
+/**
+ * 每个请求的额外配置参数
+ */
+export type ExtraConfig = ExtraRequestConfig & TransformConfig;
 
-export interface RequestData extends RequestConfiguration {
+/**
+ * 每次请求包含的全部信息(不包括 转换函数)
+ */
+export interface RequestData extends ExtraRequestConfig {
     /**
     * 请求的相对地址
-    * Base URL for request
     */
-    url?: string;
+    url: string;
 
     /**
     * 请求方法
@@ -104,30 +136,12 @@ export interface RequestData extends RequestConfiguration {
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
      */
     data?: any;
-
-
-    /**
-     * 取消操作
-     */
-    cancelToken?: CancelToken;
-
-    // /**
-    //  * allows handling of progress events
-    //  */
-    // onprogress?: (ProgressParam) => any;
-}
-
-export interface RequestOptions extends RequestData, TransformConfiguration {
-
 }
 
 /**
- * KeyValuePair
+ * 单个请求的全部可配置参数
  */
-export interface KeyRawValuePair {
-    [key: string]: string | number | boolean;
-};
-
+export type RequestOptions = RequestData & TransformConfig;
 
 // /**
 //  * 认证回调，
@@ -137,28 +151,12 @@ export interface KeyRawValuePair {
 // export type AuthFunction = (config: Configuration) => string | Promise<string>;
 
 
-// type ProgressParam = {
-//     /**
-//      * 进度百分比
-//      */
-//     progress: number;
-//     /**
-//      * 无效，只为兼容 upload/download
-//      */
-//     totalBytesSent?: number;
-
-//     /**
-//      * 无效，只为兼容 upload/download
-//      */
-//     totalBytesExpectedToSend?: number;
-// }
-
 /**
  * 合并配置
  * @param customize 自定义配置，未定义的将被默认配置覆盖
  * @param defaults 默认值
  */
-export function mergerOptions(customize: RequestOptions, defaults: RequestOptions): RequestOptions {
+export function mergerOptions(customize: RequestOptions, defaults: Configuration): RequestOptions {
     Object.keys(defaults).forEach(key => {
         if (!customize.hasOwnProperty(key)) {
             customize[key] = defaults[key]

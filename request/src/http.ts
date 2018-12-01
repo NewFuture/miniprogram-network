@@ -1,5 +1,5 @@
 import { WxQueue } from 'miniprogram-queue';
-import { Configuration, RequestOptions, mergerOptions } from "./configuration";
+import { Configuration, RequestOptions, mergerOptions, ExtraConfig } from "./configuration";
 import { ListenerEvents } from './lisetener';
 import { TransformRequest, defaultRequestTransformation, TransformResponse, defaultResponseTransformation, WxParam } from './transform';
 const RequestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
@@ -20,7 +20,7 @@ export class Http {
     /**
      * 默认全局配置
      */
-    public readonly defaults: Configuration = {
+    public readonly Defaults: Configuration = {
         /**
         * 重试一次
         */
@@ -30,7 +30,7 @@ export class Http {
     /**
      * 全局Listeners
      */
-    public readonly listeners: ListenerEvents = new ListenerEvents;
+    public readonly Listeners: ListenerEvents = new ListenerEvents;
 
 
     private readonly req: WxRequest = RequestQueue.push;
@@ -41,7 +41,7 @@ export class Http {
      */
     public constructor(config?: Configuration, request?: WxRequest) {
         if (config) {
-            this.defaults = config;
+            this.Defaults = config;
         }
         if (request) {
             this.req = request;
@@ -49,18 +49,18 @@ export class Http {
     }
 
     /**
+     * Object 参数发起请求
+     * @param options 
+     */
+    public request<T>(options: RequestOptions): Promise<T>;
+    /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
      * @param action 请求操作URL,支持{name}格式参数
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public request<T>(method: string, action: string, data?: any, config?: Configuration): Promise<T>;
-    /**
-     * Object 参数发起请求
-     * @param options 
-     */
-    public request<T>(options: RequestOptions): Promise<T>;
+    public request<T>(method: string, action: string, data?: any, config?: ExtraConfig): Promise<T>;
     public request<T>(): Promise<T> {
         const arg_num = arguments.length;
         const options: RequestOptions = arg_num == 1 ? arguments[0] : (arg_num === 4 ? arguments[3] : {});
@@ -71,7 +71,7 @@ export class Http {
                 options.data = arguments[2];
             }
         }
-        mergerOptions(options, this.defaults);
+        mergerOptions(options, this.Defaults);
         return this.process(options);
     }
 
@@ -81,7 +81,7 @@ export class Http {
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public get<T>(action: string, data?: any, config?: Configuration): Promise<T> {
+    public get<T>(action: string, data?: any, config?: ExtraConfig): Promise<T> {
         return this.request<T>('GET', action, data, config);
     }
 
@@ -91,7 +91,7 @@ export class Http {
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public post<T>(action: string, data?: any, config?: Configuration): Promise<T> {
+    public post<T>(action: string, data?: any, config?: ExtraConfig): Promise<T> {
         return this.request<T>('POST', action, data, config);
     }
 
@@ -101,7 +101,7 @@ export class Http {
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public put<T>(action: string, data?: any, config?: Configuration): Promise<T> {
+    public put<T>(action: string, data?: any, config?: ExtraConfig): Promise<T> {
         return this.request<T>('PUT', action, data, config);
     }
 
@@ -111,11 +111,11 @@ export class Http {
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public delete<T>(action: string, data?: any, config?: Configuration): Promise<T> {
+    public delete<T>(action: string, data?: any, config?: ExtraConfig): Promise<T> {
         return this.request<T>('DELETE', action, data, config);
     }
 
-    public head<T>(action: string, data?: any, config?: Configuration): Promise<T> {
+    public head<T>(action: string, data?: any, config?: ExtraConfig): Promise<T> {
         return this.request<T>('HEAD', action, data, config);
     }
 
@@ -156,7 +156,7 @@ export class Http {
      * @param options 
      */
     private beforeSend(options: RequestOptions): Promise<WxParam> {
-        this.listeners.onSend.forEach(f => f(options));
+        this.Listeners.onSend.forEach(f => f(options));
         const data = options.transformRequest ? options.transformRequest(options) : Http.RequestTransformation(options);
         return Promise.resolve(data);
     }
@@ -192,7 +192,7 @@ export class Http {
      * @param options 
      */
     private onAbort(reason: any, options: RequestOptions): void {
-        this.listeners.onComplete.forEach(f => f(reason, options));
+        this.Listeners.onComplete.forEach(f => f(reason, options));
     }
 
     /**
@@ -201,7 +201,7 @@ export class Http {
      * @param options 
      */
     private onResponse<T>(res: wx.RequestSuccessCallbackResult, options: RequestOptions): Promise<T> {
-        this.listeners.onResponse.forEach(f => f(res, options));
+        this.Listeners.onResponse.forEach(f => f(res, options));
         const result = options.transformResponse ? options.transformResponse(res, options) : Http.ResponseTransformation(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
     }
@@ -212,7 +212,7 @@ export class Http {
      * @param options 
      */
     private onFail(res: wx.GeneralCallbackResult, options: RequestOptions): Promise<wx.GeneralCallbackResult> {
-        this.listeners.onRejected.forEach(f => f(res, options));
+        this.Listeners.onRejected.forEach(f => f(res, options));
         return Promise.reject(res);
     }
 
@@ -222,6 +222,6 @@ export class Http {
      * @param options 
      */
     private onComplete(res: wx.GeneralCallbackResult, options: RequestOptions) {
-        this.listeners.onComplete.forEach(f => f(res, options));
+        this.Listeners.onComplete.forEach(f => f(res, options));
     }
 };

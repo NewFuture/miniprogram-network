@@ -16,7 +16,7 @@ export class CancelToken {
    * 生成CancelToken
    * @param executor 
    */
-  constructor(executor: (cancel: CancelFunction) => void) {
+  private constructor(executor: (cancel: CancelFunction) => void) {
     let resolve: CancelFunction;
     this.promise = new Promise<any>((res) => resolve = res);
     executor((reason?: any) => {
