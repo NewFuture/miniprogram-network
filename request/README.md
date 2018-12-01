@@ -1,8 +1,8 @@
 # miniprogram-request [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
 
-> A better Request package for MiniProgram
+> A better Request package for MiniProgram [developing]
 >
-> 小程序请求封装 axios Like
+> 小程序请求库封装 axios Like
 
 
 ## Features
@@ -26,7 +26,7 @@
 * [x] Global Listeners
     * [x] On Send (before request data send & after request data transformed)
     * [x] On Response (after request response data transformed)
-    * [] On resolved (before `then` of Promise)
+    * [ ] On resolved? (before `then` of Promise)
     * [x] On rejected (before `catch` of Promise)
     * [x] On abort
     * [x] On complete

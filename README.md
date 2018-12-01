@@ -3,7 +3,14 @@
 小程序基础库封装 [**Experimental(尚未经过生产环境测试)**]
 
 ## Packages
-
+* [miniprogram-request](request) 小程序请求库
+    * [x] Promise+泛型
+    * [x] Cancelable 可取消
+    * [x] Queue 底层队列维护
+    * [x] retry 错误重试
+    * [x] Interceptors 请求/响应拦截
+    * [x] Listeners 时间监听
+    * [x] axios like API
 * [miniprogram-queue](queue) 小程序API队列封装
     * [x] 可自动注入/手动管理
     * [x] 支持取消操作(`abort`)
