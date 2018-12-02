@@ -1,7 +1,7 @@
 /**
  * 监听事件列表
  */
-export class ListenerEvents<TFullOptions, TResult>{
+export class EventListeners<TFullOptions, TResult>{
     /**
      * 发送之前事件监听
      */

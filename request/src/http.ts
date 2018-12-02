@@ -1,7 +1,7 @@
 import { WxQueue } from 'miniprogram-queue';
-import { Configuration, RequestOptions, mergerOptions, ExtraConfig } from "./configuration";
-import { ListenerEvents } from './lisetener';
-import { TransformRequest, defaultRequestTransformation, TransformResponse, defaultResponseTransformation, WxParam } from './transform';
+import { mergerConfig, EventListeners } from 'miniprogram-network-utils';
+import { Configuration, RequestOptions, ExtraConfig } from "./configuration";
+import { defaultRequestTransformation, defaultResponseTransformation, WxParam } from './transform';
 const RequestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
 type WxRequest = (o: wx.RequestOption) => wx.RequestTask;
@@ -10,12 +10,12 @@ export class Http {
     /**
      * 默认数据转换函数
      */
-    public static readonly RequestTransformation: TransformRequest = defaultRequestTransformation;
+    public static readonly RequestTransformation: Configuration['transformSend'] = defaultRequestTransformation;
 
     /**
      * 默认输出数据转换函数
      */
-    public static readonly ResponseTransformation: TransformResponse = defaultResponseTransformation;
+    public static readonly ResponseTransformation: Configuration['transformResponse'] = defaultResponseTransformation;
 
     /**
      * 默认全局配置
@@ -30,7 +30,7 @@ export class Http {
     /**
      * 全局Listeners
      */
-    public readonly Listeners: ListenerEvents = new ListenerEvents;
+    public readonly Listeners: EventListeners<RequestOptions, wx.RequestSuccessCallbackResult> = new EventListeners;
 
 
     private readonly req: WxRequest = RequestQueue.push;
@@ -71,7 +71,7 @@ export class Http {
                 options.data = arguments[2];
             }
         }
-        mergerOptions(options, this.Defaults);
+        mergerConfig(options, this.Defaults);
         return this.process(options);
     }
 

@@ -1,14 +1,7 @@
 
-import { TransformRequest, TransformResponse } from './transform'
-import { CancelToken } from './cancel-token';
-
-/**
- * KeyValuePair
- */
-export interface KeyRawValuePair {
-    [key: string]: string | number | boolean;
-};
-
+import { BeforeSendFunc, AfterResponseFunc, KeyBasicValuePair } from 'miniprogram-network-utils'
+import { CancelToken } from 'miniprogram-cancel-token';
+import { WxParam } from './transform';
 /**
  * 基本全局配置信息
  */
@@ -23,7 +16,7 @@ interface BaseRequestConfig {
     * 自定义头 
     * user defined headers
     */
-    headers?: KeyRawValuePair;
+    headers?: KeyBasicValuePair;
 
     /**
      * URL Path
@@ -34,7 +27,7 @@ interface BaseRequestConfig {
      *  param = {ID: 12345}
      * request url will be /1234/status
      */
-    params?: KeyRawValuePair,
+    params?: KeyBasicValuePair,
 
     /**
     * 重试次数 
@@ -63,7 +56,7 @@ interface TransformConfig {
      * 异步返回promise
      * You may modify the data or headers object before it is sent.
      */
-    transformSend?: TransformRequest;
+    transformSend?: BeforeSendFunc<RequestData, WxParam>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
@@ -71,7 +64,7 @@ interface TransformConfig {
      * allows changes to the response data to be made before it is passed to then/catch
      *  @example `res=>res.data`
      */
-    transformResponse?: TransformResponse;
+    transformResponse?: AfterResponseFunc<wx.RequestSuccessCallbackResult, RequestOptions, any>;
 }
 
 /**
@@ -89,6 +82,7 @@ interface ExtraRequestConfig extends BaseRequestConfig {
     //  */
     // onprogress?: (ProgressParam) => any;
 }
+
 
 /**
  * 全局配置参数
@@ -149,18 +143,3 @@ export type RequestOptions = RequestData & TransformConfig;
 //  * 异步返回 Promise<string>，
 //  */
 // export type AuthFunction = (config: Configuration) => string | Promise<string>;
-
-
-/**
- * 合并配置
- * @param customize 自定义配置，未定义的将被默认配置覆盖
- * @param defaults 默认值
- */
-export function mergerOptions(customize: RequestOptions, defaults: Configuration): RequestOptions {
-    Object.keys(defaults).forEach(key => {
-        if (!customize.hasOwnProperty(key)) {
-            customize[key] = defaults[key]
-        }
-    })
-    return customize;
-}

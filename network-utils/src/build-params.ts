@@ -1,7 +1,7 @@
 /**
  * 键值对
  */
-export interface KeyRawValuePair {
+export interface KeyBasicValuePair {
     [key: string]: string | number | boolean;
 };
 
@@ -11,7 +11,7 @@ export interface KeyRawValuePair {
  * @param url url
  * @param params 替换的参数列表
  */
-export function buildParams(url: string, params: KeyRawValuePair): string {
+export function buildParams(url: string, params: KeyBasicValuePair): string {
     if (params) {
         for (let key in params) {
             url = url.replace(new RegExp('{' + key + '}', 'g'), params[key] as string);
