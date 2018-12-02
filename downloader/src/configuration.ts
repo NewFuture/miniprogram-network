@@ -1,14 +1,11 @@
 
-import { BeforeDownload, afterDownload } from './transform'
-// import { CancelToken } from './cancel-token';
+import { CancelToken } from 'miniprogram-cancel-token';
+import { KeyBasicValuePair, BeforeSendFunc, AfterResponseFunc } from 'miniprogram-network-utils'
+import { DownloadParams } from './transform';
 
 /**
  * KeyValuePair
  */
-export interface KeyRawValuePair {
-    [key: string]: string | number | boolean;
-};
-
 /**
  * 基本全局配置信息
  */
@@ -23,7 +20,7 @@ interface BaseConfig {
     * 自定义头 
     * user defined headers
     */
-    headers?: KeyRawValuePair;
+    headers?: KeyBasicValuePair;
 
     /**
      * URL Path
@@ -34,7 +31,7 @@ interface BaseConfig {
      *  param = {ID: 12345}
      * request url will be /1234/status
      */
-    params?: KeyRawValuePair,
+    params?: KeyBasicValuePair,
 
     /**
     * 重试次数 
@@ -58,7 +55,7 @@ interface TransformConfig {
      * 异步返回promise
      * You may modify the data or headers object before it is sent.
      */
-    transformRequest?: BeforeDownload;
+    transformSend?: BeforeSendFunc<DownloadConfig, DownloadParams>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
@@ -66,7 +63,7 @@ interface TransformConfig {
      * allows changes to the response data to be made before it is passed to then/catch
      *  @example `res=>res.data`
      */
-    transformResponse?: afterDownload;
+    transformResponse?: AfterResponseFunc<wx.DownloadFileSuccessCallbackResult, DownloadOptions, any>;
 }
 
 /**
@@ -93,6 +90,11 @@ export interface DownloadConfig extends BaseConfig {
      * 临时文件路径。如果没传入 filePath 指定文件存储路径，则下载后的文件会存储到一个临时文件
      */
     filePath?: string;
+
+    /**
+     * 取消操作的 CancelToken 
+     */
+    cancelToken?: CancelToken;
 
     /**
      * 进度回调

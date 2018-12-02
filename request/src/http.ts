@@ -10,12 +10,12 @@ export class Http {
     /**
      * 默认数据转换函数
      */
-    public static readonly SendTransformation: Configuration['transformSend'] = defaultSendTransformation;
+    public static readonly TransformSend: Configuration['transformSend'] = defaultSendTransformation;
 
     /**
      * 默认输出数据转换函数
      */
-    public static readonly ResponseTransformation: Configuration['transformResponse'] = defaultResponseTransformation;
+    public static readonly TransformResponse: Configuration['transformResponse'] = defaultResponseTransformation;
 
     /**
      * 默认全局配置
@@ -157,7 +157,7 @@ export class Http {
      */
     private beforeSend(options: RequestOptions): Promise<WxParam> {
         this.Listeners.onSend.forEach(f => f(options));
-        const data = options.transformSend ? options.transformSend(options) : Http.SendTransformation!(options);
+        const data = options.transformSend ? options.transformSend(options) : Http.TransformSend!(options);
         return Promise.resolve(data);
     }
 
@@ -202,7 +202,7 @@ export class Http {
      */
     private onResponse<T>(res: wx.RequestSuccessCallbackResult, options: RequestOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
-        const result = options.transformResponse ? options.transformResponse(res, options) : Http.ResponseTransformation!(res, options);
+        const result = options.transformResponse ? options.transformResponse(res, options) : Http.TransformResponse!(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
     }
 

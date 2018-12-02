@@ -1,8 +1,9 @@
 import { WxQueue } from 'miniprogram-queue';
-import { Configuration, DownloadOptions, KeyRawValuePair } from "./configuration";
-// import { ListenerEvents } from './lisetener';
-import { BeforeDownload, defaultBeforeDowanload, afterDownload, defaultDownloadResponseTransformation, DownloadParams } from './transform';
-const RequestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
+import { Configuration, DownloadOptions } from "./configuration";
+import { defaultBeforeDowanload, defaultDownloadResponseTransformation, DownloadParams } from './transform';
+import { EventListeners, mergerConfig, KeyBasicValuePair } from 'miniprogram-network-utils';
+
+const DownloadQueue = new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
 
 type WxDownload = (o: wx.DownloadFileOption) => wx.DownloadTask;
 export class Downloder {
@@ -10,12 +11,12 @@ export class Downloder {
     /**
      * 默认数据转换函数
      */
-    public static readonly RequestTransformation: BeforeDownload = defaultBeforeDowanload;
+    public static readonly TransformSend: Configuration['transformSend'] = defaultBeforeDowanload;
 
     /**
      * 默认输出数据转换函数
      */
-    public static readonly ResponseTransformation: afterDownload = defaultDownloadResponseTransformation;
+    public static readonly TransformResponse: Configuration['transformResponse'] = defaultDownloadResponseTransformation;
 
     /**
      * 默认全局配置
@@ -30,10 +31,10 @@ export class Downloder {
     /**
      * 全局Listeners
      */
-    // public readonly Listeners: ListenerEvents = new ListenerEvents;
+    public readonly Listeners: EventListeners<Configuration, wx.DownloadFileSuccessCallbackResult> = new EventListeners;
 
 
-    private readonly req: WxDownload = RequestQueue.push;
+    private readonly req: WxDownload = DownloadQueue.push;
 
     /**
      * 新建 Http实列
@@ -59,7 +60,7 @@ export class Downloder {
      * @param filePath 
      * @param headers 
      */
-    public download<T>(url: string, filePath?: string, headers?: KeyRawValuePair): Promise<T>;
+    public download<T>(url: string, filePath?: string, headers?: KeyBasicValuePair): Promise<T>;
     public download<T>(): Promise<T> {
         const arg_num = arguments.length;
         const options: DownloadOptions = arg_num == 1 ? arguments[0] : (arg_num === 4 ? arguments[3] : {});
@@ -67,7 +68,7 @@ export class Downloder {
             options.url = arguments[0];
             options.filePath = arguments[1];
         }
-        mergerOptions(options, this.Defaults);
+        mergerConfig(options, this.Defaults);
         return this.process(options);
     }
 
@@ -89,7 +90,7 @@ export class Downloder {
      */
     private beforeSend(options: DownloadOptions): Promise<DownloadParams> {
         this.Listeners.onSend.forEach(f => f(options));
-        const data = options.transformRequest ? options.transformRequest(options) : Http.RequestTransformation(options);
+        const data = options.transformSend ? options.transformSend(options) : Downloder.TransformSend(options);
         return Promise.resolve(data);
     }
 
@@ -134,7 +135,7 @@ export class Downloder {
      */
     private onResponse<T>(res: wx.RequestSuccessCallbackResult, options: DownloadOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
-        const result = options.transformResponse ? options.transformResponse(res, options) : Http.ResponseTransformation(res, options);
+        const result = options.transformResponse ? options.transformResponse(res, options) : Downloder.TransformResponse(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
     }
 
