@@ -10,7 +10,7 @@ export type WxParam = Pick<wx.RequestOption, 'url' | 'data' | 'dataType' | 'head
  * 构建请求参数
  * @param data 
  */
-export function defaultRequestTransformation(data: RequestData): WxParam {
+export function defaultSendTransformation(data: RequestData): WxParam {
     const wxParam: WxParam = {
         url: data.baseURL + buildParams(data.url, data.params),
         data: data.data,
