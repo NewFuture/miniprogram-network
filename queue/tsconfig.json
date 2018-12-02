@@ -2,8 +2,8 @@
     "compilerOptions": {
         "target": "es6",
         "sourceMap": true,
-        "strict": false,
-        "noImplicitAny": false,
+        "strict": true,
+        "noImplicitAny": true,
         "noImplicitReturns": true,
         "moduleResolution": "node",
         "outDir": "dist",

@@ -1,7 +1,7 @@
 import { WxQueue } from 'miniprogram-queue';
 import { mergerConfig, EventListeners } from 'miniprogram-network-utils';
 import { Configuration, RequestOptions, ExtraConfig } from "./configuration";
-import { defaultRequestTransformation, defaultResponseTransformation, WxParam } from './transform';
+import { defaultSendTransformation, defaultResponseTransformation, WxParam } from './transform';
 const RequestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
 type WxRequest = (o: wx.RequestOption) => wx.RequestTask;
@@ -10,7 +10,7 @@ export class Http {
     /**
      * 默认数据转换函数
      */
-    public static readonly RequestTransformation: Configuration['transformSend'] = defaultRequestTransformation;
+    public static readonly SendTransformation: Configuration['transformSend'] = defaultSendTransformation;
 
     /**
      * 默认输出数据转换函数
@@ -157,7 +157,7 @@ export class Http {
      */
     private beforeSend(options: RequestOptions): Promise<WxParam> {
         this.Listeners.onSend.forEach(f => f(options));
-        const data = options.transformSend ? options.transformSend(options) : Http.RequestTransformation(options);
+        const data = options.transformSend ? options.transformSend(options) : Http.SendTransformation!(options);
         return Promise.resolve(data);
     }
 
@@ -171,10 +171,10 @@ export class Http {
             const cancelToken = options.cancelToken;
             cancelToken && cancelToken.throwIfRequested();
 
-            data.success = (res: wx.RequestSuccessCallbackResult) => this.onResponse(res, options).then(resolve);
+            data.success = (res: wx.RequestSuccessCallbackResult): any => this.onResponse<T>(res, options).then(resolve);
             // retry
-            data.fail = (res: wx.GeneralCallbackResult) =>
-                options.retry-- > 0 ? this.send(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
+            data.fail = (res: wx.GeneralCallbackResult): any =>
+                options.retry!-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
 
             const task = this.req(data);
             if (cancelToken) {
@@ -202,7 +202,7 @@ export class Http {
      */
     private onResponse<T>(res: wx.RequestSuccessCallbackResult, options: RequestOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
-        const result = options.transformResponse ? options.transformResponse(res, options) : Http.ResponseTransformation(res, options);
+        const result = options.transformResponse ? options.transformResponse(res, options) : Http.ResponseTransformation!(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
     }
 

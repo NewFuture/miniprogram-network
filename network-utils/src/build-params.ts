@@ -11,7 +11,7 @@ export interface KeyBasicValuePair {
  * @param url url
  * @param params 替换的参数列表
  */
-export function buildParams(url: string, params: KeyBasicValuePair): string {
+export function buildParams(url: string, params?: KeyBasicValuePair): string {
     if (params) {
         for (let key in params) {
             url = url.replace(new RegExp('{' + key + '}', 'g'), params[key] as string);

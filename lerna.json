@@ -4,8 +4,9 @@
     "promise",
     "network-utils",
     "cancel-token",
-    "request",
     "fetch",
+    "request",
+    "downloader",
     "network"
   ],
   "command": {
