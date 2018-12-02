@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-request",
-  "version": "0.2.2-alpha.0",
+  "version": "0.2.3-alpha.0",
   "description": "A better Request package for MiniProgram API",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "miniprogram-cancel-token": "*",
-    "miniprogram-network-utils": "^0.1.1",
-    "miniprogram-queue": "^2.0.1"
+    "miniprogram-network-utils": "^0.1.2",
+    "miniprogram-queue": "^2.0.2"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram/issues"
