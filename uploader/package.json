@@ -21,9 +21,10 @@
     "type": "git",
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
-  "devDependencies": {
-    "miniprogram-api-typings": "^2.4.1",
-    "typescript": "^3.1.1"
+  "dependencies": {
+    "miniprogram-cancel-token": "*",
+    "miniprogram-network-utils": "^0.1.2",
+    "miniprogram-queue": "^2.0.2"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram/issues"

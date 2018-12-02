@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "sourceMap": true,
+        "strict": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "declaration": true,
+        "typeRoots": [
+            "../node_modules/miniprogram-api-typings"
+        ],
+        "lib": [
+            "es2015",
+            "es2015.promise"
+        ]
+    },
+    "include": [
+        "*.ts",
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

@@ -2,11 +2,10 @@
   "packages": [
     "queue",
     "promise",
-    "network-utils",
     "cancel-token",
+    "network-utils",
     "fetch",
-    "request",
-    "downloader",
+    "uploader",
     "network"
   ],
   "command": {

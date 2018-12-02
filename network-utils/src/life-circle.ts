@@ -1,25 +1,24 @@
 import { EventListeners } from "./listeners";
-import { BaseConfiguration, WxOptions, CancelConfiguration } from './configuration';
-import { TransformConfiguration } from './transform'
+import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask } from './configuration';
 import { FirstArgument } from "./first-argument";
 
 
 export abstract class LifeCircle<
     TWxOptions extends WxOptions,
     TWxTask extends wx.RequestTask | wx.DownloadTask | wx.UploadTask,
-    TConfiguration extends BaseConfiguration & TransformConfiguration<TFullOptions, TWxOptions>,
-    TFullOptions extends TConfiguration & CancelConfiguration,
+    TConfiguration extends BaseConfiguration<TFullOptions, TWxOptions>,
+    TFullOptions extends TConfiguration & ExtraConfiguration<TWxTask>,
     >{
 
     /**
      * 默认数据转换函数
      */
-    public abstract readonly TransformSend: TConfiguration['transformSend'];
+    public abstract readonly TransformSend: NonNullable<TConfiguration['transformSend']>;
 
     /**
      * 默认输出数据转换函数
      */
-    public abstract readonly TransformResponse: TConfiguration['transformResponse'];
+    public abstract readonly TransformResponse: NonNullable<TConfiguration['transformResponse']>;
 
     /**
      * 默认全局配置
@@ -66,7 +65,7 @@ export abstract class LifeCircle<
         this.Listeners.onSend.forEach(f => f(options));
         const data = options.transformSend ?
             options.transformSend(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>) :
-            this.TransformSend!(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>);
+            this.TransformSend(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>);
         return Promise.resolve(data);
     }
 
@@ -102,7 +101,7 @@ export abstract class LifeCircle<
      */
     private onResponse<T>(res: FirstArgument<WxOptions['success']>, options: TFullOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
-        const result = options.transformResponse ? options.transformResponse(res, options) : this.TransformResponse!(res, options);
+        const result = options.transformResponse ? options.transformResponse(res, options) : this.TransformResponse(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
     }
 
@@ -134,29 +133,3 @@ export abstract class LifeCircle<
         this.Listeners.onAbort.forEach(f => f(reason, options));
     }
 };
-
-// type BaseUplaodConfig = BaseConfiguration & TransformConfiguration<FullConfig, wx.UploadFileOption>;
-// interface FullConfig extends BaseUplaodConfig, CancelConfiguration {
-
-// }
-// class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, BaseUplaodConfig, FullConfig>
-// {
-//     /**
-//  * 默认数据转换函数
-//  */
-//     public readonly TransformSend: FullConfig['transformSend'];
-
-//     /**
-//      * 默认输出数据转换函数
-//      */
-//     public readonly TransformResponse: FullConfig['transformResponse'];
-
-//     constructor(config?: BaseUplaodConfig, op?: (op: wx.UploadFileOption) => wx.UploadTask) {
-//         super(config || { retry: 1 }, op || wx.uploadFile);
-//     }
-
-//     public upload(options:FullConfig) {
-//         this.process(options);
-//     }
-
-// }

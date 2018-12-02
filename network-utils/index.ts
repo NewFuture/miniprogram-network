@@ -1,4 +1,4 @@
-export { mergerConfig } from './src/merge-config'
+export { mergerConfig, BaseConfiguration, ExtraConfiguration } from './src/configuration'
 export { buildParams, KeyBasicValuePair } from './src/build-params';
 export { EventListeners } from './src/listeners';
-export { BeforeSendFunc, AfterResponseFunc } from './src/transform';
+export { LifeCircle } from './src/life-circle'
