@@ -78,8 +78,8 @@ export class Downloder {
      */
     private process<T>(options: DownloadOptions): Promise<T> {
         return this.beforeSend(options)
-            .then((param: wx.RequestOption) => {
-                param.complete = (res: wx.GeneralCallbackResult) => this.onComplete(res, options);
+            .then((param: wx.DownloadFileOption) => {
+                param.complete = (res) => this.onComplete(res, options);
                 return this.send<T>(param, options)
             })
     }
@@ -99,15 +99,15 @@ export class Downloder {
      * @param data 
      * @param options 
      */
-    private send<T>(data: wx.RequestOption, options: DownloadOptions): Promise<T> {
+    private send<T>(data: wx.DownloadFileOption, options: DownloadOptions): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             const cancelToken = options.cancelToken;
             cancelToken && cancelToken.throwIfRequested();
 
-            data.success = (res: wx.RequestSuccessCallbackResult) => this.onResponse(res, options).then(resolve);
+            data.success = (res: wx.DownloadFileSuccessCallbackResult) => this.onResponse<T>(res, options).then(resolve);
             // retry
             data.fail = (res: wx.GeneralCallbackResult) =>
-                options.retry-- > 0 ? this.send(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
+                options.retry-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
 
             const task = this.req(data);
             if (cancelToken) {
@@ -133,7 +133,7 @@ export class Downloder {
      * @param res 
      * @param options 
      */
-    private onResponse<T>(res: wx.RequestSuccessCallbackResult, options: DownloadOptions): Promise<T> {
+    private onResponse<T>(res: wx.DownloadFileSuccessCallbackResult, options: DownloadOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
         const result = options.transformResponse ? options.transformResponse(res, options) : Downloder.TransformResponse(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
