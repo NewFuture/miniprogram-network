@@ -1,3 +1,6 @@
+/**
+ * 键值对
+ */
 export interface KeyRawValuePair {
     [key: string]: string | number | boolean;
 };

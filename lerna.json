@@ -2,6 +2,8 @@
   "packages": [
     "queue",
     "promise",
+    "network-utils",
+    "cancel-token",
     "request",
     "fetch",
     "network"

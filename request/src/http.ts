@@ -157,7 +157,7 @@ export class Http {
      */
     private beforeSend(options: RequestOptions): Promise<WxParam> {
         this.Listeners.onSend.forEach(f => f(options));
-        const data = options.transformRequest ? options.transformRequest(options) : Http.RequestTransformation(options);
+        const data = options.transformSend ? options.transformSend(options) : Http.RequestTransformation(options);
         return Promise.resolve(data);
     }
 

@@ -63,7 +63,7 @@ interface TransformConfig {
      * 异步返回promise
      * You may modify the data or headers object before it is sent.
      */
-    transformRequest?: TransformRequest;
+    transformSend?: TransformRequest;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
