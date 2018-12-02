@@ -2,7 +2,8 @@
  * 微信小程序操作队列封装管理
  * @example var rq = new WxQueue(wx.requst);
  */
-export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption, Ttask extends wx.RequestTask | wx.DownloadTask | wx.UploadTask>{
+export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption,
+    Ttask extends wx.RequestTask | wx.DownloadTask | wx.UploadTask>{
     /**
      *  队列最大长度
      */
@@ -28,14 +29,14 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
      * 小程序的原始操作
      * 
      */
-    private readonly operator: (Tparam) => Ttask;
+    private readonly operator: (params: Tparam) => Ttask;
 
     /**
      * 创建Wx操作队列
      * @param wxFunc Wx操作函数
      * @param maxLength 最大队列长度，默认10
      */
-    constructor(wxFunc: (Tparam) => Ttask, maxLength: number = 10) {
+    constructor(wxFunc: (params: Tparam) => Ttask, maxLength: number = 10) {
         this.operator = wxFunc;
         this.MAX = maxLength || 10;
     }
@@ -55,8 +56,8 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
 
         return this.next() || {
             abort: () => this.abort(id),
-            onProgressUpdate: (callback) => this.onProgress(id, callback),
-            onHeadersReceived: (callback) => this.onHeaders(id, callback),
+            onProgressUpdate: (callback: any) => this.onProgress(id, callback),
+            onHeadersReceived: (callback: any) => this.onHeaders(id, callback),
         } as any;
     }
 
@@ -64,9 +65,9 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
      * do next task
      * return Undefined and do nothing when queue is full。
      */
-    private next(): Ttask {
+    private next(): Ttask | void {
         if (this.todo.length > 0 && this.TaskMap.size < this.MAX) {
-            const [taskid, taskOptions] = this.todo.shift();
+            const [taskid, taskOptions] = this.todo.shift()!;
             const oldComplete = taskOptions.complete;
             taskOptions.complete = (...args) => {
                 this.TaskMap.delete(taskid);
@@ -81,7 +82,6 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
             this.TaskMap.set(taskid, task);
             return task;
         }
-        return undefined;
     }
 
     /**
@@ -96,7 +96,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
             completeCallback && completeCallback({ errMsg: "request:fail abort" });
             this.todo.splice(index, 1);
         } else if (this.TaskMap.has(taskid)) {
-            this.TaskMap.get(taskid).abort();
+            this.TaskMap.get(taskid)!.abort();
             this.TaskMap.delete(taskid);
         }
     }
@@ -121,7 +121,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
         if (result) {
             result[1].headersReceived = callback;
         } else if (this.TaskMap.has(taskid)) {
-            this.TaskMap.get(taskid).onHeadersReceived(callback);
+            this.TaskMap.get(taskid)!.onHeadersReceived(callback);
         }
     }
 };

@@ -8,8 +8,10 @@ declare var wx: {
 
 function apply() {
     ['request', 'downloadFile', 'uploadFile'].forEach(element => {
+        //@ts-ignore
         wx['_' + element] = wx[element];
-        let queue = new WxQueue(wx[element]);
+        //@ts-ignore
+        const queue = new WxQueue(wx[element]);
         Object.defineProperty(wx, element, {
             get() {
                 return queue.push;
@@ -18,7 +20,7 @@ function apply() {
     });
 }
 
-export { 
-    WxQueue, 
+export {
+    WxQueue,
     apply
 };
