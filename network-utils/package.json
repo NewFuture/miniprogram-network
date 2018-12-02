@@ -8,6 +8,9 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "miniprogram-cancel-token": "*"
+  },
   "author": "New Future",
   "license": "Apache-2.0",
   "repository": {

@@ -40,12 +40,12 @@ export class Downloder {
      * 新建 Http实列
      * @param config 全局默认配置
      */
-    public constructor(config?: Configuration, request?: WxDownload) {
+    public constructor(config?: Configuration, downloader?: WxDownload) {
         if (config) {
             this.Defaults = config;
         }
-        if (request) {
-            this.req = request;
+        if (downloader) {
+            this.req = downloader;
         }
     }
 
