@@ -1,4 +1,4 @@
-import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask } from './configuration';
+import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask, mergeConfig } from './configuration';
 import { EventListeners } from "./listeners";
 import { FirstArgument } from "./first-argument";
 
@@ -54,6 +54,7 @@ export abstract class LifeCircle<
      * @param options 
      */
     protected process<T>(options: TFullOptions): Promise<T> {
+        mergeConfig(options, this.Defaults);
         return this.prepareSend(options)
             .then((param: TWxOptions) => {
                 param.complete = (res: wx.GeneralCallbackResult) => this.onComplete(res, options);

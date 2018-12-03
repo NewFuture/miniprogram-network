@@ -8,7 +8,7 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "tsc index.ts --target es6 --outDir dist -d",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -22,8 +22,8 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-cancel-token": "*",
     "miniprogram-network-utils": "^0.1.2",
+    "miniprogram-network-life-circle": "*",
     "miniprogram-queue": "^2.0.2"
   },
   "bugs": {

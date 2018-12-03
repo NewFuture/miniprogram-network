@@ -1,6 +1,7 @@
 import { CancelToken } from 'miniprogram-cancel-token'
 import { FirstArgument } from "./first-argument";
 
+/// <reference types="./request-task" />
 type KeyBasicValuePair = { [key: string]: string | number | boolean | null };
 type PromiseOrValue<T> = T | PromiseLike<T>
 
@@ -74,10 +75,26 @@ export interface ExtraConfiguration<TwxTask extends WxTask> {
     /**
      * 进度回调
      */
+    //@ts-ignore
     onProgress?: TwxTask['onProgressUpdate'];
 
     /**
      * 接受到消息头
      */
     onHeaders?: TwxTask['onHeadersReceived'];
+}
+
+
+/**
+ * 合并配置
+ * @param customize 自定义配置，未定义的将被设置为默认值
+ * @param defaults 默认值
+ */
+export function mergeConfig<T1 extends T2, T2 extends { [key: string]: any }>(customize: T1, defaults: T2): T1 {
+    Object.keys(defaults).forEach(key => {
+        if (!customize.hasOwnProperty(key)) {
+            customize[key] = defaults[key]
+        }
+    })
+    return customize;
 }
