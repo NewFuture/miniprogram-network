@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-network-life-circle",
-  "version": "0.1.2",
+  "version": "1.0.0-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
