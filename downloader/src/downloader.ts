@@ -1,160 +1,62 @@
 import { WxQueue } from 'miniprogram-queue';
-import { Configuration, DownloadOptions } from "./configuration";
-import { defaultBeforeDowanload, defaultDownloadResponseTransformation, DownloadParams } from './transform';
-import { EventListeners, mergerConfig, KeyBasicValuePair } from 'miniprogram-network-utils';
+import { LifeCircle, BaseConfiguration, ExtraConfiguration } from 'miniprogram-network-life-circle'
+import { defaultDowanloadTransformSend, defaultDownloadTransformResponse } from './transform';
 
-const DownloadQueue = new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
+const downloadQueue = new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
 
-type WxDownload = (o: wx.DownloadFileOption) => wx.DownloadTask;
-export class Downloder {
+/**
+ * 默认配置信息
+ */
+export type DownloadInit = BaseConfiguration<DownloadOption, wx.DownloadFileOption>;
+/**
+ * 全部配置信息
+ */
+export interface DownloadOption extends DownloadInit, ExtraConfiguration<wx.DownloadTask> {
+    url: NonNullable<string>,
+    filePath?: string,
+    onProgress?: wx.DownloadTask['offProgressUpdate']
+}
 
-    /**
-     * 默认数据转换函数
-     */
-    public static readonly TransformSend: Configuration['transformSend'] = defaultBeforeDowanload;
 
-    /**
-     * 默认输出数据转换函数
-     */
-    public static readonly TransformResponse: Configuration['transformResponse'] = defaultDownloadResponseTransformation;
-
-    /**
-     * 默认全局配置
-     */
-    public readonly Defaults: Configuration = {
-        /**
-        * 重试一次
-        */
-        retry: 1,
-    };
+export class Downloder extends LifeCircle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
 
     /**
-     * 全局Listeners
+     * 默认下载请求参数转换函数
      */
-    public readonly Listeners: EventListeners<Configuration, wx.DownloadFileSuccessCallbackResult> = new EventListeners;
+    public readonly TransformSend = defaultDowanloadTransformSend;
 
-
-    private readonly req: WxDownload = DownloadQueue.push;
+    /**
+     * 默认下载返回数据转换函数
+     */
+    public readonly TransformResponse = defaultDownloadTransformResponse;
 
     /**
      * 新建 Http实列
      * @param config 全局默认配置
      */
-    public constructor(config?: Configuration, downloader?: WxDownload) {
-        if (config) {
-            this.Defaults = config;
-        }
-        if (downloader) {
-            this.req = downloader;
-        }
+    public constructor(config?: DownloadInit, downloader?: (o: wx.DownloadFileOption) => wx.DownloadTask) {
+        super(downloader || downloadQueue.push, config);
     }
 
     /**
-     * Object 参数发起请求
+     * 快速下载
+     * @param url 下载地址
+     * @param filePath 本地文件路径
+     * @param options 其他参数
+     */
+    public download<T>(url: string, filePath?: string, options?: Exclude<DownloadOption, 'url' | 'filePath'>): Promise<T>;
+    /**
+     * Object 参数自定义下载
      * @param options 
      */
-    public download<T>(options: DownloadOptions): Promise<T>;
-    /**
-     * 快速下载
-     * @param url 
-     * @param filePath 
-     * @param headers 
-     */
-    public download<T>(url: string, filePath?: string, headers?: KeyBasicValuePair): Promise<T>;
+    public download<T>(options: DownloadOption): Promise<T>;
     public download<T>(): Promise<T> {
-        const arg_num = arguments.length;
-        const options: DownloadOptions = arg_num == 1 ? arguments[0] : (arg_num === 4 ? arguments[3] : {});
-        if (arg_num > 1) {
+        const is_multi_param = typeof arguments[0] === 'string';
+        const options: DownloadOption = is_multi_param ? (arguments[2] || {}) : arguments[0];
+        if (is_multi_param) {
             options.url = arguments[0];
             options.filePath = arguments[1];
         }
-        mergerConfig(options, this.Defaults);
-        return this.process(options);
-    }
-
-    /**
-     * 处理请求
-     * @param options 
-     */
-    private process<T>(options: DownloadOptions): Promise<T> {
-        return this.beforeSend(options)
-            .then((param: wx.DownloadFileOption) => {
-                param.complete = (res) => this.onComplete(res, options);
-                return this.send<T>(param, options)
-            })
-    }
-
-    /**
-     * 请求发送之前处理数据
-     * @param options 
-     */
-    private beforeSend(options: DownloadOptions): Promise<DownloadParams> {
-        this.Listeners.onSend.forEach(f => f(options));
-        const data = options.transformSend ? options.transformSend(options) : Downloder.TransformSend(options);
-        return Promise.resolve(data);
-    }
-
-    /**
-     * 发送请求,并自动重试
-     * @param data 
-     * @param options 
-     */
-    private send<T>(data: wx.DownloadFileOption, options: DownloadOptions): Promise<T> {
-        return new Promise<T>((resolve, reject) => {
-            const cancelToken = options.cancelToken;
-            cancelToken && cancelToken.throwIfRequested();
-
-            data.success = (res: wx.DownloadFileSuccessCallbackResult) => this.onResponse<T>(res, options).then(resolve);
-            // retry
-            data.fail = (res: wx.GeneralCallbackResult) =>
-                options.retry-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
-
-            const task = this.req(data);
-            if (cancelToken) {
-                cancelToken.promise.then(reason => {
-                    task.abort();
-                    this.onAbort(reason, options);
-                });
-            }
-        });
-    }
-
-    /**
-     * 请求完成
-     * @param res 
-     * @param options 
-     */
-    private onAbort(reason: any, options: DownloadOptions): void {
-        this.Listeners.onComplete.forEach(f => f(reason, options));
-    }
-
-    /**
-     * 处理服务器返回数据
-     * @param res 
-     * @param options 
-     */
-    private onResponse<T>(res: wx.DownloadFileSuccessCallbackResult, options: DownloadOptions): Promise<T> {
-        this.Listeners.onResponse.forEach(f => f(res, options));
-        const result = options.transformResponse ? options.transformResponse(res, options) : Downloder.TransformResponse(res, options);
-        return Promise.resolve(result).catch(reason => this.onFail(reason, options));
-    }
-
-    /**
-     * 请求发送失败
-     * @param res 
-     * @param options 
-     */
-    private onFail(res: wx.GeneralCallbackResult, options: DownloadOptions): Promise<wx.GeneralCallbackResult> {
-        this.Listeners.onRejected.forEach(f => f(res, options));
-        return Promise.reject(res);
-    }
-
-    /**
-     * 请求完成
-     * @param res 
-     * @param options 
-     */
-    private onComplete(res: wx.GeneralCallbackResult, options: DownloadOptions) {
-        this.Listeners.onComplete.forEach(f => f(res, options));
+        return this.process<T>(options);
     }
 };

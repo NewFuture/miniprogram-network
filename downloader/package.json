@@ -22,7 +22,7 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-cancel-token": "*",
+    "miniprogram-network-life-circle": "*",
     "miniprogram-network-utils": "^0.1.2",
     "miniprogram-queue": "^2.0.2"
   },
