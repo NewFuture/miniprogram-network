@@ -18,15 +18,11 @@ export class EventListeners<TFullOptions, TResult>{
     * 处理失败事件监听
     */
     onRejected: OnRejectListener<TFullOptions>[] = [];
-    // onResolved: Function[]
     /**
      * 请求中断事件监听
      */
     onAbort: OnAbortListener<TFullOptions>[] = [];
-}
-
-interface GeneralCallbackResult {
-    errMsg: string;
+    // onResolved: Function[]
 }
 
 /**
@@ -40,11 +36,11 @@ type OnResponseListener<TResult, TFullOptions> = (res: TResult, options: TFullOp
 /**
  * 操作完成时
  */
-type OnCompleteListener<TFullOptions> = (res: GeneralCallbackResult, options: TFullOptions) => any;
+type OnCompleteListener<TFullOptions> = (res: wx.GeneralCallbackResult, options: TFullOptions) => any;
 /**
  * 失败
  */
-type OnRejectListener<TFullOptions> = (res: GeneralCallbackResult | any, options: TFullOptions) => any;
+type OnRejectListener<TFullOptions> = (res: wx.GeneralCallbackResult | any, options: TFullOptions) => any;
 /**
  * 操作取消时
  */

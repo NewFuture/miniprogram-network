@@ -1,13 +1,18 @@
-import { KeyBasicValuePair } from "./build-params";
 import { CancelToken } from 'miniprogram-cancel-token'
 import { FirstArgument } from "./first-argument";
+
+type KeyBasicValuePair = { [key: string]: string | number | boolean | null };
+type PromiseOrValue<T> = T | PromiseLike<T>
 
 export type WxOptions = wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption;
 export type WxTask = wx.RequestTask | wx.DownloadTask | wx.UploadTask;
 
+/**
+ * 所有网络请求的集成类型
+ */
 export interface BaseConfiguration<
-    TFullOptions extends BaseConfiguration<TFullOptions, TWxOptions>,
-    TWxOptions extends WxOptions
+    TFullOptions extends BaseConfiguration<TFullOptions, TWxOptions>, //完整配置
+    TWxOptions extends WxOptions // 微信请求参数类型
     > {
 
     /**
@@ -46,9 +51,7 @@ export interface BaseConfiguration<
      * You may modify the data or headers object before it is sent.
      * @param data 不包含转换函数的所有配置内容
      */
-    transformSend?: (data: Exclude<TFullOptions, 'transformSend' | 'transformResponse'>) => Exclude<TWxOptions, 'complete' | 'success' | 'fail'>
-        | PromiseLike<Exclude<TWxOptions, 'complete' | 'success' | 'fail'>>;
-
+    transformSend?: (data: Exclude<TFullOptions, 'transformSend' | 'transformResponse'>) => PromiseOrValue<Exclude<TWxOptions, 'complete' | 'success' | 'fail'>>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
@@ -56,10 +59,12 @@ export interface BaseConfiguration<
      * allows changes to the response data to be made before it is passed to then/catch
      *  @example `res=>res.data`
      */
-    transformResponse?: (res: FirstArgument<TWxOptions['success']>, config: TFullOptions) => any | Promise<any>;
-
+    transformResponse?: (res: FirstArgument<TWxOptions['success']>, config: TFullOptions) => PromiseOrValue<any>;
 }
 
+/**
+ * 每个操包含的额外配置参数
+ */
 export interface ExtraConfiguration<TwxTask extends WxTask> {
     /**
      * 取消操作的 CancelToken 
@@ -69,24 +74,10 @@ export interface ExtraConfiguration<TwxTask extends WxTask> {
     /**
      * 进度回调
      */
-    onProgress: TwxTask['onProgressUpdate'];
+    onProgress?: TwxTask['onProgressUpdate'];
 
     /**
      * 接受到消息头
      */
-    onHeaders: TwxTask['onHeadersReceived'];
-}
-
-/**
- * 合并配置
- * @param customize 自定义配置，未定义的将被默认配置覆盖
- * @param defaults 默认值
- */
-export function mergerConfig<T1 extends T2, T2 extends { [key: string]: any }>(customize: T1, defaults: T2): T1 {
-    Object.keys(defaults).forEach(key => {
-        if (!customize.hasOwnProperty(key)) {
-            customize[key] = defaults[key]
-        }
-    })
-    return customize;
+    onHeaders?: TwxTask['onHeadersReceived'];
 }

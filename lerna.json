@@ -2,8 +2,9 @@
   "packages": [
     "queue",
     "promise",
-    "cancel-token",
     "network-utils",
+    "cancel-token",
+    "life-circle",
     "fetch",
     "uploader",
     "network"

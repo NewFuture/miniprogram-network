@@ -1,5 +1,5 @@
 {
-  "name": "miniprogram-network-utils",
+  "name": "miniprogram-network-life-circle",
   "version": "0.1.2",
   "description": "",
   "main": "dist/index.js",
@@ -7,6 +7,9 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "miniprogram-cancel-token": "*"
   },
   "author": "New Future",
   "license": "Apache-2.0",

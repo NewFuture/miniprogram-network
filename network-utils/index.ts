@@ -1,4 +1,2 @@
-export { mergerConfig, BaseConfiguration, ExtraConfiguration } from './src/configuration'
-export { buildParams, KeyBasicValuePair } from './src/build-params';
-export { EventListeners } from './src/listeners';
-export { LifeCircle } from './src/life-circle'
+export { mergeConfig } from './src/merge-config';
+export { buildParams } from './src/build-params';

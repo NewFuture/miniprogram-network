@@ -1,13 +1,17 @@
-import { EventListeners } from "./listeners";
 import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask } from './configuration';
+import { EventListeners } from "./listeners";
 import { FirstArgument } from "./first-argument";
 
 
+/**
+ * 网络请求的完整生命周期
+ * 
+ */
 export abstract class LifeCircle<
-    TWxOptions extends WxOptions,
-    TWxTask extends wx.RequestTask | wx.DownloadTask | wx.UploadTask,
-    TConfiguration extends BaseConfiguration<TFullOptions, TWxOptions>,
-    TFullOptions extends TConfiguration & ExtraConfiguration<TWxTask>,
+    TWxOptions extends WxOptions, // 微信操作函数
+    TWxTask extends WxTask, // 微信操作的任务类型
+    TConfiguration extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
+    TFullOptions extends TConfiguration & ExtraConfiguration<TWxTask>, //完整配置项
     >{
 
     /**
@@ -70,7 +74,7 @@ export abstract class LifeCircle<
     }
 
     /**
-     * 发送请求,并自动重试
+     * 发送网络请求,并自动重试
      * @param data 
      * @param options 
      */
