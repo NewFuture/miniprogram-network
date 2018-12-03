@@ -7,11 +7,11 @@ const uploadQueue = new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFil
 /**
  * 默认配置信息
  */
-export type UploadInit = BaseConfiguration<UploadOptions, wx.UploadFileOption>;
+export type UploadInit = BaseConfiguration<UploadOption, wx.UploadFileOption>;
 /**
  * 全部配置信息
  */
-export interface UploadOptions extends UploadInit, ExtraConfiguration<wx.UploadTask> {
+export interface UploadOption extends UploadInit, ExtraConfiguration<wx.UploadTask> {
     url: string,
     filePath: NonNullable<string>,
     name: NonNullable<string>,
@@ -22,7 +22,7 @@ export interface UploadOptions extends UploadInit, ExtraConfiguration<wx.UploadT
 /**
  * 上传管理
  */
-export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, UploadInit, UploadOptions>
+export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, UploadInit, UploadOption>
 {
     /**
      * 默认上传请求参数转换函数
@@ -51,15 +51,15 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<T>(url: string, filePath: string, name: string, data?: any, options?: Exclude<UploadOptions, 'url' | 'filePath' | 'formData' | 'data'>): Promise<T>;
+    public upload<T>(url: string, filePath: string, name: string, data?: any, options?: Exclude<UploadOption, 'url' | 'filePath' | 'formData' | 'data'>): Promise<T>;
     /**
      * 自定义上传
      * @param options 全部配置信息:url,filePath,name,为必填字段
      */
-    public upload<T>(options: UploadOptions): Promise<T>;
+    public upload<T>(options: UploadOption): Promise<T>;
     public upload<T>(): Promise<T> {
         const arg_num: number = arguments.length;
-        const options: UploadOptions = arg_num == 1 ? arguments[0] : (arguments[4] || {});
+        const options: UploadOption = arg_num == 1 ? arguments[0] : (arguments[4] || {});
         if (arg_num > 1) {
             options.url = arguments[0];
             options.filePath = arguments[1];
