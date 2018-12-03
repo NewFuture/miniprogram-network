@@ -1,12 +1,11 @@
 import { CancelToken } from 'miniprogram-cancel-token'
 import { FirstArgument } from "./first-argument";
 
-/// <reference types="./request-task" />
 type KeyBasicValuePair = { [key: string]: string | number | boolean | null };
 type PromiseOrValue<T> = T | PromiseLike<T>
 
-export type WxOptions = wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption;
 export type WxTask = wx.RequestTask | wx.DownloadTask | wx.UploadTask;
+export type WxOptions = wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption;
 
 /**
  * 所有网络请求的集成类型
@@ -72,11 +71,10 @@ export interface ExtraConfiguration<TwxTask extends WxTask> {
      */
     cancelToken?: CancelToken;
 
-    /**
-     * 进度回调
-     */
-    //@ts-ignore
-    onProgress?: TwxTask['onProgressUpdate'];
+    // /**
+    //  * 进度回调
+    //  */
+    // onProgress?: TwxTask['onProgressUpdate'];
 
     /**
      * 接受到消息头
