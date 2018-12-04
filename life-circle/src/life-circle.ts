@@ -11,20 +11,6 @@ export abstract class LifeCircle<
     TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
     TFullOptions extends TInitConfig & ExtraConfiguration<TWxTask>, //完整配置项
     >{
-
-    /**
-     * 默认数据转换函数
-     */
-    public abstract readonly TransformSend: NonNullable<TInitConfig['transformSend']>;
-
-    /**
-     * 默认输出数据转换函数
-     * 直接返回结果,不做任何处理
-     */
-    public readonly TransformResponse =
-        (res: SuccessParam<TWxOptions>, o: TFullOptions): SuccessParam<TWxOptions> => res;
-
-
     /**
      * 默认全局配置
      */
@@ -35,6 +21,10 @@ export abstract class LifeCircle<
      */
     public readonly Listeners: EventListeners<TFullOptions, SuccessParam<TWxOptions>> = new EventListeners;
 
+    /**
+     * 默认数据转换函数
+     */
+    protected abstract readonly TransformSendDefault: NonNullable<TInitConfig['transformSend']>;
 
     /**
      * 微信操作接口
@@ -51,10 +41,19 @@ export abstract class LifeCircle<
     }
 
     /**
+     * 默认输出数据转换函数
+     * 直接返回结果,不做任何处理
+     */
+    protected TransformResponseDefault(res: SuccessParam<TWxOptions>, o: TFullOptions): SuccessParam<TWxOptions> {
+        return res;
+    }
+
+
+    /**
      * 处理请求
      * @param options 
      */
-    protected process<T=ReturnType<LifeCircle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponse']>>(options: TFullOptions): Promise<T> {
+    protected process<T=ReturnType<LifeCircle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponseDefault']>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this.prepareSend(options)
             .then((param: TWxOptions) => {
@@ -71,7 +70,7 @@ export abstract class LifeCircle<
         this.Listeners.onSend.forEach(f => f(options));
         const data = options.transformSend ?
             options.transformSend(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>) :
-            this.TransformSend(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>);
+            this.TransformSendDefault(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>);
         return Promise.resolve(data);
     }
 
@@ -107,7 +106,7 @@ export abstract class LifeCircle<
      */
     private onResponse<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
-        const result = options.transformResponse ? options.transformResponse(res, options) : this.TransformResponse(res, options);
+        const result = options.transformResponse ? options.transformResponse(res, options) : this.TransformResponseDefault(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
     }
 

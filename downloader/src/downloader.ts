@@ -23,7 +23,7 @@ export class Downloder extends LifeCircle<wx.DownloadFileOption, wx.DownloadTask
     /**
      * 默认下载请求参数转换函数
      */
-    public readonly TransformSend = transfomDownloadSendDefault;
+    protected readonly TransformSendDefault = transfomDownloadSendDefault;
 
     /**
      * 新建 Http实列
@@ -39,12 +39,12 @@ export class Downloder extends LifeCircle<wx.DownloadFileOption, wx.DownloadTask
      * @param filePath 本地文件路径
      * @param options 其他参数
      */
-    public download<T=ReturnType<this['TransformResponse']>>(url: string, filePath?: string, options?: Exclude<DownloadOption, 'url' | 'filePath'>): Promise<T>;
+    public download<T=ReturnType<Downloder['TransformResponseDefault']>>(url: string, filePath?: string, options?: Exclude<DownloadOption, 'url' | 'filePath'>): Promise<T>;
     /**
      * Object 参数自定义下载
      * @param options 
      */
-    public download<T=ReturnType<this['TransformResponse']>>(options: DownloadOption): Promise<T>;
+    public download<T=ReturnType<Downloder['TransformResponseDefault']>>(options: DownloadOption): Promise<T>;
     public download<T>(): Promise<T> {
         const is_multi_param = typeof arguments[0] === 'string';
         const options: DownloadOption = is_multi_param ? (arguments[2] || {}) : arguments[0];

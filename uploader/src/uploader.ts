@@ -28,7 +28,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
     /**
      * 默认上传请求参数转换函数
      */
-    public readonly TransformSend = transformUploadSendDefault;
+    protected readonly TransformSendDefault = transformUploadSendDefault;
 
     /**
      * 创建Upload管理
@@ -47,7 +47,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<T=ReturnType<this['TransformResponse']>>(
+    public upload<T=ReturnType<Uploader['TransformResponseDefault']>>(
         filePath: string,
         name: string,
         url?: string,
@@ -57,7 +57,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
      */
-    public upload<T=ReturnType<this['TransformResponse']>>(options: UploadOption): Promise<T>;
+    public upload<T=ReturnType<Uploader['TransformResponseDefault']>>(options: UploadOption): Promise<T>;
     public upload<T>(): Promise<T> {
         const arg_num: number = arguments.length;
         const options: UploadOption = arg_num == 1 ? arguments[0] : (arguments[4] || {});
