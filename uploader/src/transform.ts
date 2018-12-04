@@ -8,11 +8,12 @@ export type UploadParams = Exclude<wx.UploadFileOption, 'success' | 'fail' | 'co
 
 /**
  * 构建请求参数
+ * baseUrl和dataUrl不同时为空
  * @param data 
  */
 export function transformUploadSendDefault(data: UploadOption): UploadParams {
     const wxParam: UploadParams = {
-        url: data.baseURL + buildParams(data.url, data.params),
+        url: data.baseURL + (data.url ? buildParams(data.url, data.params) : ''),
         filePath: data.filePath,
         header: data.headers,
         formData: data.data,
