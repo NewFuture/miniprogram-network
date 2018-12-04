@@ -10,7 +10,7 @@ export type UploadParams = Exclude<wx.UploadFileOption, 'success' | 'fail' | 'co
  * 构建请求参数
  * @param data 
  */
-export function uploadTransformSendDefault(data: UploadOption): UploadParams {
+export function transformUploadSendDefault(data: UploadOption): UploadParams {
     const wxParam: UploadParams = {
         url: data.baseURL + buildParams(data.url, data.params),
         filePath: data.filePath,
@@ -28,7 +28,7 @@ export function uploadTransformSendDefault(data: UploadOption): UploadParams {
  * @param res 
  * @param options 
  */
-export function uploadTransformResponseOkData<T=any>(res: wx.UploadFileSuccessCallbackResult, options: UploadOption): T {
+export function transformUploadResponseOkData<T=any>(res: wx.UploadFileSuccessCallbackResult, options: UploadOption): T {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }
