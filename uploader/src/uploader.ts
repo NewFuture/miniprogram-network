@@ -1,7 +1,7 @@
 
 import { BaseConfiguration, ExtraConfiguration, LifeCircle } from 'miniprogram-network-life-circle';
 import { WxQueue } from 'miniprogram-queue';
-import { uploadTransformSendDefault, uploadTransformResponseDefault } from './transform';
+import { transformUploadSendDefault } from './transform';
 
 const uploadQueue = new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFile);
 /**
@@ -28,12 +28,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
     /**
      * 默认上传请求参数转换函数
      */
-    public readonly TransformSend = uploadTransformSendDefault;
-
-    /**
-     * 默认上传返回数据转换函数
-     */
-    public readonly TransformResponse = uploadTransformResponseDefault;
+    public readonly TransformSend = transformUploadSendDefault;
 
     /**
      * 创建Upload管理
@@ -52,7 +47,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<T=ReturnType<Uploader['TransformResponse']>>(
+    public upload<T=ReturnType<this['TransformResponse']>>(
         filePath: string,
         name: string,
         url?: string,
@@ -62,8 +57,8 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
      */
-    public upload<T=ReturnType<Uploader['TransformResponse']>>(options: UploadOption): Promise<T>;
-    public upload<T=ReturnType<Uploader['TransformResponse']>>(): Promise<T> {
+    public upload<T=ReturnType<this['TransformResponse']>>(options: UploadOption): Promise<T>;
+    public upload<T>(): Promise<T> {
         const arg_num: number = arguments.length;
         const options: UploadOption = arg_num == 1 ? arguments[0] : (arguments[4] || {});
         if (arg_num > 1) {

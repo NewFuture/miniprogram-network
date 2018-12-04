@@ -11,7 +11,7 @@ export type RequestParams = Exclude<wx.RequestOption, 'success' | 'fail' | 'comp
  * 构建请求参数
  * @param data 
  */
-export function requestTransformSendDefault(data: RequestOption): RequestParams {
+export function transformRequestSendDefault(data: RequestOption): RequestParams {
     const wxParam: RequestParams = {
         url: data.baseURL + buildParams(data.url, data.params),
         data: data.data,
@@ -34,7 +34,7 @@ export function requestTransformSendDefault(data: RequestOption): RequestParams 
  * @param res 
  * @param config 
  */
-export function requestTransformResponseOkData<T=any>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
+export function transformRequestResponseOkData<T=any>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }

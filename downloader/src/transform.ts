@@ -7,10 +7,10 @@ import { DownloadOption } from './downloader';
 export type DownloadParams = Exclude<wx.DownloadFileOption, 'success' | 'fail' | 'complete'>
 
 /**
- * 构建请求参数
+ * 默认下载请求参数构建方法
  * @param data 
  */
-export function defaultDowanloadTransformSend(data: DownloadOption): DownloadParams {
+export function transfomDownloadSendDefault(data: DownloadOption): DownloadParams {
     const wxParam: DownloadParams = {
         url: data.baseURL + buildParams(data.url, data.params),
         filePath: data.filePath,
@@ -20,12 +20,14 @@ export function defaultDowanloadTransformSend(data: DownloadOption): DownloadPar
 }
 
 /**
- * 处理返回数据
+ * 正确返回返回数据处理方式
  * @param res 
  * @param config 
  */
-export function defaultDownloadTransformResponse(res: wx.DownloadFileSuccessCallbackResult, options: DownloadOption): string;
-export function defaultDownloadTransformResponse<T>(res: wx.DownloadFileSuccessCallbackResult, options: DownloadOption): T {
-    return res.tempFilePath as any as T;
+export function transformDownloadResponseOkData(res: wx.DownloadFileSuccessCallbackResult, options: DownloadOption): string {
+    if (res.statusCode < 200 || res.statusCode >= 300) {
+        throw res;
+    }
+    return res.tempFilePath;
 }
 

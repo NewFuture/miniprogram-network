@@ -1,7 +1,7 @@
 import { LifeCircle } from 'miniprogram-network-life-circle';
 import { WxQueue } from 'miniprogram-queue';
 import { RequestInit, RequestOption, RequestConfig } from './configuration';
-import { requestTransformSendDefault } from './transform';
+import { transformRequestSendDefault } from './transform';
 
 /**
  * 请求队列
@@ -19,7 +19,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
     /**
      * 默认请求发送数据转换函数
      */
-    public readonly TransformSend = requestTransformSendDefault;
+    public readonly TransformSend = transformRequestSendDefault;
 
     /**
      * 新建 Http实列
