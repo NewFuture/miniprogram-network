@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-request",
-  "version": "0.2.3-alpha.0",
+  "version": "1.0.0-alpha.0",
   "description": "A better Request package for MiniProgram API",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,7 +22,7 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-network-life-circle": "^1.0.0-alpha.0",
+    "miniprogram-network-life-circle": "^1.1.0-alpha.0",
     "miniprogram-network-utils": "^0.2.0",
     "miniprogram-queue": "^2.0.2"
   },
