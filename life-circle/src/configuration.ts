@@ -1,5 +1,4 @@
 import { CancelToken } from 'miniprogram-cancel-token'
-import { FirstArgument } from "./first-argument";
 
 type KeyBasicValuePair = { [key: string]: string | number | boolean | null };
 type PromiseOrValue<T> = T | PromiseLike<T>
@@ -59,7 +58,9 @@ export interface BaseConfiguration<
      * allows changes to the response data to be made before it is passed to then/catch
      *  @example `res=>res.data`
      */
-    transformResponse?: (res: FirstArgument<TWxOptions['success']>, config: TFullOptions) => PromiseOrValue<any>;
+    transformResponse?: (
+        res: Parameters<NonNullable<WxOptions['success']>>[0],
+        config: TFullOptions) => PromiseOrValue<any>;
 }
 
 /**

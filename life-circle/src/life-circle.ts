@@ -1,7 +1,5 @@
-import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask, mergeConfig } from './configuration';
+import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask, mergeConfig, SuccessParam } from './configuration';
 import { EventListeners } from "./listeners";
-import { FirstArgument } from "./first-argument";
-
 
 /**
  * 网络请求的完整生命周期
@@ -21,8 +19,11 @@ export abstract class LifeCircle<
 
     /**
      * 默认输出数据转换函数
+     * 直接返回结果,不做任何处理
      */
-    public abstract readonly TransformResponse: NonNullable<TInitConfig['transformResponse']>;
+    public readonly TransformResponse =
+        (res: SuccessParam<TWxOptions>, o: TFullOptions): SuccessParam<TWxOptions> => res;
+
 
     /**
      * 默认全局配置
@@ -32,7 +33,7 @@ export abstract class LifeCircle<
     /**
      * 全局Listeners
      */
-    public readonly Listeners: EventListeners<TFullOptions, FirstArgument<WxOptions['success']>> = new EventListeners;
+    public readonly Listeners: EventListeners<TFullOptions, SuccessParam<TWxOptions>> = new EventListeners;
 
 
     /**
@@ -84,7 +85,7 @@ export abstract class LifeCircle<
             const cancelToken = options.cancelToken;
             cancelToken && cancelToken.throwIfRequested();
 
-            data.success = (res: FirstArgument<WxOptions['success']>) => { this.onResponse<T>(res, options).then(resolve) };
+            data.success = (res: SuccessParam<TWxOptions>) => { this.onResponse<T>(res, options).then(resolve) };
             // retry 
             data.fail = (res: wx.GeneralCallbackResult) =>
                 options.retry!-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
@@ -104,7 +105,7 @@ export abstract class LifeCircle<
      * @param res 
      * @param options 
      */
-    private onResponse<T>(res: FirstArgument<WxOptions['success']>, options: TFullOptions): Promise<T> {
+    private onResponse<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
         const result = options.transformResponse ? options.transformResponse(res, options) : this.TransformResponse(res, options);
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));

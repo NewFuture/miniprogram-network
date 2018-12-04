@@ -52,7 +52,12 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<T=ReturnType<Uploader['TransformResponse']>>(filePath: string, name: string, url?: string, data?: any, config?: Exclude<UploadOption, 'filePath' | 'formData' | 'data'>): Promise<T>;
+    public upload<T=ReturnType<Uploader['TransformResponse']>>(
+        filePath: string,
+        name: string,
+        url?: string,
+        data?: any,
+        config?: Exclude<UploadOption, 'filePath' | 'formData' | 'data'>): Promise<T>;
     /**
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
