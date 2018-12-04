@@ -45,7 +45,7 @@ export abstract class LifeCircle<
      * @param config 全局默认配置
      */
     protected constructor(operator: (option: TWxOptions) => TWxTask, config?: TConfiguration) {
-        this.Defaults ={ retry: 1 } as TConfiguration;
+        this.Defaults = config || { retry: 1 } as TConfiguration;
         this.op = operator;
     }
 
