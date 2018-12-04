@@ -11,7 +11,7 @@ export type RequestParams = Exclude<wx.RequestOption, 'success' | 'fail' | 'comp
  * 构建请求参数
  * @param data 
  */
-export function defaultTransformSend(data: RequestOption): RequestParams {
+export function requestTransformSendDefault(data: RequestOption): RequestParams {
     const wxParam: RequestParams = {
         url: data.baseURL + buildParams(data.url, data.params),
         data: data.data,
@@ -26,16 +26,18 @@ export function defaultTransformSend(data: RequestOption): RequestParams {
     return wxParam;
 }
 
-// /**
-//  * 默认请求返回数据
-//  * @param res 
-//  * @param config 
-//  */
-// export function requestTransformResponseDefault(res: wx.RequestSuccessCallbackResult, config: RequestOption): wx.RequestSuccessCallbackResult {
-//     return res;
-// }
 
+/**
+ * 返回请求成功的响应数据data部分
+ * statusCode 2xx 操作成功仅返回data数据
+ * 否则抛出错误(rejected)
+ * @param res 
+ * @param config 
+ */
 export function requestTransformResponseOkData<T=any>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
+    if (res.statusCode < 200 || res.statusCode >= 300) {
+        throw res;
+    }
     return res.data as any as T;
 }
 

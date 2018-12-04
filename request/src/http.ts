@@ -1,7 +1,7 @@
 import { LifeCircle } from 'miniprogram-network-life-circle';
 import { WxQueue } from 'miniprogram-queue';
 import { RequestInit, RequestOption, RequestConfig } from './configuration';
-import { defaultTransformSend } from './transform';
+import { requestTransformSendDefault } from './transform';
 
 /**
  * 请求队列
@@ -19,12 +19,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
     /**
      * 默认请求发送数据转换函数
      */
-    public readonly TransformSend = defaultTransformSend;
-
-    // /**
-    //  * 默认响应数据转换函数
-    //  */
-    // public readonly TransformResponse = requestTransformResponseDefault;
+    public readonly TransformSend = requestTransformSendDefault;
 
     /**
      * 新建 Http实列
@@ -39,7 +34,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * Object 参数发起请求
      * @param options 每个请求的全部配置信息，未设置内容使用默认全局配置
      */
-    public request<T=ReturnType<Http['TransformResponse']>>(options: RequestOption): Promise<T>;
+    public request<T=ReturnType<this['TransformResponse']>>(options: RequestOption): Promise<T>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -47,8 +42,8 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public request<T=ReturnType<Http['TransformResponse']>>(method: string, action: string, data?: any, config?: RequestConfig): Promise<T>;
-    public request<T=ReturnType<Http['TransformResponse']>>(): Promise<T> {
+    public request<T=ReturnType<this['TransformResponse']>>(method: string, action: string, data?: any, config?: RequestConfig): Promise<T>;
+    public request<T=ReturnType<this['TransformResponse']>>(): Promise<T> {
         const arg_num = arguments.length;
         const options: RequestOption = arg_num == 1 ? arguments[0] : (arguments[3] || {});
         if (arg_num > 1) {
@@ -67,7 +62,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param data 可转为query string
      * @param config 可覆盖默认配置
      */
-    public get<T>(action: string, data?: any, config?: RequestConfig): Promise<T> {
+    public get<T=ReturnType<this['TransformResponse']>>(action: string, data?: any, config?: RequestConfig): Promise<T> {
         return this.request<T>('GET', action, data, config);
     }
 
@@ -77,7 +72,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public post<T>(action: string, data?: any, config?: RequestConfig): Promise<T> {
+    public post<T=ReturnType<this['TransformResponse']>>(action: string, data?: any, config?: RequestConfig): Promise<T> {
         return this.request<T>('POST', action, data, config);
     }
 
@@ -87,7 +82,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public put<T>(action: string, data?: any, config?: RequestConfig): Promise<T> {
+    public put<T=ReturnType<this['TransformResponse']>>(action: string, data?: any, config?: RequestConfig): Promise<T> {
         return this.request<T>('PUT', action, data, config);
     }
 
@@ -97,11 +92,11 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public delete<T>(action: string, data?: any, config?: RequestConfig): Promise<T> {
+    public delete<T=ReturnType<this['TransformResponse']>>(action: string, data?: any, config?: RequestConfig): Promise<T> {
         return this.request<T>('DELETE', action, data, config);
     }
 
-    public head<T>(action: string, data?: any, config?: RequestConfig): Promise<T> {
+    public head<T=ReturnType<this['TransformResponse']>>(action: string, data?: any, config?: RequestConfig): Promise<T> {
         return this.request<T>('HEAD', action, data, config);
     }
 
@@ -113,7 +108,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public patch<T>(action: string, data?: any, config?: RequestConfig): Promise<T> {
+    public patch<T=ReturnType<this['TransformResponse']>>(action: string, data?: any, config?: RequestConfig): Promise<T> {
         if (!config) {
             config = {
                 headers: { 'X-HTTP-Method-Override': 'PATCH' },

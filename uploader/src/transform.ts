@@ -22,16 +22,6 @@ export function uploadTransformSendDefault(data: UploadOption): UploadParams {
 }
 
 /**
- * 默认上传返回处理函数,不进行任何处理
- * @param res 
- * @param config 
- */
-export function uploadTransformResponseDefault(res: wx.UploadFileSuccessCallbackResult, options: UploadOption)
-    : wx.UploadFileSuccessCallbackResult {
-    return res;
-}
-
-/**
  * 根据错误码处理数据
  * statusCode 2xx 操作成功仅返回data数据
  * 否则抛出错误(rejected)
