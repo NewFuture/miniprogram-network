@@ -22,9 +22,9 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-network-life-circle": "latest",
-    "miniprogram-network-utils": "latest",
-    "miniprogram-queue": "latest"
+    "miniprogram-network-life-circle": "^1.0.0-alpha.0",
+    "miniprogram-network-utils": "^0.2.0",
+    "miniprogram-queue": "^2.0.2"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram/issues"

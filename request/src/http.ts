@@ -1,7 +1,7 @@
 import { LifeCircle } from 'miniprogram-network-life-circle';
 import { WxQueue } from 'miniprogram-queue';
 import { RequestInit, RequestOption, RequestConfig } from './configuration';
-import { defaultTransformSend, defaultTransformResponse } from './transform';
+import { defaultTransformSend } from './transform';
 
 /**
  * 请求队列
@@ -12,7 +12,7 @@ const requestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 /**
  * 小程序HTTP请求生命周期封装
  * @example 
- *    `const http = new Http({ baseURL: 'https://qq.com/', retry: 3 });`
+ *    `const http = new Http({ baseURL: 'https://api.newfuture.cc/', retry: 3 });`
  */
 export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestInit, RequestOption> {
 
@@ -21,10 +21,10 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      */
     public readonly TransformSend = defaultTransformSend;
 
-    /**
-     * 默认响应数据转换函数
-     */
-    public readonly TransformResponse = defaultTransformResponse;
+    // /**
+    //  * 默认响应数据转换函数
+    //  */
+    // public readonly TransformResponse = requestTransformResponseDefault;
 
     /**
      * 新建 Http实列
@@ -39,7 +39,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * Object 参数发起请求
      * @param options 每个请求的全部配置信息，未设置内容使用默认全局配置
      */
-    public request<T>(options: RequestOption): Promise<T>;
+    public request<T=ReturnType<Http['TransformResponse']>>(options: RequestOption): Promise<T>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -47,8 +47,8 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public request<T>(method: string, action: string, data?: any, config?: RequestConfig): Promise<T>;
-    public request<T>(): Promise<T> {
+    public request<T=ReturnType<Http['TransformResponse']>>(method: string, action: string, data?: any, config?: RequestConfig): Promise<T>;
+    public request<T=ReturnType<Http['TransformResponse']>>(): Promise<T> {
         const arg_num = arguments.length;
         const options: RequestOption = arg_num == 1 ? arguments[0] : (arguments[3] || {});
         if (arg_num > 1) {
@@ -64,7 +64,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
     /**
      * GET 操作
      * @param action 请求操作URL,支持{name}格式参数
-     * @param data 可转未query string
+     * @param data 可转为query string
      * @param config 可覆盖默认配置
      */
     public get<T>(action: string, data?: any, config?: RequestConfig): Promise<T> {

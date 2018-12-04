@@ -26,12 +26,16 @@ export function defaultTransformSend(data: RequestOption): RequestParams {
     return wxParam;
 }
 
-/**
- * 处理返回数据
- * @param res 
- * @param config 
- */
-export function defaultTransformResponse<T>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
+// /**
+//  * 默认请求返回数据
+//  * @param res 
+//  * @param config 
+//  */
+// export function requestTransformResponseDefault(res: wx.RequestSuccessCallbackResult, config: RequestOption): wx.RequestSuccessCallbackResult {
+//     return res;
+// }
+
+export function requestTransformResponseOkData<T=any>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
     return res.data as any as T;
 }
 

@@ -8,3 +8,5 @@ export { Http };
  * 预定义全局 Request 对象
  */
 export const Request = new Http();
+
+Request.request({ url: 'x', method: 'GET' }).then(s=>s.)

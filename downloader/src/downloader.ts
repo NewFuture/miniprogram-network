@@ -28,7 +28,7 @@ export class Downloder extends LifeCircle<wx.DownloadFileOption, wx.DownloadTask
     /**
      * 默认下载返回数据转换函数
      */
-    public readonly TransformResponse = defaultDownloadTransformResponse;
+    // public readonly TransformResponse = defaultDownloadTransformResponse;
 
     /**
      * 新建 Http实列

@@ -5,6 +5,7 @@ type PromiseOrValue<T> = T | PromiseLike<T>
 
 export type WxTask = wx.RequestTask | wx.DownloadTask | wx.UploadTask;
 export type WxOptions = wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption;
+export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['success']>>[0]
 
 /**
  * 所有网络请求的集成类型
@@ -58,9 +59,7 @@ export interface BaseConfiguration<
      * allows changes to the response data to be made before it is passed to then/catch
      *  @example `res=>res.data`
      */
-    transformResponse?: (
-        res: Parameters<NonNullable<WxOptions['success']>>[0],
-        config: TFullOptions) => PromiseOrValue<any>;
+    transformResponse?: (res: SuccessParam<WxOptions>, config: TFullOptions) => PromiseOrValue<any>;
 }
 
 /**

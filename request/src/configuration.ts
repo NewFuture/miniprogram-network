@@ -29,7 +29,7 @@ export interface RequestOption extends RequestInit, ExtraConfiguration<wx.Reques
     * 请求方法
     * HTTP request mthod: GET POST ...
     */
-    method: wx.RequestOption['method'],
+    method?: wx.RequestOption['method'],
 
     /**
      * 请求数据
