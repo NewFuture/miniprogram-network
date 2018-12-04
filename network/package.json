@@ -26,9 +26,9 @@
     "typescript": "^3.1.1"
   },
   "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram/issues"
+    "url": "https://github.com/NewFuture/miniprogram-network/issues"
   },
-  "homepage": "https://github.com/NewFuture/miniprogram/",
+  "homepage": "https://github.com/NewFuture/miniprogram-network/",
   "dependencies": {
     "miniprogram-downloader": "^1.1.0-alpha.0",
     "miniprogram-request": "^1.0.0-alpha.0",

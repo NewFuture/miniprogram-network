@@ -43,7 +43,7 @@ const requestQueue = new WxQueue(wx.request,10);
 
 // 发送请求
 let task = requestQueue.push({
-    url:'https://github.com/NewFuture/miniprogram/'
+    url:'https://github.com/NewFuture/miniprogram-network/'
 });
 
 // task.abort() 可取消操作

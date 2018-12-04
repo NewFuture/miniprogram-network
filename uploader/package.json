@@ -27,7 +27,7 @@
     "miniprogram-queue": "^2.0.2"
   },
   "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram/issues"
+    "url": "https://github.com/NewFuture/miniprogram-network/issues"
   },
-  "homepage": "https://github.com/NewFuture/miniprogram/"
+  "homepage": "https://github.com/NewFuture/miniprogram-network/"
 }
