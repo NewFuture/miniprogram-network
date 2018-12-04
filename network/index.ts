@@ -1,6 +1,15 @@
-import { Request, Http } from "miniprogram-request";
-import { Upload, Uploader } from "miniprogram-uploader";
-import { Download, Downloder } from "miniprogram-downloader";
+// import { Request, Http } from "miniprogram-request";
+// import { Upload, Uploader } from "miniprogram-uploader";
+// import { Download, Downloder } from "miniprogram-downloader";
+// export const Netwrok: Readonly<{
+//     Http: Http,
+//     Uploader: Uploader,
+//     Downloder: Downloder,
+// }> = {
+//     Http: Request,
+//     Uploader: Upload,
+//     Downloder: Download,
+// }
 
 export {
     Http,
@@ -33,13 +42,3 @@ export {
     transformDownloadResponseOkData,
     transfomDownloadSendDefault,
 } from 'miniprogram-downloader'
-
-// export const Netwrok: Readonly<{
-//     Http: Http,
-//     Uploader: Uploader,
-//     Downloder: Downloder,
-// }> = {
-//     Http: Request,
-//     Uploader: Upload,
-//     Downloder: Download,
-// }
