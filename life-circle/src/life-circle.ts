@@ -10,29 +10,29 @@ import { FirstArgument } from "./first-argument";
 export abstract class LifeCircle<
     TWxOptions extends WxOptions, // 微信操作函数
     TWxTask extends WxTask, // 微信操作的任务类型
-    TConfiguration extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
-    TFullOptions extends TConfiguration & ExtraConfiguration<TWxTask>, //完整配置项
+    TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
+    TFullOptions extends TInitConfig & ExtraConfiguration<TWxTask>, //完整配置项
     >{
 
     /**
      * 默认数据转换函数
      */
-    public abstract readonly TransformSend: NonNullable<TConfiguration['transformSend']>;
+    public abstract readonly TransformSend: NonNullable<TInitConfig['transformSend']>;
 
     /**
      * 默认输出数据转换函数
      */
-    public abstract readonly TransformResponse: NonNullable<TConfiguration['transformResponse']>;
+    public abstract readonly TransformResponse: NonNullable<TInitConfig['transformResponse']>;
 
     /**
      * 默认全局配置
      */
-    public readonly Defaults: TConfiguration;
+    public readonly Defaults: TInitConfig;
 
     /**
      * 全局Listeners
      */
-    public readonly Listeners: EventListeners<TConfiguration, FirstArgument<WxOptions['success']>> = new EventListeners;
+    public readonly Listeners: EventListeners<TFullOptions, FirstArgument<WxOptions['success']>> = new EventListeners;
 
 
     /**
@@ -44,8 +44,8 @@ export abstract class LifeCircle<
      * 新建实列
      * @param config 全局默认配置
      */
-    protected constructor(operator: (option: TWxOptions) => TWxTask, config?: TConfiguration) {
-        this.Defaults = config || { retry: 1 } as TConfiguration;
+    protected constructor(operator: (option: TWxOptions) => TWxTask, config?: TInitConfig) {
+        this.Defaults = config || { retry: 1 } as TInitConfig;
         this.op = operator;
     }
 
@@ -53,7 +53,7 @@ export abstract class LifeCircle<
      * 处理请求
      * @param options 
      */
-    protected process<T>(options: TFullOptions): Promise<T> {
+    protected process<T=ReturnType<LifeCircle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponse']>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this.prepareSend(options)
             .then((param: TWxOptions) => {
