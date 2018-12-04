@@ -7,12 +7,13 @@ const uploadQueue = new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFil
 /**
  * 默认配置信息
  */
-export type UploadInit = BaseConfiguration<UploadOption, wx.UploadFileOption>;
+export interface UploadInit extends BaseConfiguration<UploadOption, wx.UploadFileOption> {
+    url?: string,
+};
 /**
  * 全部配置信息
  */
 export interface UploadOption extends UploadInit, ExtraConfiguration<wx.UploadTask> {
-    url: string,
     filePath: NonNullable<string>,
     name: NonNullable<string>,
     data?: wx.UploadFileOption['formData'],
@@ -51,7 +52,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<T>(url: string, filePath: string, name: string, data?: any, options?: Exclude<UploadOption, 'url' | 'filePath' | 'formData' | 'data'>): Promise<T>;
+    public upload<T>(url: string, filePath: string, name: string, data?: any, config?: Exclude<UploadOption, 'url' | 'filePath' | 'formData' | 'data'>): Promise<T>;
     /**
      * 自定义上传
      * @param options 全部配置信息:url,filePath,name,为必填字段

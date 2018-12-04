@@ -1,17 +1,18 @@
-import { RequestData, RequestOptions } from './configuration';
+// import { RequestData, RequestOptions } from './configuration';
 import { buildParams } from 'miniprogram-network-utils';
+import { RequestOption } from './configuration';
 
 /**
  * 微信请求参数 (不包含回调函数)
  */
-export type WxParam = Pick<wx.RequestOption, 'url' | 'data' | 'dataType' | 'header' | 'method' | 'responseType'>
+export type RequestParams = Exclude<wx.RequestOption, 'success' | 'fail' | 'complete'>
 
 /**
  * 构建请求参数
  * @param data 
  */
-export function defaultSendTransformation(data: RequestData): WxParam {
-    const wxParam: WxParam = {
+export function defaultTransformSend(data: RequestOption): RequestParams {
+    const wxParam: RequestParams = {
         url: data.baseURL + buildParams(data.url, data.params),
         data: data.data,
         method: data.method,
@@ -30,7 +31,7 @@ export function defaultSendTransformation(data: RequestData): WxParam {
  * @param res 
  * @param config 
  */
-export function defaultResponseTransformation<T>(res: wx.RequestSuccessCallbackResult, config: RequestOptions): T {
+export function defaultTransformResponse<T>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
     return res.data as any as T;
 }
 

@@ -1,13 +1,10 @@
 import 'miniprogram-network-utils/promise.finally';
 import { Http } from './src/http';
-
-// 全局 Request 对象
-const Request = new Http();
-export {
-    Request,
-    Http
-}
-
-export { WxParam } from './src/transform';
-export { RequestData, RequestOptions, Configuration } from './src/configuration';
-export { CancelToken } from 'miniprogram-cancel-token';
+export { CancelToken } from 'miniprogram-network-life-circle';
+export { RequestParams } from './src/transform';
+export { RequestOption, RequestConfig, RequestInit } from './src/configuration';
+export { Http };
+/**
+ * 预定义全局 Request 对象
+ */
+export const Request = new Http();

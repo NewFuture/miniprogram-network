@@ -8,6 +8,7 @@
     "fetch",
     "uploader",
     "downloader",
+    "request",
     "network"
   ],
   "command": {
