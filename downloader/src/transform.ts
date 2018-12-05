@@ -11,12 +11,11 @@ export type DownloadParams = Exclude<wx.DownloadFileOption, 'success' | 'fail' |
  * @param data 
  */
 export function transfomDownloadSendDefault(data: DownloadOption): DownloadParams {
-    const wxParam: DownloadParams = {
-        url: data.baseURL + buildParams(data.url, data.params),
+    return {
+        url: buildParams(data.url, data.params, data.baseURL),
         filePath: data.filePath,
         header: data.headers,
-    }
-    return wxParam;
+    } as DownloadParams;
 }
 
 /**

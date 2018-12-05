@@ -13,7 +13,7 @@ export type RequestParams = Exclude<wx.RequestOption, 'success' | 'fail' | 'comp
  */
 export function transformRequestSendDefault(data: RequestOption): RequestParams {
     const wxParam: RequestParams = {
-        url: data.baseURL + buildParams(data.url, data.params),
+        url: buildParams(data.url, data.params, data.baseURL),
         data: data.data,
         method: data.method,
         header: data.headers,

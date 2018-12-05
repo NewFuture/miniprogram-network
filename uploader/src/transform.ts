@@ -12,14 +12,13 @@ export type UploadParams = Exclude<wx.UploadFileOption, 'success' | 'fail' | 'co
  * @param data 
  */
 export function transformUploadSendDefault(data: UploadOption): UploadParams {
-    const wxParam: UploadParams = {
-        url: data.baseURL + (data.url ? buildParams(data.url, data.params) : ''),
+    return {
+        url: buildParams(data.url||'', data.params, data.baseURL),
         filePath: data.filePath,
         header: data.headers,
         formData: data.data,
         name: data.name,
-    }
-    return wxParam;
+    } as UploadParams;
 }
 
 /**
