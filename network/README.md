@@ -6,9 +6,9 @@
 
 
 ## Todo
-* [x] request
-* [x] upload
-* [x] download
+* [x] [request](https://www.npmjs.com/package/miniprogram-request)
+* [x] [upload](https://www.npmjs.com/package/miniprogram-upload)
+* [x] [download](https://www.npmjs.com/package/miniprogram-request)
 * [ ] websocket
 
 
@@ -18,10 +18,13 @@
 * [x] CancelToken 可取消操作
 * [x] Queue 队列支持
 * [x] Retry 网络错误自动重试
+* [x] 每个请求的原生回调接口支持
+    * [x] onHeaders (`onHeadersReceived`事件)
+    * [x] onProgress (`onProgressUpdate`事件)
 * [x] Interceptors 拦截器
     * [x] transform send data
     * [x] transform response data
-* [x] Listeners 事件监听
+* [x] Listeners 全局事件监听
     * [x] On Send (before request data send & after request data transformed)
     * [x] On Response (after request response data transformed)
     * [x] On rejected (before `catch` of Promise)
