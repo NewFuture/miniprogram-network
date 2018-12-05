@@ -1,15 +1,13 @@
 # miniprogram-request [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
 
-> An axios API like `Request` package for MiniProgram [In development]
+> An axios API like `Request` package for MiniProgram [alpha]
 >
-> 更好用的小程序请求库封装 [开发中]
+> 更好用的小程序请求库封装 [alpha]
 
 
 ## Features
 
-* [x] Promise
-* [x] Cancelable
-* [x] Queue
+
 * [x] Wx request option
     * [x] responseType
     * [x] headers
@@ -45,22 +43,6 @@
 * `delete<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
 * `patch<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
 * `head<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
-
-### properties:
-
-* `Request.Defaults` 全局配置
-* `Reqeust.Listeners` 全局事件监听列表
-    * `onSend(options: RequestOptions) => any`;
-    * `onResponse(res: wx.RequestSuccessCallbackResult, options: RequestOptions) => any`;
-    * `onComplete(res: wx.GeneralCallbackResult, options: RequestOptions) => any`;
-    * `onReject(res: any | wx.GeneralCallbackResult, options: RequestOptions) => any`;
-    * `onAbort(reason: any, options: RequestOptions) => any`;
-
-### static:
-
-* `Http.RequestTransformation` 默认请求转换函数
-* `Http.ResponseTransformation` 默认响应转换函数
-
 
 ## Usage
 
