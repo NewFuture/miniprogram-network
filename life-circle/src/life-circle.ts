@@ -55,7 +55,7 @@ export abstract class LifeCircle<
      */
     protected process<T=ReturnType<LifeCircle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponseDefault']>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
-        return this.prepareSend(options)
+        return this.onSend(options)
             .then((param: TWxOptions) => {
                 param.complete = (res: wx.GeneralCallbackResult) => this.onComplete(res, options);
                 return this.send<T>(param, options)
@@ -66,11 +66,11 @@ export abstract class LifeCircle<
      * 请求发送之前处理数据
      * @param options 
      */
-    private prepareSend(options: TFullOptions): Promise<Exclude<TWxOptions, 'complete' | 'success' | 'fail'>> {
-        this.Listeners.onSend.forEach(f => f(options));
+    private onSend(options: TFullOptions): Promise<Exclude<TWxOptions, 'complete' | 'success' | 'fail'>> {
         const data = options.transformSend ?
             options.transformSend(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>) :
             this.TransformSendDefault(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>);
+        this.Listeners.onSend.forEach(f => f(options));
         return Promise.resolve(data);
     }
 

@@ -6,7 +6,7 @@
 
 
 ## Features
-  
+
 * [x] Promise
 * [x] Cancelable
 * [x] Queue
