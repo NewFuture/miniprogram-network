@@ -6,8 +6,8 @@
 
 * [miniprogram-network](network) 小程序网路库集合
     * [request](https://www.npmjs.com/package/miniprogram-request)
-    * [upload](https://www.npmjs.com/package/miniprogram-upload)
-    * [download](https://www.npmjs.com/package/miniprogram-request)
+    * [upload](https://www.npmjs.com/package/miniprogram-uploader)
+    * [download](https://www.npmjs.com/package/miniprogram-downloader)
 * [miniprogram-request](request) 小程序请求库
     * [x] Promise+泛型
     * [x] Cancelable 可取消

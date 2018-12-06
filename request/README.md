@@ -3,7 +3,7 @@
 > An axios API like `Request` package for MiniProgram [alpha]
 >
 > 更好用的小程序请求库封装 [alpha]
-
+> 小程序网络库[miniprogram-network](https://github.com/NewFuture/miniprogram-network) 核心库之一
 
 ## API
 

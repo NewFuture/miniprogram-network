@@ -3,6 +3,7 @@
 > An axios API like `Download` package for MiniProgram [alpha]
 >
 > 小程序下载封装 [alpha]
+> 小程序网络库[miniprogram-network](https://github.com/NewFuture/miniprogram-network) 核心库之一
 
 
 ## API
