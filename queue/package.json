@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-queue",
-  "version": "2.0.3-alpha.0",
+  "version": "2.0.4-alpha.0",
   "description": "Queue Management for Wechat MiniProgram",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
