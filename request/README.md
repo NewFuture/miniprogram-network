@@ -5,44 +5,41 @@
 > 更好用的小程序请求库封装 [alpha]
 
 
-## Features
-
-
-* [x] Wx request option
-    * [x] responseType
-    * [x] headers
-    * [ ] ~~dataType~~ (merged into `responseType`)
-    * [ ] ~~timeout~~ (not supported for each request)
-* [x] Configuration
-    * [x] baseUri
-    * [x] replace parameters
-    * [x] Retry when network failure
-    * [ ] authentication?
-* [x] Interceptors in Lifecycle (only one,modify data or status)
-    * [x] transform request data
-    * [x] transform response data
-* [x] Global Listeners
-    * [x] On Send (before request data send & after request data transformed)
-    * [x] On Response (after request response data transformed)
-    * [ ] On resolved? (before `then` of Promise)
-    * [x] On rejected (before `catch` of Promise)
-    * [x] On abort
-    * [x] On complete
-* [ ] On Progress?
-* [ ] ~~pause/resume~~ (promise/async instead)
-
 ## API
 
 ### methods:
 
 * `request<T>(options: RequestOptions): Promise<T>`;
-* `request<T>(method: string, action: string, data?: any, config?: ExtraConfig): Promise<T>`;
-* `get<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
-* `post<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
-* `put<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
-* `delete<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
-* `patch<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
-* `head<T>(action: string, data?: any, config?: ExtraConfig): Promise<T>`;
+* `request<T>(method: string, action: string, data?: any, config?: RequestConfig): Promise<T>`;
+* `get<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
+* `post<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
+* `put<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
+* `delete<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
+* `patch<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
+* `head<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
+
+### options
+
+* [x] url 地址 **required** (_只能请求时设置for single request_)
+* [x] method 方法 (_只能请求时设置for single request_) 
+* [x] data 数据 (_只能请求时设置for single request_) 
+* [x] cancelToken 取消 (_只能请求时设置for single request_) 
+* [x] onHeaders 接收头响应 (_只能请求时设置for single request_) 
+* [x] responseType
+* [x] headers
+* [x] params
+* [x] baseUri
+* [x] headers
+* [x] retry
+* [x] transformSend
+* [x] transformResponse
+    
+### Global Listeners
+* [x] On Send (before request data send & after request data transformed)
+* [x] On Response (after request response data transformed)
+* [x] On rejected (before `catch` of Promise)
+* [x] On abort
+* [x] On complete
 
 ## Usage
 

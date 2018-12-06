@@ -52,7 +52,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
         name: string,
         url?: string,
         data?: any,
-        config?: Exclude<UploadOption, 'filePath' | 'formData' | 'data'>): Promise<T>;
+        config?: Exclude<UploadOption, 'filePath' | 'name' | 'url' | 'data'>): Promise<T>;
     /**
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
