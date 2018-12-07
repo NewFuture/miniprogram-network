@@ -72,11 +72,10 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
         if (this.todo.length > 0 && map.size < this.MAX) {
             const [taskid, taskOptions] = this.todo.shift()!;
             const oldComplete = taskOptions.complete;
-            const self = this;
-            taskOptions.complete = function () {
+            taskOptions.complete = (res) => {
                 map.delete(taskid);
-                oldComplete && oldComplete.apply(taskOptions, arguments);
-                self.next();
+                oldComplete && oldComplete.apply(taskOptions, [res]);
+                this.next();
             }
             const task = this.operator(taskOptions);
             // task progress polyfill
@@ -86,7 +85,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
             if (taskOptions.onHeadersReceived) {
                 (<wx.UploadTask>task).onHeadersReceived(taskOptions.onHeadersReceived);
             }
-            this.TaskMap.set(taskid, task);
+            map.set(taskid, task);
             return task;
         }
     }
