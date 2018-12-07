@@ -26,7 +26,7 @@
     * [x] retry 错误重试
     * [x] Interceptors 请求/响应拦截
     * [x] Listeners 事件监听
-* [miniprogram-ddownloader](ddownloader) 小程序下载库
+* [miniprogram-downloader](downloader) 小程序下载库
     * [x] Promise+泛型
     * [x] Cancelable 可取消
     * [x] Queue 底层队列维护
