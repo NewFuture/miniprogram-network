@@ -1,4 +1,3 @@
-import 'miniprogram-network-utils/promise.finally';
 import { Downloder } from './src/downloader';
 export { CancelToken } from 'miniprogram-network-life-circle';
 export { Downloder, DownloadOption, DownloadInit } from "./src/downloader";

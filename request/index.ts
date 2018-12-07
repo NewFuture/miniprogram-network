@@ -1,4 +1,3 @@
-import 'miniprogram-network-utils/promise.finally';
 import { Http } from './src/http';
 export { CancelToken } from 'miniprogram-network-life-circle';
 export { RequestParams, transformRequestSendDefault, transformRequestResponseOkData } from './src/transform';
