@@ -10,7 +10,9 @@ Features:
 * [x] 可自动注入/手动管理
 * [x] [取消操作(`abort`)](#abort-取消操作)
 * [x] [进度回调](#progress-进度支持)
+* [x] [header回调]
 * [x] [插队](#jump-插队)
+* [ ] 动态收缩扩展
 
 ## Install(安装)
 
