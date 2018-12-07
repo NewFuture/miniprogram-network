@@ -30,7 +30,7 @@ export class Downloder extends LifeCircle<wx.DownloadFileOption, wx.DownloadTask
      * @param config 全局默认配置
      */
     public constructor(config?: DownloadInit, downloader?: (o: wx.DownloadFileOption) => wx.DownloadTask) {
-        super(downloader || downloadQueue.push, config);
+        super(downloader || downloadQueue.push.bind(downloadQueue), config);
     }
 
     /**

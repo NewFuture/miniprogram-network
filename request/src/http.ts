@@ -27,7 +27,7 @@ export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestIn
      * @param request 请求处理方法，默认使用请求队列处理
      */
     public constructor(config?: RequestInit, request?: (o: wx.RequestOption) => wx.RequestTask) {
-        super(request || requestQueue.push, config);
+        super(request || requestQueue.push.bind(requestQueue), config);
     }
 
     /**

@@ -36,7 +36,7 @@ export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, Upl
      * @param uploader 操作函数,默认使用上传队列
      */
     constructor(config?: UploadInit, uploader?: (op: wx.UploadFileOption) => wx.UploadTask) {
-        super(uploader || uploadQueue.push, config);
+        super(uploader || uploadQueue.push.bind(uploader), config);
     }
 
     /**
