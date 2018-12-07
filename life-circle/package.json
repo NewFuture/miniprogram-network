@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-network-life-circle",
-  "version": "1.3.0-alpha.0",
+  "version": "1.3.1-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "miniprogram-cancel-token": "^0.1.0-alpha.0"
+    "miniprogram-cancel-token": "^0.1.1-alpha.0"
   },
   "author": "New Future",
   "license": "Apache-2.0",
