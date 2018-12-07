@@ -43,4 +43,5 @@
     * [x] cancelable/abort (可取消的Promise)
 * [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch)
     * [x] 自动队列支持
-    
+* [miniprogram-network-life-cirlce](life-circle) 网络操作流程和事件
+![](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
