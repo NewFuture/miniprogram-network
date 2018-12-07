@@ -24,7 +24,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
     /**
      * 正在运行的任务
      */
-    private readonly TaskMap = new Map<number,Ttask>();
+    private readonly TaskMap = new Map<number, Ttask>();
     // { [key: number]: Ttask } = {};
 
     /**
@@ -47,7 +47,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
      * 向队列中添加操作
      * @param param 微信操作
      */
-    public push(param: ExtraOptions & Tparam): Ttask {
+    public push(param: QueueOption<Tparam>): Ttask {
         const id = ++this.taskid;
         if (param.jump) {
             //插队
@@ -68,18 +68,23 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
      * return Undefined and do nothing when queue is full。
      */
     private next(): Ttask | void {
-        if (this.todo.length > 0 && Object.keys(this.TaskMap).length < this.MAX) {
+        const map = this.TaskMap;
+        if (this.todo.length > 0 && map.size < this.MAX) {
             const [taskid, taskOptions] = this.todo.shift()!;
             const oldComplete = taskOptions.complete;
-            taskOptions.complete = (...args) => {
-                this.TaskMap.delete(taskid);
-                oldComplete && oldComplete.apply(taskOptions, args);
-                this.next();
+            const self = this;
+            taskOptions.complete = function () {
+                map.delete(taskid);
+                oldComplete && oldComplete.apply(taskOptions, arguments);
+                self.next();
             }
             const task = this.operator(taskOptions);
             // task progress polyfill
-            if (taskOptions.progress && (<wx.UploadTask>task).onProgressUpdate) {
-                (<wx.UploadTask>task).onProgressUpdate(taskOptions.progress as wx.UploadTaskOnProgressUpdateCallback)
+            if (taskOptions.onProgressUpdate && (<wx.UploadTask>task).onProgressUpdate) {
+                (<wx.UploadTask>task).onProgressUpdate(taskOptions.onProgressUpdate as wx.UploadTaskOnProgressUpdateCallback);
+            }
+            if (taskOptions.onHeadersReceived) {
+                (<wx.UploadTask>task).onHeadersReceived(taskOptions.onHeadersReceived);
             }
             this.TaskMap.set(taskid, task);
             return task;
@@ -109,10 +114,10 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
      * @param taskid 
      * @param callback 回调操作
      */
-    private onProgress(taskid: number, callback: ExtraOptions['progress']): void {
+    private onProgress(taskid: number, callback: ExtraOptions['onProgressUpdate']): void {
         const result = this.todo.find(v => v[0] === taskid);
         if (result) {
-            result[1].progress = callback;
+            result[1].onProgressUpdate = callback;
         } else if (this.TaskMap.has(taskid)) {
             (this.TaskMap.get(taskid) as wx.UploadTask).onProgressUpdate(callback as wx.UploadTaskOnProgressUpdateCallback);
         }
@@ -121,7 +126,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
     private onHeaders(taskid: number, callback: wx.RequestTaskOnHeadersReceivedCallback) {
         const result = this.todo.find(v => v[0] === taskid);
         if (result) {
-            result[1].headersReceived = callback;
+            result[1].onHeadersReceived = callback;
         } else if (this.TaskMap.has(taskid)) {
             this.TaskMap.get(taskid)!.onHeadersReceived(callback);
         }
@@ -135,9 +140,10 @@ interface ExtraOptions {
     /**
      * progress 回调
      */
-    progress?: wx.UploadTaskOnProgressUpdateCallback | wx.DownloadTaskOnProgressUpdateCallback;
-    headersReceived?: wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback;
-    jump?: false
+    onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback | wx.DownloadTaskOnProgressUpdateCallback;
+    onHeadersReceived?: wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback;
+    jump?: boolean;
 }
 
+export type QueueOption<T> = T & ExtraOptions;
 // type Task = Partial<(wx.RequestTask & wx.DownloadTask & wx.UploadTask)>;

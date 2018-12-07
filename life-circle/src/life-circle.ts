@@ -37,7 +37,7 @@ export abstract class LifeCircle<
      */
     protected constructor(operator: (option: TWxOptions) => TWxTask, config?: TInitConfig) {
         this.Defaults = config || { retry: 1 } as TInitConfig;
-        this.op = operator;
+        this.op = (o: TWxOptions) => operator(o);
     }
 
     /**
