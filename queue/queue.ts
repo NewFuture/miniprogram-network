@@ -74,7 +74,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
             const oldComplete = taskOptions.complete;
             taskOptions.complete = (res) => {
                 map.delete(taskid);
-                oldComplete && oldComplete.apply(taskOptions, [res]);
+                oldComplete && oldComplete.call(taskOptions, res);
                 this.next();
             }
             const task = this.operator(taskOptions);
@@ -83,7 +83,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
                 (<wx.UploadTask>task).onProgressUpdate(taskOptions.onProgressUpdate as wx.UploadTaskOnProgressUpdateCallback);
             }
             if (taskOptions.onHeadersReceived) {
-                (<wx.UploadTask>task).onHeadersReceived(taskOptions.onHeadersReceived);
+                task.onHeadersReceived(taskOptions.onHeadersReceived);
             }
             map.set(taskid, task);
             return task;
