@@ -23,7 +23,7 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
     /**
      * 正在运行的任务
      */
-    private readonly TaskMap = new Map<Number, Ttask>();
+    private readonly TaskMap: { [key: number]: Ttask } = {};
 
     /**
      * 小程序的原始操作
@@ -66,11 +66,12 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
      * return Undefined and do nothing when queue is full。
      */
     private next(): Ttask | void {
-        if (this.todo.length > 0 && this.TaskMap.size < this.MAX) {
+        if (this.todo.length > 0 && Object.keys(this.TaskMap).length < this.MAX) {
             const [taskid, taskOptions] = this.todo.shift()!;
             const oldComplete = taskOptions.complete;
             taskOptions.complete = (...args) => {
-                this.TaskMap.delete(taskid);
+                // this.TaskMap.delete(taskid);
+                delete this.TaskMap[taskid]
                 oldComplete && oldComplete.apply(taskOptions, args);
                 this.next();
             }
@@ -79,7 +80,8 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
             if (taskOptions.progress && (<wx.UploadTask>task).onProgressUpdate) {
                 (<wx.UploadTask>task).onProgressUpdate(taskOptions.progress as wx.UploadTaskOnProgressUpdateCallback)
             }
-            this.TaskMap.set(taskid, task);
+            // this.TaskMap.set(taskid, task);
+            this.TaskMap[taskid]=task;
             return task;
         }
     }
