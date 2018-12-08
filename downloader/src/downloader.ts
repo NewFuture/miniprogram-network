@@ -14,7 +14,7 @@ export type DownloadInit = BaseConfiguration<DownloadOption, wx.DownloadFileOpti
 export interface DownloadOption extends DownloadInit, ExtraConfiguration<wx.DownloadTask> {
     url: NonNullable<string>,
     filePath?: string,
-    onProgress?: wx.DownloadTask['offProgressUpdate']
+    onProgressUpdate?: wx.DownloadTask['onProgressUpdate']
 }
 
 

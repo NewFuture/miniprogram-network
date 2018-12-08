@@ -17,7 +17,9 @@ export function transformRequestSendDefault(data: RequestOption): RequestParams 
         data: data.data,
         method: data.method,
         header: data.headers,
-    }
+        onHeadersReceived: data.onHeadersReceived,
+        // onProgressUpdate:data.onProgressUpdate,
+    } as RequestParams;
     if (data.responseType === 'arraybuffer') {
         wxParam.responseType = 'arraybuffer';
     } else if (data.responseType === 'json') {

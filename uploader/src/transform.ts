@@ -13,11 +13,13 @@ export type UploadParams = Exclude<wx.UploadFileOption, 'success' | 'fail' | 'co
  */
 export function transformUploadSendDefault(data: UploadOption): UploadParams {
     return {
-        url: buildParams(data.url||'', data.params, data.baseURL),
+        url: buildParams(data.url || '', data.params, data.baseURL),
         filePath: data.filePath,
         header: data.headers,
         formData: data.data,
         name: data.name,
+        onHeadersReceived: data.onHeadersReceived,
+        onProgressUpdate: data.onProgressUpdate,
     } as UploadParams;
 }
 

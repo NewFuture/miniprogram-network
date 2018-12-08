@@ -77,9 +77,14 @@ export interface ExtraConfiguration<TwxTask extends WxTask> {
     // onProgress?: TwxTask['onProgressUpdate'];
 
     /**
-     * 接受到消息头
+     * 接收到响应头回调
      */
-    onHeaders?: TwxTask['onHeadersReceived'];
+    onHeadersReceived?: TwxTask['onHeadersReceived'];
+
+    /**
+     * 是否插队
+     */
+    jump?: boolean;
 }
 
 

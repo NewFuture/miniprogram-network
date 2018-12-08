@@ -17,7 +17,7 @@ export interface UploadOption extends UploadInit, ExtraConfiguration<wx.UploadTa
     filePath: NonNullable<string>,
     name: NonNullable<string>,
     data?: wx.UploadFileOption['formData'],
-    onProgress?: wx.UploadTask['offProgressUpdate']
+    onProgressUpdate?: wx.UploadTask['onProgressUpdate']
 }
 
 /**
