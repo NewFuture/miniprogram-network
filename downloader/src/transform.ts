@@ -17,6 +17,7 @@ export function transfomDownloadSendDefault(data: DownloadOption): DownloadParam
         header: data.headers,
         onHeadersReceived: data.onHeadersReceived,
         onProgressUpdate: data.onProgressUpdate,
+        jump: data.jump,
     } as DownloadParams;
 }
 

@@ -19,6 +19,7 @@ export function transformRequestSendDefault(data: RequestOption): RequestParams 
         header: data.headers,
         onHeadersReceived: data.onHeadersReceived,
         // onProgressUpdate:data.onProgressUpdate,
+        jump: data.jump,
     } as RequestParams;
     if (data.responseType === 'arraybuffer') {
         wxParam.responseType = 'arraybuffer';

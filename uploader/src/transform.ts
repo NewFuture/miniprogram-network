@@ -20,6 +20,7 @@ export function transformUploadSendDefault(data: UploadOption): UploadParams {
         name: data.name,
         onHeadersReceived: data.onHeadersReceived,
         onProgressUpdate: data.onProgressUpdate,
+        jump: data.jump,
     } as UploadParams;
 }
 

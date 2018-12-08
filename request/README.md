@@ -20,26 +20,28 @@
 
 ### options
 
-* [x] url 地址 **required** (_只能请求时设置for single request_)
-* [x] method 方法 (_只能请求时设置for single request_) 
-* [x] data 数据 (_只能请求时设置for single request_) 
-* [x] cancelToken 取消 (_只能请求时设置for single request_) 
-* [x] onHeaders 接收头响应 (_只能请求时设置for single request_) 
-* [x] responseType
-* [x] headers
-* [x] params
-* [x] baseUri
-* [x] headers
-* [x] retry
-* [x] transformSend
-* [x] transformResponse
+* [x] `url` 地址 **required** (_只能请求时设置for single request_)
+* [x] `method` 方法 (_只能请求时设置for single request_) 
+* [x] `data` 数据 (_只能请求时设置for single request_) 
+* [x] `cancelToken` 取消 (_只能请求时设置for single request_) 
+* [x] `onHeadersReceived` 接收头响应 (_只能请求时设置for single request_) 
+* [x] `jump` 是否插队 (_只能请求时设置for single request_) 
+* [x] `responseType`
+* [x] `headers`
+* [x] `params`
+* [x] `baseUrl`
+* [x] `headers`
+* [x] `retry`
+* [x] `transformSend`
+* [x] `transformResponse`
     
 ### Global Listeners
-* [x] On Send (before request data send & after request data transformed)
-* [x] On Response (after request response data transformed)
-* [x] On rejected (before `catch` of Promise)
-* [x] On abort
-* [x] On complete
+
+* [x] `onSend` (before request data send & after request data transformed)
+* [x] `onResponse` (after request response data transformed)
+* [x] `onRejected` (before `catch` of Promise)
+* [x] `onAbort`
+* [x] `onComplete`
 
 ## Usage
 

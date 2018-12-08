@@ -15,28 +15,29 @@
 
 ### options
 
-* [x] filePath 文件路径  **required** (_只能请求时设置for single request_) 
-* [x] name 上传文件名  **required** (_只能请求时设置for single request_) 
-* [x] data 额外数据 (_只能请求时设置for single request_) 
-* [x] cancelToken 取消 (_只能请求时设置for single request_) 
-* [x] onProgress 下载进度响应 (_只能请求时设置for single request_) 
-* [x] onHeaders 接收头响应 (_只能请求时设置for single request_) 
-* [x] url 上传地址
-* [x] responseType
-* [x] headers
-* [x] params
-* [x] baseUri
-* [x] headers
-* [x] retry
-* [x] transformSend
-* [x] transformResponse
+* [x] `filePath` 文件路径  **required** (_只能请求时设置for single request_) 
+* [x] `name` 上传文件名  **required** (_只能请求时设置for single request_) 
+* [x] `data` 额外数据 (_只能请求时设置for single request_) 
+* [x] `cancelToken` 取消 (_只能请求时设置for single request_) 
+* [x] `onProgressUpdate` 下载进度响应 (_只能请求时设置for single request_) 
+* [x] `onHeadersReceived` 接收头响应 (_只能请求时设置for single request_) 
+* [x] `jump` 是否插队 (_只能请求时设置for single request_)
+* [x] `url` 上传地址
+* [x] `headers`
+* [x] `params`
+* [x] `baseUrl`
+* [x] `headers`
+* [x] `retry`
+* [x] `transformSend`
+* [x] `transformResponse`
     
 ### Global Listeners
-* [x] On Send (before request data send & after request data transformed)
-* [x] On Response (after request response data transformed)
-* [x] On rejected (before `catch` of Promise)
-* [x] On abort
-* [x] On complete
+
+* [x] `onSend` (before request data send & after request data transformed)
+* [x] `onResponse` (after request response data transformed)
+* [x] `onRejected` (before `catch` of Promise)
+* [x] `onAbort`
+* [x] `onComplete`
 
 ## Usage
 
