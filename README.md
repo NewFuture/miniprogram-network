@@ -3,9 +3,10 @@
 > 小程序基础网络库,支持 `Javascript` & `TypeScript`
 >
 > Redefined the network API of Wechat MiniProgram. 
+> 
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 
-## Miniprogram Network Packages
+## Main Packages 主要模块和功能
 
 * [miniprogram-network](network) 小程序网路库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
     * [Request from `miniprogram-request` ![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
