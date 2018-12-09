@@ -1,22 +1,22 @@
 # miniprogram-request [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
 
-> An axios API like `Request` package for MiniProgram [alpha]
+> An axios API like `Request` package for MiniProgram
 >
-> 更好用的小程序请求库封装 [alpha]
+> 更好用的小程序请求库封装
 > 小程序网络库[miniprogram-network](https://github.com/NewFuture/miniprogram-network) 核心库之一
 
 ## API
 
 ### methods:
 
-* `request<T>(options: RequestOptions): Promise<T>`;
-* `request<T>(method: string, action: string, data?: any, config?: RequestConfig): Promise<T>`;
-* `get<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
-* `post<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
-* `put<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
-* `delete<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
-* `patch<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
-* `head<T>(action: string, data?: any, config?: RequestConfig): Promise<T>`;
+* `request<T>(options): Promise<T>`;
+* `request<T>(method, action, data?, config?): Promise<T>`;
+* `get<T>(action, data?, config?): Promise<T>`;
+* `post<T>(action, data?, config?): Promise<T>`;
+* `put<T>(action, data?, config?): Promise<T>`;
+* `delete<T>(action, data?, config?): Promise<T>`;
+* `patch<T>(action, data?, config?): Promise<T>`;
+* `head<T>(action, data?, config?): Promise<T>`;
 
 ### options
 
@@ -26,14 +26,13 @@
 * [x] `cancelToken` 取消 (_只能请求时设置for single request_) 
 * [x] `onHeadersReceived` 接收头响应 (_只能请求时设置for single request_) 
 * [x] `jump` 是否插队 (_只能请求时设置for single request_) 
-* [x] `responseType`
-* [x] `headers`
-* [x] `params`
-* [x] `baseUrl`
-* [x] `headers`
-* [x] `retry`
-* [x] `transformSend`
-* [x] `transformResponse`
+* [x] `responseType` 返回数据类型
+* [x] `headers` 请求头
+* [x] `params` URL参数
+* [x] `baseURL` 根URL
+* [x] `retry` 重试次数
+* [x] `transformSend` 输入转换函数
+* [x] `transformResponse` 输出转换函数
     
 ### Global Listeners
 
@@ -140,7 +139,7 @@ Request.Defaults.retry = 2;//设置网络错误时重试次数
     * 请求方法
     * HTTP request mthod: GET POST ...
     */
-    method?:'OPTIONS'|'GET'|'HEAD'|'POST'|'PUT'|'DELETE'|'TRACE'|'CONNECT';
+    method:'OPTIONS'|'GET'|'HEAD'|'POST'|'PUT'|'DELETE'|'TRACE'|'CONNECT';
 
     /**
      * 请求数据
@@ -154,17 +153,33 @@ Request.Defaults.retry = 2;//设置网络错误时重试次数
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
      */
     data?: any;
+    
+    /**
+     * 取消操作的 CancelToken 
+     */
+    cancelToken?: CancelToken;
+
+    /**
+     * 接收到响应头回调
+     */
+    onHeadersReceived?: TwxTask['onHeadersReceived'];
+
+    /**
+     * 是否插队
+     */
+    jump?: boolean;
+
     /**
     * 请求的根目录
     * Base URL for request
     */
     baseURL?: string;
-
+    
     /**
     * 自定义头 
     * user defined headers
     */
-    headers?: KeyRawValuePair;
+    headers?: KeyBasicValuePair;
 
     /**
      * URL Path
@@ -175,7 +190,7 @@ Request.Defaults.retry = 2;//设置网络错误时重试次数
      *  param = {ID: 12345}
      * request url will be /1234/status
      */
-    params?: KeyRawValuePair,
+    params?: KeyBasicValuePair,
 
     /**
     * 重试次数 默认重试1次
@@ -193,7 +208,7 @@ Request.Defaults.retry = 2;//设置网络错误时重试次数
      * 异步返回promise
      * You may modify the data or headers object before it is sent.
      */
-    transformRequest?: TransformRequest;
+    transformRequest?: (options) => PromiseOrValue<Exclude<wx.options, 'complete' | 'success' | 'fail'>>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
@@ -201,7 +216,7 @@ Request.Defaults.retry = 2;//设置网络错误时重试次数
      * allows changes to the response data to be made before it is passed to then/catch
      *  @example `res=>res.data`
      */
-    transformResponse?: TransformResponse;
+    transformResponse?:  (res, options) => any|Promise<any>;
 
 }
 ```
@@ -263,4 +278,3 @@ const http = new Http({
 ## references
 
 * API inspired by <https://github.com/axios/axios>
-* cancle-token learn from <https://github.com/PolymerLabs/cancel-token>

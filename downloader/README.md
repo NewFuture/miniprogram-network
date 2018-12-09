@@ -11,7 +11,7 @@
 ### methods:
 
 * `download<T>(options: DownloadOption): Promise<T>`;
-* `download<T>(url: string, filePath?: string, options?: Exclude<DownloadOption, 'url' | 'filePath'>): Promise<T>`
+* `download<T>(url: string, filePath?: string, options?): Promise<T>`
 
 ### options
 
@@ -23,8 +23,7 @@
 * [x] `jump` 是否插队 (_只能请求时设置for single request_)
 * [x] `headers`
 * [x] `params`
-* [x] `baseUrl`
-* [x] `headers`
+* [x] `baseURL`
 * [x] `retry`
 * [x] `transformSend`
 * [x] `transformResponse`
@@ -78,6 +77,7 @@ Download.download(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
 
 
 ### CancelToken (abort)
+
 可通过cancel token 方式取消请求
 ```js
 import { Download, CancelToken } from 'miniprogram-request';

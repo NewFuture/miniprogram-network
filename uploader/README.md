@@ -1,8 +1,8 @@
 # miniprogram-uploader [![npm version](https://badge.fury.io/js/miniprogram-uploader.svg)](https://npmjs.com/package/miniprogram-uploader)
 
-> An axios API like `Upload` package for MiniProgram [alpha]
+> An axios API like `Upload` package for MiniProgram
 >
-> 小程序上传封装 [alpha]
+> 小程序上传封装
 > 小程序网络库[miniprogram-network](https://github.com/NewFuture/miniprogram-network) 核心库之一
 
 
@@ -25,8 +25,7 @@
 * [x] `url` 上传地址
 * [x] `headers`
 * [x] `params`
-* [x] `baseUrl`
-* [x] `headers`
+* [x] `baseURL`
 * [x] `retry`
 * [x] `transformSend`
 * [x] `transformResponse`
@@ -76,6 +75,7 @@ Upload.upload(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
 
 
 ### CancelToken (abort)
+
 可通过cancel token 方式取消请求
 ```js
 import { Upload, CancelToken } from 'miniprogram-request';

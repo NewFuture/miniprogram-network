@@ -19,17 +19,17 @@
 * [x] Queue 队列支持
 * [x] Retry 网络错误自动重试
 * [x] 每个请求的原生回调接口支持
-    * [x] onHeaders (`onHeadersReceived`事件)
-    * [x] onProgress (`onProgressUpdate`事件)
+    * [x] onHeadersReceived (`onHeadersReceived`事件)
+    * [x] onProgressUpdate (`onProgressUpdate`事件)
 * [x] Interceptors 拦截器
     * [x] transform send data
     * [x] transform response data
 * [x] Listeners 全局事件监听
-    * [x] On Send (before request data send & after request data transformed)
-    * [x] On Response (after request response data transformed)
-    * [x] On rejected (before `catch` of Promise)
-    * [x] On abort
-    * [x] On complete
+    * [x] `onSend` (before request data send & after request data transformed)
+    * [x] `onResponse` (after request response data transformed)
+    * [x] `onRejected` (before `catch` of Promise)
+    * [x] `onAbort`
+    * [x] `onComplete`
 
 ## 数据转换
 

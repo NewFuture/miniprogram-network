@@ -42,3 +42,6 @@ doFoo(foo,stc.token).then(console.log);
 cts.cancel();
 
 ```
+
+## references
+* API inspired by <https://github.com/PolymerLabs/cancel-token>
