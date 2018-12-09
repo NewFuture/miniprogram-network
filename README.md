@@ -88,7 +88,7 @@ Network.dowanload('network/','lcoalpath',
 ### TypeScript
 
 ```js
-import {setConfig, Request, Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
+import {setConfig,Request,Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
 
 // setConfig设置所有网络请求的默认配置
 // 也可通过Request.Defaults,Download.Defaults,Upload.Defaults 分别设置不同默认配置
