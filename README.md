@@ -68,7 +68,7 @@ Network.get('index.html')
 
 Network.patch('items/{id}',{dataKey:'dataValue'},{{
         params: {id:123456}, // 绑定参数
-        transformResponse: transformRequestResponseOkData,// 响应2xx操作成功直接返回数据
+        transformResponse: Network.transformRequestResponseOkData,// 响应2xx操作成功直接返回数据
     }).then((item)=>console.log(item))
     .catch(console.error);
 
