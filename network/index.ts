@@ -1,7 +1,8 @@
-import { Request, RequestInit } from "miniprogram-request";
-import { Upload, UploadInit } from "miniprogram-uploader";
-import { Download, DownloadInit } from "miniprogram-downloader";
-import { Omit } from "miniprogram-network-utils";
+import { Request, Http } from "miniprogram-request";
+import { Downloder, Download } from "miniprogram-downloader";
+import { Uploader, Upload } from "miniprogram-uploader";
+
+export { setConfig } from "./src/set-config";
 
 export {
     Http,
@@ -35,39 +36,44 @@ export {
     transfomDownloadSendDefault,
 } from 'miniprogram-downloader';
 
-type CommonConfig =Partial<Omit<(RequestInit | DownloadInit | UploadInit), 'transformSend' | 'transformResponse'>>;
-
+// ShortLink for Request
 /**
- * 设置所有网络请求基本配置
- * @param config 公共配置项
+ * Request.request
  */
-function setConfig(config: CommonConfig): void;
+export const request: Http['request'] = Request.request.bind(Request) as Http['request'];
 /**
- * 设置所有网络请求公共配置
- * @example setConfig<'retry'>('retry',3);
- * @param key - 配置字段
- * @param value - 配置值
+ * Request.get
  */
-function setConfig<T extends keyof CommonConfig>(key: T, value: CommonConfig[T]): void;
-function setConfig(): void {
-    if (arguments.length === 2) {
-        const key: keyof CommonConfig = arguments[0];
-        const value = arguments[1];
-        Request.Defaults[key] = value;
-        Download.Defaults[key] = value;
-        Upload.Defaults[key] = value;
-    } else if (typeof arguments[0] === 'object') {
-        const config: CommonConfig = arguments[0];
-        for (let key in config) {
-            if (config.hasOwnProperty(key)) {
-                Request.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-                Download.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-                Upload.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-            }
-        }
-    }
-}
+export const get: Http['get'] = Request.get.bind(Request) as Http['get'];
+/**
+ * Request.post
+ */
+export const post: Http['post'] = Request.post.bind(Request) as Http['post'];
+/**
+ * Request.put
+ */
+export const put: Http['put'] = Request.put.bind(Request) as Http['put'];
+/**
+ * Request.delete
+ */
+export const del: Http['delete'] = Request.delete.bind(Request) as Http['delete'];
+/**
+ * Request.patch
+ */
+export const patch: Http['patch'] = Request.patch.bind(Request) as Http['patch'];
+/**
+ * Request.head
+ */
+export const head: Http['head'] = Request.head.bind(Request) as Http['head'];
 
-export {
-    setConfig,
-}
+// Short Link for Download
+/** 
+ * Download.download
+*/
+export const download: Downloder['download'] = Download.download.bind(Download) as Downloder['download'];
+
+// ShortLink for Upload
+/**
+ * Upload.upload
+ */
+export const upload: Uploader['upload'] = Upload.upload.bind(Upload) as Uploader['upload'];
