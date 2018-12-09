@@ -1,7 +1,7 @@
 import { Request, RequestInit } from "miniprogram-request";
 import { Upload, UploadInit } from "miniprogram-uploader";
 import { Download, DownloadInit } from "miniprogram-downloader";
-import { Omit } from "../life-circle/dist/src/configuration";
+import { Omit } from "miniprogram-network-utils";
 
 export {
     Http,

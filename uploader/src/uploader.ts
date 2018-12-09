@@ -1,5 +1,5 @@
 
-import { BaseConfiguration, ExtraConfiguration, LifeCircle } from 'miniprogram-network-life-circle';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle } from 'miniprogram-network-life-cycle';
 import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transformUploadSendDefault } from './transform';
@@ -24,7 +24,7 @@ export interface UploadOption extends UploadInit, ExtraConfiguration<wx.UploadTa
 /**
  * 上传管理
  */
-export class Uploader extends LifeCircle<wx.UploadFileOption, wx.UploadTask, UploadInit, UploadOption>
+export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, UploadInit, UploadOption>
 {
     /**
      * 默认上传请求参数转换函数

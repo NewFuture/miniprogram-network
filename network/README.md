@@ -69,7 +69,7 @@ setConfig({
 ```
 
 
-## LifeCircle
+## LifeCycle
 
-详情说明[miniprogram-network-life-circle](../life-circle/)
+详情说明[miniprogram-network-life-cycle](../life-cycle/)
 ![](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)

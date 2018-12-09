@@ -1,4 +1,4 @@
-# miniprogram-network-life-circle [![npm version](https://badge.fury.io/js/miniprogram-network-life-circle.svg)](https://npmjs.com/package/miniprogram-network-life-circle)
+# miniprogram-network-life-cycle [![npm version](https://badge.fury.io/js/miniprogram-network-life-cycle.svg)](https://npmjs.com/package/miniprogram-network-life-cycle)
 
 
 

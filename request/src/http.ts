@@ -1,4 +1,4 @@
-import { LifeCircle } from 'miniprogram-network-life-circle';
+import { LifeCycle } from 'miniprogram-network-life-cycle';
 import { WxQueue } from 'miniprogram-queue';
 import { RequestInit, RequestOption, RequestConfig } from './configuration';
 import { transformRequestSendDefault } from './transform';
@@ -14,7 +14,7 @@ const requestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
  * @example 
  *    `const http = new Http({ baseURL: 'https://api.newfuture.cc/', retry: 3 });`
  */
-export class Http extends LifeCircle<wx.RequestOption, wx.RequestTask, RequestInit, RequestOption> {
+export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestInit, RequestOption> {
 
     /**
      * 默认请求发送数据转换函数

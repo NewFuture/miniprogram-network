@@ -5,7 +5,7 @@ import { EventListeners } from "./listeners";
  * 网络请求的完整生命周期
  * 
  */
-export abstract class LifeCircle<
+export abstract class LifeCycle<
     TWxOptions extends WxOptions, // 微信操作函数
     TWxTask extends WxTask, // 微信操作的任务类型
     TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
@@ -53,7 +53,7 @@ export abstract class LifeCircle<
      * 处理请求
      * @param options 
      */
-    protected process<T=ReturnType<LifeCircle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponseDefault']>>(options: TFullOptions): Promise<T> {
+    protected process<T=ReturnType<LifeCycle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponseDefault']>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this.onSend(options)
             .then((param) => {

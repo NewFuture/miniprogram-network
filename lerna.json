@@ -4,7 +4,7 @@
     "promise",
     "network-utils",
     "cancel-token",
-    "life-circle",
+    "life-cycle",
     "fetch",
     "uploader",
     "downloader",

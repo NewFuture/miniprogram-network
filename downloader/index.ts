@@ -1,5 +1,5 @@
 import { Downloder } from './src/downloader';
-export { CancelToken } from 'miniprogram-network-life-circle';
+export { CancelToken } from 'miniprogram-network-life-cycle';
 export { Downloder, DownloadOption, DownloadInit } from "./src/downloader";
 export { transfomDownloadSendDefault, transformDownloadResponseOkData, DownloadParams } from "./src/transform";
 /**

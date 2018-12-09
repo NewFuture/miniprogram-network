@@ -1,5 +1,5 @@
 import { WxQueue } from 'miniprogram-queue';
-import { LifeCircle, BaseConfiguration, ExtraConfiguration } from 'miniprogram-network-life-circle'
+import { LifeCycle, BaseConfiguration, ExtraConfiguration } from 'miniprogram-network-life-cycle'
 import { transfomDownloadSendDefault } from './transform';
 import { Omit } from 'miniprogram-network-utils';
 
@@ -19,7 +19,7 @@ export interface DownloadOption extends DownloadInit, ExtraConfiguration<wx.Down
 }
 
 
-export class Downloder extends LifeCircle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
+export class Downloder extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
 
     /**
      * 默认下载请求参数转换函数

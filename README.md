@@ -50,5 +50,5 @@
 * ~~[miniprogram-promise](promise) 小程序异步API转Promise~~
     * [x] Finally Promise (支持finally)
     * [x] cancelable/abort (可取消的Promise)
-* [miniprogram-network-life-circle](life-circle) 网络操作流程和事件
-![life-circle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
+* [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
+![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)

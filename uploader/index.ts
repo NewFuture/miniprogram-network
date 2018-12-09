@@ -1,5 +1,5 @@
 import { Uploader } from './src/uploader';
-export { CancelToken } from 'miniprogram-network-life-circle';
+export { CancelToken } from 'miniprogram-network-life-cycle';
 export { Uploader, UploadOption, UploadInit } from "./src/uploader";
 export { transformUploadSendDefault, transformUploadResponseOkData, UploadParams } from "./src/transform";
 /**

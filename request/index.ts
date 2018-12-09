@@ -1,5 +1,5 @@
 import { Http } from './src/http';
-export { CancelToken } from 'miniprogram-network-life-circle';
+export { CancelToken } from 'miniprogram-network-life-cycle';
 export { RequestParams, transformRequestSendDefault, transformRequestResponseOkData } from './src/transform';
 export { RequestOption, RequestConfig, RequestInit } from './src/configuration';
 export { Http };
