@@ -1,10 +1,22 @@
-type CancelFunction = (reason?: any) => void;
 
+/**
+ * CancelTokenSource
+ */
 export interface CancelTokenSource {
-    token: CancelToken;
-    cancel: CancelFunction;
+    /**
+     * token
+     */
+    readonly token: CancelToken;
+    /**
+     * 取消函数
+     */
+    readonly cancel: (reason?: any) => any;
 }
 
+/**
+ * 为异步Promise和async/await 提供取消接口
+ * @example `const cts = CancleToken.source(); cts.cancle()`
+ */
 export class CancelToken {
     /**
      * Promise of CancelToken
@@ -16,8 +28,8 @@ export class CancelToken {
      * 生成CancelToken
      * @param executor 
      */
-    private constructor(executor: (cancel: CancelFunction) => void) {
-        let resolve: CancelFunction;
+    private constructor(executor: (cancel: CancelTokenSource['cancel']) => void) {
+        let resolve: CancelTokenSource['cancel'];
         this.promise = new Promise<any>((res) => resolve = res);
         executor((reason?: any) => {
             if (this.reason === undefined) {
@@ -31,11 +43,15 @@ export class CancelToken {
     /**
      * 是否已取消
      */
-    isCancelled() {
+    public isCancelled(): boolean {
         return this.reason === undefined;
     }
 
-    throwIfRequested() {
+    /**
+     * 如果已取消，抛出异常
+     * 防止二次取消
+     */
+    public throwIfRequested(): void | never {
         if (this.reason !== undefined) {
             throw this.reason;
         }
@@ -43,9 +59,10 @@ export class CancelToken {
 
     /**
      * Create TokenSoure
+     * @returns 生成一个CancelTokenSource
      */
     static source(): CancelTokenSource {
-        let cancel: CancelFunction = null as any;
+        let cancel: CancelTokenSource['cancel'] = null as any;
         const token = new CancelToken((c) => {
             cancel = c;
         });
