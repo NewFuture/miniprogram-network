@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-network-utils",
-  "version": "0.3.6-alpha.0",
+  "version": "0.4.0",
   "description": "",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

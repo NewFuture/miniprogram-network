@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-uploader",
-  "version": "1.4.0-alpha.0",
+  "version": "1.4.0",
   "description": "miniprogram upload package",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,9 +22,9 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-network-life-cycle": "^1.4.0-alpha.0",
-    "miniprogram-network-utils": "^0.3.6-alpha.0",
-    "miniprogram-queue": "^2.2.0-alpha.0"
+    "miniprogram-network-life-cycle": "^1.4.0",
+    "miniprogram-network-utils": "^0.4.0",
+    "miniprogram-queue": "^2.2.0"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram-network/issues"
