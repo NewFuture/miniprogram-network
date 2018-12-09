@@ -1,11 +1,11 @@
 // import { RequestData, RequestOptions } from './configuration';
-import { buildParams } from 'miniprogram-network-utils';
+import { buildParams, Omit } from 'miniprogram-network-utils';
 import { RequestOption } from './configuration';
 
 /**
  * 微信请求参数 (不包含回调函数)
  */
-export type RequestParams = Exclude<wx.RequestOption, 'success' | 'fail' | 'complete'>
+export type RequestParams = Omit<wx.RequestOption, 'success' | 'fail' | 'complete'>
 
 /**
  * 构建请求参数

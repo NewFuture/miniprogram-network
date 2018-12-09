@@ -1,10 +1,10 @@
-import { buildParams } from 'miniprogram-network-utils';
+import { buildParams, Omit } from 'miniprogram-network-utils';
 import { UploadOption } from './uploader';
 
 /**
  * 微信请求参数 (不包含回调函数)
  */
-export type UploadParams = Exclude<wx.UploadFileOption, 'success' | 'fail' | 'complete'>
+export type UploadParams = Omit<wx.UploadFileOption, 'success' | 'fail' | 'complete'>
 
 /**
  * 构建请求参数

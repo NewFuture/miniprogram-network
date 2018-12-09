@@ -1,10 +1,10 @@
-import { buildParams } from 'miniprogram-network-utils';
+import { buildParams, Omit } from 'miniprogram-network-utils';
 import { DownloadOption } from './downloader';
 
 /**
  * 微信请求参数 (不包含回调函数)
  */
-export type DownloadParams = Exclude<wx.DownloadFileOption, 'success' | 'fail' | 'complete'>
+export type DownloadParams = Omit<wx.DownloadFileOption, 'success' | 'fail' | 'complete'>
 
 /**
  * 默认下载请求参数构建方法

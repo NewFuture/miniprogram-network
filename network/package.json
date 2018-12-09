@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/NewFuture/miniprogram-network/",
   "dependencies": {
+    "miniprogram-network-utils": "^0.3.6-alpha.0",
     "miniprogram-downloader": "^1.4.0-alpha.0",
     "miniprogram-request": "^1.4.0-alpha.0",
     "miniprogram-uploader": "^1.4.0-alpha.0"

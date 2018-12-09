@@ -1,6 +1,7 @@
 import { WxQueue } from 'miniprogram-queue';
 import { LifeCircle, BaseConfiguration, ExtraConfiguration } from 'miniprogram-network-life-circle'
 import { transfomDownloadSendDefault } from './transform';
+import { Omit } from 'miniprogram-network-utils';
 
 const downloadQueue = new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
 
@@ -39,7 +40,7 @@ export class Downloder extends LifeCircle<wx.DownloadFileOption, wx.DownloadTask
      * @param filePath 本地文件路径
      * @param options 其他参数
      */
-    public download<T=ReturnType<Downloder['TransformResponseDefault']>>(url: string, filePath?: string, options?: Exclude<DownloadOption, 'url' | 'filePath'>): Promise<T>;
+    public download<T=ReturnType<Downloder['TransformResponseDefault']>>(url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
     /**
      * Object 参数自定义下载
      * @param options 
