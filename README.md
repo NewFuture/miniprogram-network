@@ -61,6 +61,8 @@
 ```js
 var Network = require('miniprogram-network');
 
+// setConfig设置所有网络请求的默认配置
+// 也可Network.Request.Defaults,Network.Download.Defaults,Network.Upload.Defaults 分别设置不同默认配置
 Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
 
 Network.get('index.html')
@@ -88,6 +90,8 @@ Network.dowanload('network/','lcoalpath',
 ```js
 import {setConfig, Request, Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
 
+// setConfig设置所有网络请求的默认配置
+// 也可通过Request.Defaults,Download.Defaults,Upload.Defaults 分别设置不同默认配置
 setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
 
 Request.get('index.html')
