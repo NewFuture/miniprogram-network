@@ -1,8 +1,10 @@
-# [Miniprogram-Network :octocat:](https://github.com/NewFuture/miniprogram-network)
+# miniprogram-network
 
 > 小程序基础网络库,支持 `Javascript` & `TypeScript` 。
 >
-> Redefined Network API of MiniProgram. 
+> Redefined the network API of Wechat MiniProgram. 
+
+[GitHub: miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 
 ## Miniprogram Network Packages
 
