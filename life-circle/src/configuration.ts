@@ -3,6 +3,8 @@ import { CancelToken } from 'miniprogram-cancel-token'
 type KeyBasicValuePair = { [key: string]: string | number | boolean | null };
 type PromiseOrValue<T> = T | PromiseLike<T>
 
+export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
+
 export type WxTask = wx.RequestTask | wx.DownloadTask | wx.UploadTask;
 export type WxOptions = wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption;
 export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['success']>>[0]
@@ -51,7 +53,7 @@ export interface BaseConfiguration<
      * You may modify the data or headers object before it is sent.
      * @param data 不包含转换函数的所有配置内容
      */
-    transformSend?: (data: Exclude<TFullOptions, 'transformSend' | 'transformResponse'>) => PromiseOrValue<Exclude<TWxOptions, 'complete' | 'success' | 'fail'>>;
+    transformSend?: (data: Omit<TFullOptions, 'transformSend' | 'transformResponse'>) => PromiseOrValue<Omit<TWxOptions, 'complete' | 'success' | 'fail'>>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch

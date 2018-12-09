@@ -1,4 +1,4 @@
-import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask, mergeConfig, SuccessParam } from './configuration';
+import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask, mergeConfig, SuccessParam, Omit } from './configuration';
 import { EventListeners } from "./listeners";
 
 /**
@@ -56,9 +56,9 @@ export abstract class LifeCircle<
     protected process<T=ReturnType<LifeCircle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponseDefault']>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this.onSend(options)
-            .then((param: TWxOptions) => {
-                param.complete = (res: wx.GeneralCallbackResult) => this.onComplete(res, options);
-                return this.send<T>(param, options)
+            .then((param) => {
+                (param as TWxOptions).complete = (res: wx.GeneralCallbackResult) => this.onComplete(res, options);
+                return this.send<T>(param as TWxOptions, options)
             })
     }
 
@@ -66,10 +66,10 @@ export abstract class LifeCircle<
      * 请求发送之前处理数据
      * @param options 
      */
-    private onSend(options: TFullOptions): Promise<Exclude<TWxOptions, 'complete' | 'success' | 'fail'>> {
+    private onSend(options: TFullOptions): Promise<Omit<TWxOptions, 'complete' | 'success' | 'fail'>> {
         const data = options.transformSend ?
-            options.transformSend(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>) :
-            this.TransformSendDefault(options as Exclude<TFullOptions, 'transformSend' | 'transformResponse'>);
+            options.transformSend(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>) :
+            this.TransformSendDefault(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>);
         this.Listeners.onSend.forEach(f => f(options));
         return Promise.resolve(data);
     }
