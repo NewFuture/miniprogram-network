@@ -18,18 +18,9 @@
 * [x] CancelToken 可取消操作
 * [x] Queue 队列支持
 * [x] Retry 网络错误自动重试
-* [x] 每个请求的原生回调接口支持
-    * [x] onHeadersReceived (`onHeadersReceived`事件)
-    * [x] onProgressUpdate (`onProgressUpdate`事件)
-* [x] Interceptors 拦截器
-    * [x] transform send data
-    * [x] transform response data
-* [x] Listeners 全局事件监听
-    * [x] `onSend` (before request data send & after request data transformed)
-    * [x] `onResponse` (after request response data transformed)
-    * [x] `onRejected` (before `catch` of Promise)
-    * [x] `onAbort`
-    * [x] `onComplete`
+* [x] 每个请求的原生回调接口支持(`onHeadersReceived`事件)和(`onProgressUpdate`事件)
+* [x] Interceptors 拦截器 transform send data / transform response data
+* [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
 
 ## 数据转换
 
@@ -42,7 +33,7 @@ import {
     Request, transformRequestResponseOkData,
     Download, transformDownloadResponseOkData,
     Upload, transformUploadResponseOkData,
-} from '../index'
+} from 'miniprogram-network';
 
 // Request的默认响应拦设为成transformRequestResponseOkData,
 // 正常2xx返回data部分，否则rejected
@@ -62,7 +53,23 @@ Download.download('url')
     });
 ```
 
-### LifeCircle
+## 快速配置 setConfig
+
+```js
+import { setConfig } from 'miniprogram-network';
+
+//将Request,Upload,Download的默认baseURL设置为'https://api.newfuture.cc'
+setConfig('baseURL', 'https://api.newfuture.cc');
+
+//等效方式
+setConfig({
+    baseURL:'https://api.newfuture.cc'
+})
+
+```
+
+
+## LifeCircle
 
 详情说明[miniprogram-network-life-circle](https://github.com/NewFuture/miniprogram-network/tree/master/life-circle)
 ![](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
