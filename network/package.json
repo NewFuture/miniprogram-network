@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-network",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A better network package for MiniProgram API",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
