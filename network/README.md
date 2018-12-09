@@ -71,5 +71,5 @@ setConfig({
 
 ## LifeCircle
 
-详情说明[miniprogram-network-life-circle](https://github.com/NewFuture/miniprogram-network/tree/master/life-circle)
+详情说明[miniprogram-network-life-circle](../life-circle/)
 ![](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)

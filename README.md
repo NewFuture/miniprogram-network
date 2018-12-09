@@ -1,13 +1,15 @@
- # miniprogram-network
+# [Miniprogram-Network :octocat:](https://github.com/NewFuture/miniprogram-network)
 
-小程序基础网络库封装
+> 小程序基础网络库,支持 `Javascript` & `TypeScript` 。
+>
+> Redefined Network API of MiniProgram. 
 
 ## Miniprogram Network Packages
 
 * [miniprogram-network](network) 小程序网路库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
-    * [Request ![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
-    * [Upload ![npm version](https://badge.fury.io/js/miniprogram-uploader.svg)](https://npmjs.com/package/miniprogram-uploader)
-    * [Download ![npm version](https://badge.fury.io/js/miniprogram-downloader.svg)](https://npmjs.com/package/miniprogram-downloader)
+    * [Request from `miniprogram-request` ![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
+    * [Upload from `miniprogram-uploader` ![npm version](https://badge.fury.io/js/miniprogram-uploader.svg)](https://npmjs.com/package/miniprogram-uploader)
+    * [Download from `miniprogram-downloader` ![npm version](https://badge.fury.io/js/miniprogram-downloader.svg)](https://npmjs.com/package/miniprogram-downloader)
 * [miniprogram-request](request) 小程序请求库 [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
     * [x] Promise支持+finally+泛型
     * [x] CancelToken 取消支持
