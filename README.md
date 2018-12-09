@@ -54,9 +54,10 @@
 ![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
 
 
-## Examples 示例
+## Examples 示例代码
 
 ### JavaScript
+
 ```js
 var Network = require('miniprogram-network');
 
@@ -66,13 +67,15 @@ Network.get('index.html')
     .then(res=>console.log(res))
     .catch(console.error);
 
-Network.patch('items/{id}',{dataKey:'dataValue'},{{
+Network.patch('items/{id}',{dataKey:'dataValue'},
+    {
         params: {id:123456}, // 绑定参数
         transformResponse: Network.transformRequestResponseOkData,// 响应2xx操作成功直接返回数据
     }).then((item)=>console.log(item))
     .catch(console.error);
 
-Network.dowanload('network/','lcoalpath',{
+Network.dowanload('network/','lcoalpath',
+    {
         onProgressUpdate:progressUpdateCallBack,// 进度回调
         retry:3,// 重试3次
         transformResponse: Network.transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
@@ -85,19 +88,21 @@ Network.dowanload('network/','lcoalpath',{
 ```js
 import {setConfig, Request, Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
 
-setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
+setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
 
 Request.get('index.html')
     .then(res=>console.log(res))
     .catch(console.error);
 
-Request.patch<Item>('items/{id}',{dataKey:'dataValue'},{
+Request.patch<Item>('items/{id}',{dataKey:'dataValue'},
+    {
         params: {id:123456}, // 绑定参数
         transformResponse:transformRequestResponseOkData, // 响应2xx操作成功直接返回数据
     }).then((item:Item)=>console.log(item))
     .catch(console.error);
 
-Download.dowanload<string>('network/','lcoalpath',{
+Download.dowanload<string>('network/','lcoalpath',
+    {
         onProgressUpdate:progressUpdateCallBack,// 进度回调
         retry:3,// 重试3次
         transformResponse: transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
