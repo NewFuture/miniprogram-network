@@ -1,7 +1,7 @@
 import {
     Request, transformRequestResponseOkData,
     Download, transformDownloadResponseOkData,
-    Upload, transformUploadResponseOkData,
+    Upload, transformUploadResponseOkData, setConfig,
 } from '../index'
 
 // Request的默认响应拦设为成transformRequestResponseOkData,正常返回data部分
@@ -17,3 +17,8 @@ Download.download('url')
     }).catch(res=>{
         console.error(res);//objct
     });
+
+setConfig({
+    baseURL:'',
+});
+setConfig('baseURL','https://api.xyz');

@@ -35,7 +35,7 @@ export {
     transfomDownloadSendDefault,
 } from 'miniprogram-downloader';
 
-type CommonConfig = NonNullable<Omit<(RequestInit | DownloadInit | UploadInit), 'transformSend' | 'transformResponse'>>;
+type CommonConfig =Partial<Omit<(RequestInit | DownloadInit | UploadInit), 'transformSend' | 'transformResponse'>>;
 
 /**
  * 设置所有网络请求基本配置
