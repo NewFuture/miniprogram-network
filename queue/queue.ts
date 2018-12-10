@@ -3,8 +3,7 @@
  * 微信小程序操作队列封装管理
  * @example var rq = new WxQueue(wx.requst);
  */
-export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption,
-    Ttask extends wx.RequestTask | wx.DownloadTask | wx.UploadTask>{
+export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
     /**
      *  队列最大长度
      */
@@ -72,15 +71,15 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
         if (this.todo.length > 0 && map.size < this.MAX) {
             const [taskid, taskOptions] = this.todo.shift()!;
             const oldComplete = taskOptions.complete;
-            taskOptions.complete = (res) => {
+            taskOptions.complete = (res: any) => {
                 map.delete(taskid);
                 oldComplete && oldComplete.call(taskOptions, res);
                 this.next();
             }
             const task = this.operator(taskOptions);
             // task progress polyfill
-            if (taskOptions.onProgressUpdate && (<wx.UploadTask>task).onProgressUpdate) {
-                (<wx.UploadTask>task).onProgressUpdate(taskOptions.onProgressUpdate as wx.UploadTaskOnProgressUpdateCallback);
+            if (taskOptions.onProgressUpdate && (task as any as ProgressTask).onProgressUpdate) {
+                (task as any as ProgressTask).onProgressUpdate(taskOptions.onProgressUpdate);
             }
             if (taskOptions.onHeadersReceived) {
                 task.onHeadersReceived(taskOptions.onHeadersReceived);
@@ -118,11 +117,11 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
         if (result) {
             result[1].onProgressUpdate = callback;
         } else if (this.TaskMap.has(taskid)) {
-            (this.TaskMap.get(taskid) as wx.UploadTask).onProgressUpdate(callback as wx.UploadTaskOnProgressUpdateCallback);
+            (this.TaskMap.get(taskid) as any as ProgressTask).onProgressUpdate(callback as any);
         }
     }
 
-    private onHeaders(taskid: number, callback: wx.RequestTaskOnHeadersReceivedCallback) {
+    private onHeaders(taskid: number, callback: ExtraOptions['onHeadersReceived']) {
         const result = this.todo.find(v => v[0] === taskid);
         if (result) {
             result[1].onHeadersReceived = callback;
@@ -132,6 +131,8 @@ export class WxQueue<Tparam extends wx.RequestOption | wx.DownloadFileOption | w
     }
 };
 
+export type QueueOption<T> = T & ExtraOptions;
+
 /**
  * 微信操作参数声明 
  */
@@ -140,9 +141,63 @@ interface ExtraOptions {
      * progress 回调
      */
     onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback | wx.DownloadTaskOnProgressUpdateCallback;
-    onHeadersReceived?: wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback | wx.RequestTaskOnHeadersReceivedCallback;
+    /** 
+     * 开发者服务器返回的 HTTP Response Header 回调
+     */
+    onHeadersReceived?(result: { header: object }): void;
     jump?: boolean;
 }
 
-export type QueueOption<T> = T & ExtraOptions;
-// type Task = Partial<(wx.RequestTask & wx.DownloadTask & wx.UploadTask)>;
+interface BaseOption {
+    /** 开发者服务器接口地址 */
+    url: string;
+    /** 接口调用结束的回调函数（调用成功、失败都会执行） */
+    complete?: Function;
+    /** 接口调用失败的回调函数 */
+    fail?: Function;
+    /** 接口调用成功的回调函数 */
+    success?: Function;
+}
+
+interface BaseTask {
+    abort(): void;
+    /** HTTP Response Header 事件的回调函数 */
+    onHeadersReceived(callback: ExtraOptions['onHeadersReceived'], ): void;
+}
+
+interface ProgressTask {
+    /** 下载进度变化事件的回调函数 */
+    onProgressUpdate(callback: ExtraOptions['onProgressUpdate']): void;
+}
+
+declare namespace wx {
+    type UploadTaskOnProgressUpdateCallback = (res: {
+        /**
+         * 上传进度百分比
+         */
+        progress: number
+        /**
+         * 已经上传的数据长度，单位 Bytes
+         */
+        totalBytesSent: number
+        /**
+         * 预期需要上传的数据总长度，单位 Bytes
+         */
+        totalBytesExpectedToSend: number
+    }) => void;
+
+    type DownloadTaskOnProgressUpdateCallback = (res: {
+        /**
+         * 下载进度百分比
+         */
+        progress: number
+        /**
+         * 已经下载的数据长度，单位 Bytes
+         */
+        totalBytesWritten: number
+        /**
+         * 预期需要下载的数据总长度，单位 Bytes
+         */
+        totalBytesExpectedToWrite: number
+    }) => void;
+}
