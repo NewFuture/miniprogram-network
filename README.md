@@ -61,7 +61,7 @@
 ```js
 var Network = require('miniprogram-network');
 
-// setConfig设置所有网络请求的默认配置
+// setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
 // 也可Network.Request.Defaults,Network.Download.Defaults,Network.Upload.Defaults 分别设置不同默认配置
 Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
 
@@ -70,15 +70,13 @@ Network.get('index.html')
     .catch(console.error)
     .finally(()=>{console.info('done')});
 
-Network.patch('items/{id}',{dataKey:'dataValue'},
-    {
+Network.patch('items/{id}',{dataKey:'dataValue'},{
         params: {id:123456}, // 绑定参数
         transformResponse: Network.transformRequestResponseOkData,// 响应2xx操作成功直接返回数据
     }).then((item)=>console.log(item))
     .catch(console.error);
 
-Network.dowanload('network/','lcoalpath',
-    {
+Network.dowanload('network/','lcoalpath',{
         onProgressUpdate:progressUpdateCallBack,// 进度回调
         retry:3,// 重试3次
         transformResponse: Network.transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
@@ -91,7 +89,7 @@ Network.dowanload('network/','lcoalpath',
 ```js
 import {setConfig,Request,Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
 
-// setConfig设置所有网络请求的默认配置
+// setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
 // 也可通过Request.Defaults,Download.Defaults,Upload.Defaults 分别设置不同默认配置
 setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
 
@@ -100,15 +98,13 @@ Request.get('index.html')
     .catch(console.error);
     .finally(()=>{console.info('done')});
 
-Request.patch<Item>('items/{id}',{dataKey:'dataValue'},
-    {
+Request.patch<Item>('items/{id}',{dataKey:'dataValue'},{
         params: {id:123456}, // 绑定参数
         transformResponse:transformRequestResponseOkData, // 响应2xx操作成功直接返回数据
     }).then((item:Item)=>console.log(item))
     .catch(console.error);
 
-Download.dowanload<string>('network/','lcoalpath',
-    {
+Download.dowanload<string>('network/','lcoalpath',{
         onProgressUpdate:progressUpdateCallBack,// 进度回调
         retry:3,// 重试3次
         transformResponse: transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
