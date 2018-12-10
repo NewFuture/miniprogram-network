@@ -67,7 +67,8 @@ Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
 
 Network.get('index.html')
     .then(res=>console.log(res))
-    .catch(console.error);
+    .catch(console.error)
+    .finally(()=>{console.info('done')});
 
 Network.patch('items/{id}',{dataKey:'dataValue'},
     {
@@ -97,6 +98,7 @@ setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
 Request.get('index.html')
     .then(res=>console.log(res))
     .catch(console.error);
+    .finally(()=>{console.info('done')});
 
 Request.patch<Item>('items/{id}',{dataKey:'dataValue'},
     {
