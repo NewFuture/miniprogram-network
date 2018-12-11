@@ -5,10 +5,27 @@ type PromiseOrValue<T> = T | PromiseLike<T>
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 
-export type WxTask = wx.RequestTask | wx.DownloadTask | wx.UploadTask;
-export type WxOptions = wx.RequestOption | wx.DownloadFileOption | wx.UploadFileOption;
-export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['success']>>[0]
+export interface WxTask {
+    abort(): void;
+    /** HTTP Response Header 事件的回调函数 */
+    onHeadersReceived(callback: ExtraConfiguration['onHeadersReceived'], ): void;
+    /** 下载进度变化事件的回调函数 */
+    onProgressUpdate?(callback: ExtraConfiguration['onProgressUpdate']): void;
 
+};
+
+export interface WxOptions {
+    /** 开发者服务器接口地址 */
+    url: string;
+    /** 接口调用结束的回调函数（调用成功、失败都会执行） */
+    complete?: Function;
+    /** 接口调用失败的回调函数 */
+    fail?: Function;
+    /** 接口调用成功的回调函数 */
+    success?: (res: any) => any;
+};
+
+export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['success']>>[0]
 /**
  * 所有网络请求的集成类型
  */
@@ -67,28 +84,27 @@ export interface BaseConfiguration<
 /**
  * 每个操包含的额外配置参数
  */
-export interface ExtraConfiguration<TwxTask extends WxTask> {
+export interface ExtraConfiguration {
     /**
      * 取消操作的 CancelToken 
      */
     cancelToken?: CancelToken;
 
-    // /**
-    //  * 进度回调
-    //  */
-    // onProgress?: TwxTask['onProgressUpdate'];
-
     /**
      * 接收到响应头回调
      */
-    onHeadersReceived?: TwxTask['onHeadersReceived'];
+    onHeadersReceived?: (result: { header: object }) => void;
+
+    /**
+     * 进度回调
+     */
+    onProgressUpdate?: (res: any) => any;
 
     /**
      * 是否插队
      */
     jump?: boolean;
 }
-
 
 /**
  * 合并配置

@@ -1,6 +1,10 @@
 import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask, mergeConfig, SuccessParam, Omit } from './configuration';
 import { EventListeners } from "./listeners";
 
+type GeneralCallbackResult = {
+    errMsg: string;
+}
+
 /**
  * 网络请求的完整生命周期
  * 
@@ -9,7 +13,7 @@ export abstract class LifeCycle<
     TWxOptions extends WxOptions, // 微信操作函数
     TWxTask extends WxTask, // 微信操作的任务类型
     TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
-    TFullOptions extends TInitConfig & ExtraConfiguration<TWxTask>, //完整配置项
+    TFullOptions extends TInitConfig & ExtraConfiguration, //完整配置项
     >{
     /**
      * 默认全局配置
@@ -57,7 +61,7 @@ export abstract class LifeCycle<
         mergeConfig(options, this.Defaults);
         return this.onSend(options)
             .then((param) => {
-                (param as TWxOptions).complete = (res: wx.GeneralCallbackResult) => this.onComplete(res, options);
+                (param as TWxOptions).complete = (res: GeneralCallbackResult) => this.onComplete(res, options);
                 return this.send<T>(param as TWxOptions, options)
             })
     }
@@ -86,10 +90,16 @@ export abstract class LifeCycle<
 
             data.success = (res: SuccessParam<TWxOptions>) => { this.onResponse<T>(res, options).then(resolve) };
             // retry 
-            data.fail = (res: wx.GeneralCallbackResult) =>
+            data.fail = (res: GeneralCallbackResult) =>
                 options.retry!-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
 
             const task = this.op(data);
+            if (options.onHeadersReceived) {
+                task.onHeadersReceived(options.onHeadersReceived);
+            }
+            if (options.onProgressUpdate && task.onProgressUpdate) {
+                task.onProgressUpdate(options.onProgressUpdate);
+            }
             if (cancelToken) {
                 cancelToken.promise.then(reason => {
                     task.abort();
@@ -115,7 +125,7 @@ export abstract class LifeCycle<
      * @param res 
      * @param options 
      */
-    private onFail(res: wx.GeneralCallbackResult, options: TFullOptions): Promise<wx.GeneralCallbackResult> {
+    private onFail(res: GeneralCallbackResult, options: TFullOptions): Promise<GeneralCallbackResult> {
         this.Listeners.onRejected.forEach(f => f(res, options));
         return Promise.reject(res);
     }
@@ -125,7 +135,7 @@ export abstract class LifeCycle<
      * @param res 
      * @param options 
      */
-    private onComplete(res: wx.GeneralCallbackResult, options: TFullOptions) {
+    private onComplete(res: GeneralCallbackResult, options: TFullOptions) {
         this.Listeners.onComplete.forEach(f => f(res, options));
     }
 

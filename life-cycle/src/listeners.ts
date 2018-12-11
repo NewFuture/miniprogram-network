@@ -36,11 +36,11 @@ type OnResponseListener<TResult, TFullOptions> = (res: TResult, options: TFullOp
 /**
  * 操作完成时
  */
-type OnCompleteListener<TFullOptions> = (res: wx.GeneralCallbackResult, options: TFullOptions) => any;
+type OnCompleteListener<TFullOptions> = (res: { errMsg: string }, options: TFullOptions) => any;
 /**
  * 失败
  */
-type OnRejectListener<TFullOptions> = (res: wx.GeneralCallbackResult | any, options: TFullOptions) => any;
+type OnRejectListener<TFullOptions> = (res: { errMsg: string } | any, options: TFullOptions) => any;
 /**
  * 操作取消时
  */

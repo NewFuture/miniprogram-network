@@ -14,7 +14,7 @@ export interface UploadInit extends BaseConfiguration<UploadOption, wx.UploadFil
 /**
  * 全部配置信息
  */
-export interface UploadOption extends UploadInit, ExtraConfiguration<wx.UploadTask> {
+export interface UploadOption extends UploadInit, ExtraConfiguration {
     filePath: NonNullable<string>,
     name: NonNullable<string>,
     data?: wx.UploadFileOption['formData'],

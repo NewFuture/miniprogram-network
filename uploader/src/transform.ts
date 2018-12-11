@@ -18,8 +18,6 @@ export function transformUploadSendDefault(data: UploadOption): UploadParams {
         header: data.headers,
         formData: data.data,
         name: data.name,
-        onHeadersReceived: data.onHeadersReceived,
-        onProgressUpdate: data.onProgressUpdate,
         jump: data.jump,
     } as UploadParams;
 }

@@ -78,8 +78,8 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
             }
             const task = this.operator(taskOptions);
             // task progress polyfill
-            if (taskOptions.onProgressUpdate && (task as any as ProgressTask).onProgressUpdate) {
-                (task as any as ProgressTask).onProgressUpdate(taskOptions.onProgressUpdate);
+            if (taskOptions.onProgressUpdate && task.onProgressUpdate) {
+                task.onProgressUpdate(taskOptions.onProgressUpdate);
             }
             if (taskOptions.onHeadersReceived) {
                 task.onHeadersReceived(taskOptions.onHeadersReceived);
@@ -117,7 +117,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
         if (result) {
             result[1].onProgressUpdate = callback;
         } else if (this.TaskMap.has(taskid)) {
-            (this.TaskMap.get(taskid) as any as ProgressTask).onProgressUpdate(callback as any);
+            this.TaskMap.get(taskid)!.onProgressUpdate!(callback as any);
         }
     }
 
@@ -163,11 +163,8 @@ interface BaseTask {
     abort(): void;
     /** HTTP Response Header 事件的回调函数 */
     onHeadersReceived(callback: ExtraOptions['onHeadersReceived'], ): void;
-}
-
-interface ProgressTask {
     /** 下载进度变化事件的回调函数 */
-    onProgressUpdate(callback: ExtraOptions['onProgressUpdate']): void;
+    onProgressUpdate?(callback: ExtraOptions['onProgressUpdate']): void;
 }
 
 declare namespace wx {

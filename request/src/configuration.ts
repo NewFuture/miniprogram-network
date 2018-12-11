@@ -14,12 +14,12 @@ export interface RequestInit extends BaseConfiguration<RequestOption, wx.Request
 /**
  * 单个请求的额外配置信息
  */
-export type RequestConfig = RequestInit & ExtraConfiguration<wx.RequestTask>;
+export type RequestConfig = RequestInit & ExtraConfiguration;
 
 /**
  * 每个请求的全部配置信息
  */
-export interface RequestOption extends RequestInit, ExtraConfiguration<wx.RequestTask> {
+export interface RequestOption extends RequestInit, ExtraConfiguration {
     /**
     * 请求的地址
     */

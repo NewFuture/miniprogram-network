@@ -17,8 +17,6 @@ export function transformRequestSendDefault(data: RequestOption): RequestParams 
         data: data.data,
         method: data.method,
         header: data.headers,
-        onHeadersReceived: data.onHeadersReceived,
-        // onProgressUpdate:data.onProgressUpdate,
         jump: data.jump,
     } as RequestParams;
     if (data.responseType === 'arraybuffer') {
