@@ -1,41 +1,47 @@
-import { Request, Http } from "miniprogram-request";
-import { Downloder, Download } from "miniprogram-downloader";
-import { Uploader, Upload } from "miniprogram-uploader";
+import {
+    Request,
+    Http,
+    RequestOption as NetworkRequestOption,
+    RequestConfig as NetworkRequestConfig,
+    RequestInit as NetworkRequestInit,
+    RequestParams as NetworkRequestParams,
+} from "miniprogram-request";
+import {
+    Download,
+    Downloder,
+    DownloadOption as NetworkDownloadOption,
+    DownloadInit as NetworkDownloadInit,
+    DownloadParams as NetworkDownloadParams,
+} from "miniprogram-downloader";
+import {
+    Upload,
+    Uploader,
+    UploadOption as NetworkUploadOption,
+    UploadInit as NetworkUploadInit,
+    UploadParams as NetworkUploadParams,
+} from "miniprogram-uploader";
 
 export { setConfig } from "./src/set-config";
 
 export {
     Http,
     Request,
-    RequestOption,
-    RequestConfig,
-    RequestInit,
-    RequestParams,
     transformRequestResponseOkData,
     transformRequestSendDefault,
     CancelToken,
 } from "miniprogram-request";
-
 export {
     Uploader,
     Upload,
-    UploadOption,
-    UploadInit,
-    UploadParams,
     transformUploadResponseOkData,
     transformUploadSendDefault,
 } from 'miniprogram-uploader';
-
 export {
     Downloder,
     Download,
-    DownloadOption,
-    DownloadInit,
-    DownloadParams,
     transformDownloadResponseOkData,
     transfomDownloadSendDefault,
 } from 'miniprogram-downloader';
-
 // ShortLink for Request
 /**
  * Request.request
@@ -77,3 +83,48 @@ export const download: Downloder['download'] = Download.download.bind(Download) 
  * Upload.upload
  */
 export const upload: Uploader['upload'] = Upload.upload.bind(Upload) as Uploader['upload'];
+
+
+
+export declare namespace Network {
+    /**
+     * Full Options for send a Request
+     */
+    type RequestOption = NetworkRequestOption;
+    /**
+     * Extra Request Config for each Request
+     */
+    type RequestConfig = NetworkRequestConfig;
+    /**
+     * Request Defaults Config to init a HTTP
+     */
+    type RequestInit = NetworkRequestInit;
+    /**
+     * return type for Request TransformSend
+     */
+    type RequestParams = NetworkRequestParams;
+    /**
+     * Full Options for download 
+     */
+    type DownloadOption = NetworkDownloadOption;
+    /**
+     * Defaults Config to init a Downloader
+     */
+    type DownloadInit = NetworkDownloadInit;
+    /**
+     * return type for Download TransformSend
+     */
+    type DownloadParams = NetworkDownloadParams;
+    /**
+     * Full Options for upload 
+     */
+    type UploadOption = NetworkUploadOption;
+    /**
+     * Defaults Config to init a Uploader 
+     */
+    type UploadInit = NetworkUploadInit;
+    /**
+     * return type for Upload TransformSend     
+     */
+    type UploadParams = NetworkUploadParams;
+}
