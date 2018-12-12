@@ -1,6 +1,7 @@
 import { buildParams, Omit } from 'miniprogram-network-utils';
 import { DownloadOption } from './downloader';
 
+///<reference path="wx.download.ts"/>
 /**
  * 微信请求参数 (不包含回调函数)
  */
@@ -24,7 +25,7 @@ export function transfomDownloadSendDefault(data: DownloadOption): DownloadParam
  * @param res 
  * @param config 
  */
-export function transformDownloadResponseOkData(res: wx.DownloadFileSuccessCallbackResult, options: DownloadOption): string {
+export function transformDownloadResponseOkData(res: Parameters<NonNullable<wx.DownloadFileOption['success']>>[0], options: DownloadOption): string {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }

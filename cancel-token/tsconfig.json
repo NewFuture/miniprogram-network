@@ -8,9 +8,6 @@
         "moduleResolution": "node",
         "outDir": "dist",
         "declaration": true,
-        "typeRoots": [
-            "../node_modules/miniprogram-api-typings"
-        ],
         "lib": [
             "es2015"
         ]
