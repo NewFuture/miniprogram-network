@@ -86,7 +86,8 @@ Network.dowanload('network/','lcoalpath',{
 
 ### TypeScript
 
-> 注: TS开启完整的定义支持,依赖小程序官方定义 [miniprogram-api-typings](https://github.com/wechat-miniprogram/api-typings)
+> 注: ~~TS开启完整的定义支持,依赖小程序官方定义 [miniprogram-api-typings](https://github.com/wechat-miniprogram/api-typings)~~
+> 完整定义支持无需额外依赖
 
 ```js
 import {setConfig,Request,Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
