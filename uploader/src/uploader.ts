@@ -3,7 +3,7 @@ import { BaseConfiguration, ExtraConfiguration, LifeCycle } from 'miniprogram-ne
 import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transformUploadSendDefault } from './transform';
-
+import { wx } from './wx.upload';
 const uploadQueue = new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFile);
 /**
  * 默认配置信息
@@ -18,7 +18,7 @@ export interface UploadOption extends UploadInit, ExtraConfiguration {
     filePath: NonNullable<string>,
     name: NonNullable<string>,
     data?: wx.UploadFileOption['formData'],
-    onProgressUpdate?: wx.UploadTask['onProgressUpdate']
+    onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback,
 }
 
 /**

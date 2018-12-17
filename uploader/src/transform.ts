@@ -1,5 +1,6 @@
 import { buildParams, Omit } from 'miniprogram-network-utils';
 import { UploadOption } from './uploader';
+import { wx } from './wx.upload';
 
 /**
  * 微信请求参数 (不包含回调函数)

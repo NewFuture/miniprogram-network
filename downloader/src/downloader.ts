@@ -2,8 +2,8 @@ import { WxQueue } from 'miniprogram-queue';
 import { LifeCycle, BaseConfiguration, ExtraConfiguration } from 'miniprogram-network-life-cycle'
 import { transfomDownloadSendDefault } from './transform';
 import { Omit } from 'miniprogram-network-utils';
-// import {wx} from './wx.download'
-///<reference path="wx.download.ts"/>
+import { wx } from './wx.download';
+
 const downloadQueue = new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
 
 /**

@@ -1,7 +1,8 @@
 import { buildParams, Omit } from 'miniprogram-network-utils';
 import { DownloadOption } from './downloader';
+import { wx } from './wx.download';
 
-///<reference path="wx.download.ts"/>
+
 /**
  * 微信请求参数 (不包含回调函数)
  */
