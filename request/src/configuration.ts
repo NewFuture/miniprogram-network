@@ -1,4 +1,5 @@
 import { BaseConfiguration, ExtraConfiguration } from "miniprogram-network-life-cycle";
+import { wx } from './wx.request';
 
 /**
  * 默认配置信息
