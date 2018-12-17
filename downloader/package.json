@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-downloader",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "minprogram download package ",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,7 +22,7 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-network-life-cycle": "^1.5.0-alpha.0",
+    "miniprogram-network-life-cycle": "^2.0.0",
     "miniprogram-network-utils": "^1.0.0",
     "miniprogram-queue": "^2.3.0"
   },
