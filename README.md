@@ -1,10 +1,75 @@
 # miniprogram-network
 
-> 小程序基础网络库,支持 `Javascript` & `TypeScript`
+> 小程序全局网络库,支持`Promise`、`队列`、自动`重试`、`可取消`、全局`拦击器`、和多种`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram. 
+> Redefine the network API of Wechat MiniProgram with `Promise`,`Queue`,`retry`,`CancelToken`, global `interceptors` and `event listeners` etc...
 > 
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
+> for `Javascript` & `TypeScript`
+
+## Examples 示例代码
+
+### JavaScript
+
+```js
+const Network = require('miniprogram-network');
+
+// setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
+// 也可Network.Request.Defaults,Network.Download.Defaults,Network.Upload.Defaults 分别设置不同默认配置
+Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
+
+Network.get('index.html')
+    .then(res=>console.log(res))
+    .catch(console.error)
+    .finally(()=>{console.info('done')}); //支持 finally操作
+
+Network.patch('items/{id}',{dataKey:'dataValue'},{
+        params: {id:123456}, // 绑定参数
+        transformResponse: Network.transformRequestResponseOkData,// 响应2xx操作成功直接返回数据
+    }).then((item)=>console.log(item))
+    .catch(console.error);
+
+Network.dowanload('network/','lcoalpath',{
+        onProgressUpdate:progressUpdateCallBack,// 进度回调
+        retry:3,// 重试3次
+        transformResponse: Network.transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
+    }).then(path=>console.log(path))
+    .catch(console.error);
+```
+
+### TypeScript
+
+> 注: ~~TS开启完整的定义支持,依赖小程序官方定义 [miniprogram-api-typings](https://github.com/wechat-miniprogram/api-typings)~~
+> 完整定义支持无需额外依赖
+
+```js
+import {setConfig,Request,Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
+
+// setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
+// 也可通过Request.Defaults,Download.Defaults,Upload.Defaults 分别设置不同默认配置
+setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
+
+Request.get('index.html')
+    .then(res=>console.log(res))
+    .catch(console.error);
+    .finally(()=>{console.info('done')}); //支持 finally操作
+
+Request.patch<Item>('items/{id}',{dataKey:'dataValue'},{
+        params: {id:123456}, // 绑定参数
+        transformResponse:transformRequestResponseOkData, // 响应2xx操作成功直接返回数据
+    }).then((item:Item)=>console.log(item))
+    .catch(console.error);
+
+Download.dowanload<string>('network/','lcoalpath',{
+        onProgressUpdate:progressUpdateCallBack,// 进度回调
+        retry:3,// 重试3次
+        transformResponse: transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
+    }).then((path:string)=>console.log(path))
+    .catch(console.error);
+```
+
+更多用法和配置参看`miniprogram-request`,`miniprogram-downloader`,`miniprogram-uploader`
+
 
 ## Main Packages 主要模块和功能
 
@@ -52,67 +117,3 @@
     * [x] cancelable/abort (可取消的Promise)
 * [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
 ![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
-
-
-## Examples 示例代码
-
-### JavaScript
-
-```js
-var Network = require('miniprogram-network');
-
-// setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
-// 也可Network.Request.Defaults,Network.Download.Defaults,Network.Upload.Defaults 分别设置不同默认配置
-Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
-
-Network.get('index.html')
-    .then(res=>console.log(res))
-    .catch(console.error)
-    .finally(()=>{console.info('done')});
-
-Network.patch('items/{id}',{dataKey:'dataValue'},{
-        params: {id:123456}, // 绑定参数
-        transformResponse: Network.transformRequestResponseOkData,// 响应2xx操作成功直接返回数据
-    }).then((item)=>console.log(item))
-    .catch(console.error);
-
-Network.dowanload('network/','lcoalpath',{
-        onProgressUpdate:progressUpdateCallBack,// 进度回调
-        retry:3,// 重试3次
-        transformResponse: Network.transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
-    }).then(path=>console.log(path))
-    .catch(console.error);
-```
-
-### TypeScript
-
-> 注: ~~TS开启完整的定义支持,依赖小程序官方定义 [miniprogram-api-typings](https://github.com/wechat-miniprogram/api-typings)~~
-> 完整定义支持无需额外依赖
-
-```js
-import {setConfig,Request,Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
-
-// setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
-// 也可通过Request.Defaults,Download.Defaults,Upload.Defaults 分别设置不同默认配置
-setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
-
-Request.get('index.html')
-    .then(res=>console.log(res))
-    .catch(console.error);
-    .finally(()=>{console.info('done')});
-
-Request.patch<Item>('items/{id}',{dataKey:'dataValue'},{
-        params: {id:123456}, // 绑定参数
-        transformResponse:transformRequestResponseOkData, // 响应2xx操作成功直接返回数据
-    }).then((item:Item)=>console.log(item))
-    .catch(console.error);
-
-Download.dowanload<string>('network/','lcoalpath',{
-        onProgressUpdate:progressUpdateCallBack,// 进度回调
-        retry:3,// 重试3次
-        transformResponse: transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
-    }).then((path:string)=>console.log(path))
-    .catch(console.error);
-```
-
-更多用法和配置参看`miniprogram-request`,`miniprogram-downloader`,`miniprogram-uploader`
