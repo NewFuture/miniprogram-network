@@ -5,7 +5,7 @@
 > Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`CancelToken`, global `interceptors`, `event listeners` and more.
 > 
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
-> for `Javascript` & `TypeScript`
+> for `JavaScript` & `TypeScript`
 
 ## Examples 示例代码
 
@@ -39,8 +39,7 @@ Network.dowanload('network/','lcoalpath',{
 
 ### TypeScript
 
-> 注: ~~TS开启完整的定义支持,依赖小程序官方定义 [miniprogram-api-typings](https://github.com/wechat-miniprogram/api-typings)~~
-> 完整定义支持无需额外依赖
+> 装完即用，无需额外配置和类型声明
 
 ```js
 import {setConfig,Request,Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
