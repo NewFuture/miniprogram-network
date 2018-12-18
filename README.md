@@ -1,8 +1,8 @@
 # miniprogram-network
 
-> 小程序全局网络库,支持`Promise`、`队列`、自动`重试`、`可取消`、全局`拦击器`、和多种`事件监听`等……
+> 小程序全局网络库,提供完整`代码提示`,支持`Promise`、`队列`、自动`重试`、`可取消`、全局`拦截`、和多`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram with `Promise`,`Queue`,`retry`,`CancelToken`, global `interceptors` and `event listeners` etc...
+> Redefine the network API of Wechat MiniProgram in full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`CancelToken`, global `interceptors` and `event listeners` etc...
 > 
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 > for `Javascript` & `TypeScript`
@@ -69,6 +69,10 @@ Download.dowanload<string>('network/','lcoalpath',{
 ```
 
 更多用法和配置参看`miniprogram-request`,`miniprogram-downloader`,`miniprogram-uploader`
+
+### Intelligent code completion 代码提示和自动完成
+
+![Intelligent code completion](https://user-images.githubusercontent.com/6290356/50153198-b569bd80-0300-11e9-859c-5742d070434a.png)
 
 
 ## Main Packages 主要模块和功能
