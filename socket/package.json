@@ -1,0 +1,30 @@
+{
+  "name": "miniprogram-socket",
+  "version": "0.0.1-alpha",
+  "description": "A better Request package for MiniProgram API",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "miniprogram"
+  ],
+  "author": "NewFuture",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewFuture/miniprogram.git"
+  },
+  "dependencies": {
+    "miniprogram-network-utils": "^1.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/NewFuture/miniprogram-network/issues"
+  },
+  "homepage": "https://github.com/NewFuture/miniprogram-network/"
+}
