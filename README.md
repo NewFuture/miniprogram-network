@@ -2,7 +2,7 @@
 
 > 小程序全局网络库,提供完整`代码自动提示`,支持`Promise`、`队列`、自动`重试`、`可取消`、全局`拦截`、和多`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram in full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`CancelToken`, global `interceptors` and `event listeners` etc...
+> Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`CancelToken`, global `interceptors`, `event listeners` and more.
 > 
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 > for `Javascript` & `TypeScript`
@@ -68,19 +68,23 @@ Download.dowanload<string>('network/','lcoalpath',{
     .catch(console.error);
 ```
 
-更多用法和配置参看`miniprogram-request`,`miniprogram-downloader`,`miniprogram-uploader`
+更多用法和配置参看可查看下面完整文档
 
 ### Intelligent code completion 代码提示
 
+包含完整的类型定义,结合编辑器(VScode)等,能提供完整的代码提示和自动完成功能。
+
 ![Intelligent code completion](https://user-images.githubusercontent.com/6290356/50153198-b569bd80-0300-11e9-859c-5742d070434a.png)
+
+对于TypeScript提供泛型支持,可完整的进行静态类型检查。
 
 
 ## Main Packages 所有包
 
-* [miniprogram-network](network) 小程序网路库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
-    * `Request` from [`miniprogram-request` ![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
-    * `Upload` from [`miniprogram-uploader` ![npm version](https://badge.fury.io/js/miniprogram-uploader.svg)](https://npmjs.com/package/miniprogram-uploader)
-    * `Download` from [`miniprogram-downloader` ![npm version](https://badge.fury.io/js/miniprogram-downloader.svg)](https://npmjs.com/package/miniprogram-downloader)
+* [miniprogram-network](network) All in one 小程序网络库库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
+    * `Request` from [`miniprogram-request` npm](https://npmjs.com/package/miniprogram-request)
+    * `Upload` from [`miniprogram-uploader` npm](https://npmjs.com/package/miniprogram-uploader)
+    * `Download` from [`miniprogram-downloader` npm](https://npmjs.com/package/miniprogram-downloader)
 * [miniprogram-request](request) 小程序请求库 [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
     * [x] Promise支持+finally+泛型
     * [x] CancelToken 取消支持
