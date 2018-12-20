@@ -18,7 +18,7 @@ export abstract class LifeCycle<
     /**
      * 默认全局配置
      */
-    public readonly Defaults: TInitConfig;
+    public readonly Defaults: TInitConfig = { retry: 1, headers: {} } as TInitConfig;
 
     /**
      * 全局Listeners
@@ -40,8 +40,8 @@ export abstract class LifeCycle<
      * @param config 全局默认配置
      */
     protected constructor(operator: (option: TWxOptions) => TWxTask, config?: TInitConfig) {
-        this.Defaults = config || { retry: 1 } as TInitConfig;
         this.op = operator;
+        if (config) { this.Defaults = config; }
     }
 
     /**

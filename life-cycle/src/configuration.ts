@@ -53,7 +53,7 @@ export interface BaseConfiguration<
      * @example 
      *  url = "/{ID}/status"
      *  param = {ID: 12345}
-     * request url will be /1234/status
+     *  request url will be /1234/status
      */
     params?: KeyBasicValuePair,
 
