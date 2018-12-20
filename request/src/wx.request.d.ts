@@ -1,4 +1,4 @@
-export declare namespace wx {
+declare namespace wx {
     function request(option: RequestOption): RequestTask;
     interface RequestOption {
         /** 开发者服务器接口地址 */

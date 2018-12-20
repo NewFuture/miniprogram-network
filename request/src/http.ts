@@ -2,7 +2,7 @@ import { LifeCycle } from 'miniprogram-network-life-cycle';
 import { WxQueue } from 'miniprogram-queue';
 import { RequestInit, RequestOption, RequestConfig } from './configuration';
 import { transformRequestSendDefault } from './transform';
-import { wx } from './wx.request';
+
 /**
  * 请求队列
  */

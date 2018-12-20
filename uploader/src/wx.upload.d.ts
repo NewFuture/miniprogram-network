@@ -1,4 +1,4 @@
-export declare namespace wx {
+declare namespace wx {
     function uploadFile(option: UploadFileOption): UploadTask;
     interface GeneralCallbackResult {
         errMsg: string;

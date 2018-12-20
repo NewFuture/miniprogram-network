@@ -4,7 +4,7 @@
   "description": "Fetch API polyfill for Wechat MiniProgram",
   "main": "dist/index.js",
   "scripts": {
-    "publish": "npm run build && lerna publish",
+    "publish": "lerna run clean && npm run build && lerna publish",
     "init": "npm run rm:module && lerna bootstrap && lerna run build",
     "build": "lerna run build",
     "clean": "lerna run clean",
