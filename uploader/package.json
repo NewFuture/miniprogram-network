@@ -3,23 +3,26 @@
   "version": "2.0.0",
   "description": "miniprogram upload package",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
-    "dist/**"
+    "dist/**",
+    "types/**",
+    "src/**"
   ],
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist && rm -rf types",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "miniprogram",
-    "request"
+    "wx.uploadFile"
   ],
   "author": "NewFuture",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram.git"
+    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
   },
   "dependencies": {
     "miniprogram-network-life-cycle": "^2.0.0",

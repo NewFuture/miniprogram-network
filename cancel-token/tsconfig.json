@@ -1,22 +1,12 @@
 {
+    "extends": "../tsconfig.json",
     "compilerOptions": {
-        "target": "es5",
-        "sourceMap": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "moduleResolution": "node",
         "outDir": "dist",
-        "declaration": true,
         "lib": [
             "es2015"
         ]
     },
-    "include": [
-        "*.ts",
-        "src/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules"
+    "files": [
+        "index.ts"
     ]
 }

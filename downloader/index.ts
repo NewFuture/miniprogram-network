@@ -1,3 +1,4 @@
+/// <reference path="./src/wx.download.d.ts"/>
 import { Downloder } from './src/downloader';
 export { CancelToken } from 'miniprogram-network-life-cycle';
 export { Downloder, DownloadOption, DownloadInit } from "./src/downloader";

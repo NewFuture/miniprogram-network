@@ -1,5 +1,5 @@
 
-export declare namespace wx {
+declare namespace wx {
     function downloadFile(options: DownloadFileOption): DownloadTask;
     type DownloadTaskOnHeadersReceivedCallback = (result?: { header: object }) => void;
     type DownloadTaskOnProgressUpdateCallback = (

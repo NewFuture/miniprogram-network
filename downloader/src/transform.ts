@@ -1,6 +1,6 @@
 import { buildParams, Omit } from 'miniprogram-network-utils';
 import { DownloadOption } from './downloader';
-import { wx } from './wx.download';
+// import { wx } from './wx.download.';
 
 
 /**

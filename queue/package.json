@@ -3,16 +3,20 @@
   "version": "2.3.0",
   "description": "Queue Management for Wechat MiniProgram",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
-    "dist/**"
+    "dist/**",
+    "types/**",
+    "src/**"
   ],
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist && rm -rf types",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "miniprogram",
+    "queue",
     "request",
     "upload",
     "download"
@@ -21,7 +25,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram.git"
+    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram-network/issues"

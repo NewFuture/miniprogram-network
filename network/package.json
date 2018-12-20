@@ -1,25 +1,29 @@
 {
   "name": "miniprogram-network",
   "version": "2.0.0",
-  "description": "A better network package for MiniProgram API",
+  "description": "Redefine the network API of Wechat MiniProgram",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "types/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist && rm -rf types",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "miniprogram",
-    "request"
+    "network",
+    "wx.request",
+    "wx.downloadFile",
+    "wx.uploadFile"
   ],
   "author": "NewFuture",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram.git"
+    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram-network/issues"
@@ -27,8 +31,8 @@
   "homepage": "https://github.com/NewFuture/miniprogram-network/",
   "dependencies": {
     "miniprogram-downloader": "^2.0.0",
-    "miniprogram-network-utils": "^1.0.0",
     "miniprogram-request": "^2.0.0",
-    "miniprogram-uploader": "^2.0.0"
+    "miniprogram-uploader": "^2.0.0",
+    "miniprogram-network-utils": "^1.0.0"
   }
 }

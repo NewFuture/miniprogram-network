@@ -3,15 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "types/index.d.ts",
+  "files": [
+    "dist/**",
+    "types/**",
+    "src/**"
+  ],
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist && rm -rf types",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "New Future",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram.git"
+    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
   }
 }

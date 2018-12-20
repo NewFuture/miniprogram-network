@@ -1,4 +1,4 @@
-import { WxQueue } from './queue';
+import { WxQueue } from './src/queue';
 
 declare var wx: {
     request: Function;
