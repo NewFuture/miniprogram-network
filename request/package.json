@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-request",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A better Request package for MiniProgram API",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -25,9 +25,9 @@
     "url": "git+https://github.com/NewFuture/miniprogram-network.git"
   },
   "dependencies": {
-    "miniprogram-network-life-cycle": "^2.0.0",
-    "miniprogram-network-utils": "^1.0.0",
-    "miniprogram-queue": "^2.3.0"
+    "miniprogram-network-life-cycle": "^2.1.0",
+    "miniprogram-network-utils": "^1.1.0",
+    "miniprogram-queue": "^2.4.0"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram-network/issues"

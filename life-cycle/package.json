@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-network-life-cycle",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "miniprogram-network",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
@@ -15,7 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "miniprogram-cancel-token": "^0.2.1"
+    "miniprogram-cancel-token": "^0.2.2"
   },
   "author": "New Future",
   "license": "Apache-2.0",
