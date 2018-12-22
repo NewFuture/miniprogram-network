@@ -9,6 +9,7 @@
 
 ## Examples 示例代码
 
+
 ### JavaScript
 
 ```js
@@ -67,7 +68,12 @@ Download.dowanload<string>('network/','lcoalpath',{
     .catch(console.error);
 ```
 
-更多用法和配置参看可查看下面完整文档
+`miniprogram-network`对网络操作做了统一封装，详细操作和用法可查看完整[miniprogram-network 完整文档](network)
+
+* 如果只需要微信request的相关的HTTP操作API可只使用[miniprogram-request(文档🔗)](request)
+* 如果只需要微信downloadFile的相关下载API可只使用[miniprogram-downloader(文档🔗)](downloader)
+* 如果只需要微信uploadFile的相关上传API可只使用[miniprogram-uploader(文档🔗)](uploader)
+
 
 ### Intelligent code completion 代码提示
 
@@ -124,3 +130,8 @@ Download.dowanload<string>('network/','lcoalpath',{
     * [x] cancelable/abort (可取消的Promise)
 * [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
 ![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
+
+
+## Todo
+* [ ] Cache (Network)
+* [ ] timestamp (queue or lifecycle)
