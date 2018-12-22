@@ -85,5 +85,7 @@ declare namespace wx {
         statusCode: number;
         /** 开发者服务器返回的数据 */
         data: string | object | ArrayBuffer;
+        /** cookie信息2.4.2以上版本有 */
+        cookie?: any[];
     }
 }
