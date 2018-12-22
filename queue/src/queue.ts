@@ -28,7 +28,6 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
 
     /**
      * 小程序的原始操作
-     * 
      */
     private readonly operator: (params: Tparam) => Ttask;
 
@@ -48,14 +47,16 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
      */
     public push(param: QueueOption<Tparam>): Ttask {
         const id = ++this.taskid;
-        if (param.jump) {
-            //插队
+        if (this.TaskMap.size < this.MAX) {
+            // task队列未满
+            return this.process(id, param);
+        } else if (param.jump) {
+            // 插队
             this.todo.unshift([id, param]);
         } else {
             this.todo.push([id, param]);
         }
-
-        return this.next() || {
+        return {
             abort: () => this.abort(id),
             onProgressUpdate: (callback: any) => this.onProgress(id, callback),
             onHeadersReceived: (callback: any) => this.onHeaders(id, callback),
@@ -63,30 +64,38 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
     }
 
     /**
-     * do next task
-     * return Undefined and do nothing when queue is full。
+     * check and do next task
      */
-    private next(): Ttask | void {
-        const map = this.TaskMap;
-        if (this.todo.length > 0 && map.size < this.MAX) {
+    private next(): void {
+        if (this.todo.length > 0 && this.TaskMap.size < this.MAX) {
             const [taskid, taskOptions] = this.todo.shift()!;
-            const oldComplete = taskOptions.complete;
-            taskOptions.complete = (res: any) => {
-                map.delete(taskid);
-                oldComplete && oldComplete.call(taskOptions, res);
-                this.next();
-            }
-            const task = this.operator(taskOptions);
-            // task progress polyfill
-            if (taskOptions.onProgressUpdate && task.onProgressUpdate) {
-                task.onProgressUpdate(taskOptions.onProgressUpdate);
-            }
-            if (taskOptions.onHeadersReceived) {
-                task.onHeadersReceived(taskOptions.onHeadersReceived);
-            }
-            map.set(taskid, task);
-            return task;
+            this.process(taskid, taskOptions);
         }
+    }
+
+    /**
+     * process a task
+     * @param id task ID
+     * @param options  task param
+     */
+    private process(id: number, options: QueueOption<Tparam>): Ttask {
+        const oldComplete = options.complete;
+        options.complete = (res: any) => {
+            this.TaskMap.delete(id);
+            oldComplete && oldComplete.call(options, res);
+            this.next();
+        }
+        const task = this.operator(options);
+        // task progress polyfill
+        if (options.onProgressUpdate && task.onProgressUpdate) {
+            task.onProgressUpdate(options.onProgressUpdate);
+        }
+        // task onHeadersReceived
+        if (options.onHeadersReceived) {
+            task.onHeadersReceived(options.onHeadersReceived);
+        }
+        this.TaskMap.set(id, task);
+        return task;
     }
 
     /**
@@ -97,9 +106,9 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
         const index = this.todo.findIndex(v => v[0] === taskid);
         if (index >= 0) {
             const completeCallback = this.todo[index][1].complete;
+            this.todo.splice(index, 1);
             // call back complete.
             completeCallback && completeCallback({ errMsg: "request:fail abort" });
-            this.todo.splice(index, 1);
         } else if (this.TaskMap.has(taskid)) {
             this.TaskMap.get(taskid)!.abort();
             this.TaskMap.delete(taskid);
