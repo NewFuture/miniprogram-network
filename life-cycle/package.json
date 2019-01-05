@@ -2,13 +2,19 @@
   "name": "miniprogram-network-life-cycle",
   "version": "2.1.0",
   "description": "miniprogram-network",
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
+  },
+  "license": "Apache-2.0",
+  "author": "New Future",
   "files": [
     "dist/**",
     "types/**",
     "src/"
   ],
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist && rm -rf types",
@@ -16,11 +22,5 @@
   },
   "dependencies": {
     "miniprogram-cancel-token": "^0.2.2"
-  },
-  "author": "New Future",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
   }
 }

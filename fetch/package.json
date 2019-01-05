@@ -2,20 +2,20 @@
 	"name": "miniprogram-fetch",
 	"version": "0.3.0",
 	"description": "Fetch API polyfill for Wechat MiniProgram",
+	"keywords": [
+		"fetch",
+		"miniprogram",
+		"promise",
+		"request"
+	],
+	"license": "Apache-2.0",
+	"author": "NewFuture",
 	"main": "dist/fetch.js",
 	"typings": "dist/fetch.d.ts",
 	"scripts": {
 		"build": "tsc fetch.ts --moduleResolution node --target es6 --outDir dist -d"
 	},
-	"keywords": [
-		"miniprogram",
-		"request",
-		"promise",
-		"fetch"
-	],
 	"dependencies": {
 		"miniprogram-queue": "^1.0.0-alpha.0"
-	},
-	"author": "NewFuture",
-	"license": "Apache-2.0"
+	}
 }

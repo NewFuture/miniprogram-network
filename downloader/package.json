@@ -2,35 +2,35 @@
   "name": "miniprogram-downloader",
   "version": "2.1.0",
   "description": "minprogram download package ",
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "keywords": [
+    "miniprogram",
+    "wx.downloadFile"
+  ],
+  "homepage": "https://github.com/NewFuture/miniprogram-network/",
+  "bugs": {
+    "url": "https://github.com/NewFuture/miniprogram-network/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
+  },
+  "license": "Apache-2.0",
+  "author": "NewFuture",
   "files": [
     "dist/**",
     "types/**",
     "src/**"
   ],
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist && rm -rf types",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "miniprogram",
-    "wx.downloadFile"
-  ],
-  "author": "NewFuture",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
-  },
   "dependencies": {
     "miniprogram-network-life-cycle": "^2.1.0",
     "miniprogram-network-utils": "^1.1.0",
     "miniprogram-queue": "^2.4.0"
-  },
-  "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram-network/issues"
-  },
-  "homepage": "https://github.com/NewFuture/miniprogram-network/"
+  }
 }

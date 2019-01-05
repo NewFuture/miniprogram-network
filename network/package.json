@@ -2,35 +2,36 @@
   "name": "miniprogram-network",
   "version": "2.1.0",
   "description": "Redefine the network API of Wechat MiniProgram",
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "keywords": [
+    "miniprogram",
+    "network",
+    "wx.downloadFile",
+    "wx.request",
+    "wx.uploadFile"
+  ],
+  "homepage": "https://github.com/NewFuture/miniprogram-network/",
+  "bugs": {
+    "url": "https://github.com/NewFuture/miniprogram-network/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
+  },
+  "license": "Apache-2.0",
+  "author": "NewFuture",
   "files": [
     "dist/**"
   ],
+  "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist && rm -rf types",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "miniprogram",
-    "network",
-    "wx.request",
-    "wx.downloadFile",
-    "wx.uploadFile"
-  ],
-  "author": "NewFuture",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
-  },
-  "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram-network/issues"
-  },
-  "homepage": "https://github.com/NewFuture/miniprogram-network/",
   "dependencies": {
     "miniprogram-downloader": "^2.1.0",
+    "miniprogram-network-cache": "^0.0.1",
     "miniprogram-network-utils": "^1.1.0",
     "miniprogram-request": "^2.1.0",
     "miniprogram-uploader": "^2.1.0"

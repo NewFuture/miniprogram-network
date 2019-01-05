@@ -2,31 +2,31 @@
   "name": "miniprogram-untils",
   "version": "1.0.0",
   "description": "Fetch API polyfill for Wechat MiniProgram",
-  "main": "dist/index.js",
-  "scripts": {
-    "publish": "lerna run clean && npm run build && lerna publish",
-    "init": "npm run rm:module && lerna bootstrap && lerna run build",
-    "build": "lerna run build",
-    "clean": "lerna run clean",
-    "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "keywords": [
+    "fetch",
+    "miniprogram",
+    "promise",
+    "request"
+  ],
+  "homepage": "https://github.com/NewFuture/miniprogram-fetch#readme",
+  "bugs": {
+    "url": "https://github.com/NewFuture/miniprogram-fetch/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NewFuture/miniprogram-fetch.git"
   },
-  "keywords": [
-    "miniprogram",
-    "request",
-    "promise",
-    "fetch"
-  ],
-  "author": "NewFuture",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram-fetch/issues"
+  "author": "NewFuture",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "lerna run build",
+    "clean": "lerna run clean",
+    "init": "npm run rm:module && lerna bootstrap && lerna run build",
+    "publish": "lerna run clean && npm run build && lerna publish",
+    "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/NewFuture/miniprogram-fetch#readme",
   "devDependencies": {
     "lerna": "^3.4.3",
     "typescript": "^3.1.1"
