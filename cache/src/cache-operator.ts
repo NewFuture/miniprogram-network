@@ -13,12 +13,12 @@ export class CacheOperator<
     /**
      * 缓存配置
      */
-    public readonly Config: Configuration;
+    public readonly Config: Configuration<TRes, TOptions>;
 
     private readonly op: (option: TOptions) => TTask;
     private readonly cache: Cache<TRes & CacheRes> = new Cache();
 
-    constructor(operator: (option: TOptions) => TTask, config?: Configuration) {
+    constructor(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>) {
         this.op = operator;
         this.Config = config || {
             expire: 15 * 60 * 1000,
@@ -36,15 +36,14 @@ export class CacheOperator<
         if (res === undefined) {
             options.success = (res) => {
                 if (this.Config.cacheable(res, options)) {
-                    (res as CacheRes).cache = 0;
                     this.cache.set(key, res, this.Config.expire);
                 }
-                options.success(res);
+                options.success && options.success(res);
             }
             return this.op(options);
         } else {
             if (options.success) {
-                ++res.cache;
+                res.cache = (res.cache || 0) + 1;
                 try {
                     options.success(res)
                 } catch (error) {
@@ -62,9 +61,11 @@ export class CacheOperator<
         }
     }
 
-    static createHandler<TOptions extends WxOptions<any>= WxOptions<any>, // 微信操作函数
+    static createHandler<
+        TRes extends { errMsg: string }={ errMsg: string },
+        TOptions extends WxOptions<any>= WxOptions<any>, // 微信操作函数
         TTask extends WxTask=WxTask, // 微信操作的任务类型
-        >(operator: (option: TOptions) => TTask, config?: Configuration): CacheOperator['handle'] {
+        >(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>): CacheOperator<TRes, TOptions, TTask>['handle'] {
         const cacheOperator = new CacheOperator(operator, config);
         return cacheOperator.handle.bind(cacheOperator);
     }
@@ -73,9 +74,9 @@ export class CacheOperator<
 interface CacheRes {
     cache?: number
 }
-interface Configuration {
+interface Configuration<TRes, TOptions> {
     expire: number,
-    cacheable: (res, param) => boolean,
+    cacheable: (res: TRes, param: TOptions) => boolean,
 }
 
 interface WxTask {

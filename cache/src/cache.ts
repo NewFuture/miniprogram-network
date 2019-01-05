@@ -6,20 +6,21 @@ export class Cache<T> {
     }
     get(key: string): T | undefined {
         if (this.map.has(key)) {
-            const [value, expire_time] = this.map.get(key);
+            const [value, expire_time] = this.map.get(key)!;
             if (expire_time >= Date.now()) {
                 return value;
             } else {
                 this.map.delete(key);
             }
         }
+        return undefined;
     }
     delete(key: string): boolean {
         return this.map.delete(key);
     }
     has(key: string): boolean {
         if (this.map.has(key)) {
-            if (this.map.get(key)[1] > Date.now()) {
+            if (this.map.get(key)![1] > Date.now()) {
                 return true;
             }
             this.map.delete(key);
