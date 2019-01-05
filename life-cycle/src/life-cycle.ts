@@ -33,7 +33,7 @@ export abstract class LifeCycle<
     /**
      * 微信操作接口
      */
-    private readonly op: (option: TWxOptions) => TWxTask;
+    public readonly op: (option: TWxOptions) => TWxTask;
 
     /**
      * 新建实列

@@ -9,7 +9,8 @@
     "uploader",
     "downloader",
     "request",
-    "network"
+    "network",
+    "cache"
   ],
   "command": {
     "bootstrap": {
