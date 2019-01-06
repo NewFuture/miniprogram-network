@@ -108,7 +108,7 @@ export interface Configuration<TRes=BaseSuccessRes, TOptions=WxOptions> {
 interface WxTask {
     abort(): void;
     /** HTTP Response Header 事件的回调函数 */
-    onHeadersReceived(callback: (result: { header: object }) => void, ): void;
+    onHeadersReceived(callback: (result: any) => void): void;
     /** 下载进度变化事件的回调函数 */
     onProgressUpdate?(callback: (res: any) => any): void;
 

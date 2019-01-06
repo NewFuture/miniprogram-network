@@ -22,7 +22,12 @@ import {
 } from "miniprogram-uploader";
 
 export { setConfig } from "./src/set-config";
-
+export {
+    get as getCache,
+    request as requestCache,
+    download as downloadCache,
+    config as CacheConfig,
+} from "./src/cache";
 export {
     Http,
     Request,
@@ -83,8 +88,6 @@ export const download: Downloader['download'] = Download.download.bind(Download)
  * Upload.upload
  */
 export const upload: Uploader['upload'] = Upload.upload.bind(Upload) as Uploader['upload'];
-
-
 
 export declare namespace Network {
     /**
