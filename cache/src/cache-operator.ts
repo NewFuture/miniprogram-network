@@ -1,12 +1,16 @@
 import { Cache } from './cache';
 
 function doNothing(): void { };
+export function isOkResult(res: BaseSuccessRes): boolean {
+    return res && res.statusCode >= 200 && res.statusCode < 300;
+}
+
 
 /**
  * 缓存操作
  */
 export class CacheOperator<
-    TRes extends { errMsg: string }={ errMsg: string },
+    TRes extends BaseSuccessRes = BaseSuccessRes,
     TOptions extends WxOptions= WxOptions, // 微信操作函数
     TTask extends WxTask=WxTask, // 微信操作的任务类型
     > {
@@ -23,7 +27,7 @@ export class CacheOperator<
         this.op = operator;
         this.Config = config || {
             expire: 15 * 60 * 1000,
-            cacheable: (res) => true,
+            resultCacheable: isOkResult,
         }
     }
 
@@ -32,9 +36,12 @@ export class CacheOperator<
      * @param options 
      */
     handle(options: TOptions): TTask {
+        if (this.Config.paramCacheable && !this.Config.paramCacheable(options)) {
+            // 不缓存
+            return this.op(options);
+        }
         const key = JSON.stringify(options);
         const res = this.cache.get(key);
-        let task = null;
         if (res) {
             // 缓存命中
             res.cache = (res.cache || 0) + 1;
@@ -58,7 +65,7 @@ export class CacheOperator<
                 complete: options.complete ? [options.complete] : [],
             }
             options.success = (res: TRes) => {
-                if (this.Config.cacheable(res, options)) {
+                if (this.Config.resultCacheable(res)) {
                     this.cache.set(key, res, this.Config.expire);
                 }
                 this.callbackMapList[key].success.forEach(function (v) { v(res) });
@@ -80,7 +87,7 @@ export class CacheOperator<
     }
 
     static createHandler<
-        TRes extends { errMsg: string }={ errMsg: string },
+        TRes extends BaseSuccessRes=BaseSuccessRes,
         TOptions extends WxOptions= WxOptions, // 微信操作函数
         TTask extends WxTask=WxTask, // 微信操作的任务类型
         >(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>): CacheOperator<TRes, TOptions, TTask>['handle'] {
@@ -94,7 +101,8 @@ interface CacheRes {
 }
 interface Configuration<TRes, TOptions> {
     expire: number,
-    cacheable: (res: TRes, param: TOptions) => boolean,
+    resultCacheable: (res: TRes) => boolean,
+    paramCacheable?: (options: TOptions) => boolean,
 }
 
 interface WxTask {
@@ -116,3 +124,8 @@ interface WxOptions {
     /** 接口调用成功的回调函数 */
     success?: (res: any) => any;
 };
+
+interface BaseSuccessRes {
+    errMsg: string;
+    statusCode: number
+}
