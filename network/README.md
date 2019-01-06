@@ -68,6 +68,20 @@ setConfig({
 
 ```
 
+## Cache 缓存
+
+```js
+import {getCache,downloadCache,CacheConfig} from 'miniprogram-network';
+
+//getCache 与 Request共用配置
+getCache('xxx').then(resolve);
+getCache('xxx').then(resolve);
+
+// downloadCache 与 Download共用配置
+downloadCache('xxx').then();
+
+CacheConfig.expire = 30*60*1000;//设置缓存时间
+```
 
 ## LifeCycle
 
