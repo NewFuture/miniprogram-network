@@ -27,7 +27,7 @@ export class CacheOperator<
         this.op = operator;
         this.Config = config || {
             expire: 15 * 60 * 1000,
-            resultCacheable: isOkResult,
+            resultCondition: isOkResult,
         }
     }
 
@@ -36,7 +36,7 @@ export class CacheOperator<
      * @param options 
      */
     handle(options: TOptions): TTask {
-        if (this.Config.paramCacheable && !this.Config.paramCacheable(options)) {
+        if (this.Config.paramCondition && !this.Config.paramCondition(options)) {
             // 不缓存
             return this.op(options);
         }
@@ -65,7 +65,7 @@ export class CacheOperator<
                 complete: options.complete ? [options.complete] : [],
             }
             options.success = (res: TRes) => {
-                if (this.Config.resultCacheable(res)) {
+                if (this.Config.resultCondition(res)) {
                     this.cache.set(key, res, this.Config.expire);
                 }
                 this.callbackMapList[key].success.forEach(function (v) { v(res) });
@@ -99,10 +99,10 @@ export class CacheOperator<
 interface CacheRes {
     cache?: number
 }
-interface Configuration<TRes, TOptions> {
+export interface Configuration<TRes=BaseSuccessRes, TOptions=WxOptions> {
     expire: number,
-    resultCacheable: (res: TRes) => boolean,
-    paramCacheable?: (options: TOptions) => boolean,
+    resultCondition: (res: TRes) => boolean,
+    paramCondition?: (options: TOptions) => boolean,
 }
 
 interface WxTask {

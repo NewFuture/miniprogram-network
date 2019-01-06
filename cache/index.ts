@@ -1,1 +1,1 @@
-export { CacheOperator } from './src/cache-operator';
+export { CacheOperator, Configuration, isOkResult } from './src/cache-operator';
