@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-promise",
-  "version": "0.0.19-alpha.0",
+  "version": "0.0.19",
   "description": "promise for Wechat MiniProgram",
   "keywords": [
     "download",
