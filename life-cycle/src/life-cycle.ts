@@ -33,14 +33,14 @@ export abstract class LifeCycle<
     /**
      * 微信操作接口
      */
-    public readonly op: (option: TWxOptions) => TWxTask;
+    public readonly handle: (option: TWxOptions) => TWxTask;
 
     /**
      * 新建实列
      * @param config 全局默认配置
      */
     protected constructor(operator: (option: TWxOptions) => TWxTask, config?: TInitConfig) {
-        this.op = operator;
+        this.handle = operator;
         if (config) { this.Defaults = config; }
     }
 
@@ -93,7 +93,7 @@ export abstract class LifeCycle<
             data.fail = (res: GeneralCallbackResult) =>
                 options.retry!-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
 
-            const task = this.op(data);
+            const task = this.handle(data);
             if (options.onHeadersReceived) {
                 task.onHeadersReceived(options.onHeadersReceived);
             }

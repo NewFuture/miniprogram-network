@@ -8,7 +8,7 @@ import {
 } from "miniprogram-request";
 import {
     Download,
-    Downloder,
+    Downloader,
     DownloadOption as NetworkDownloadOption,
     DownloadInit as NetworkDownloadInit,
     DownloadParams as NetworkDownloadParams,
@@ -37,7 +37,7 @@ export {
     transformUploadSendDefault,
 } from 'miniprogram-uploader';
 export {
-    Downloder,
+    Downloader,
     Download,
     transformDownloadResponseOkData,
     transfomDownloadSendDefault,
@@ -76,7 +76,7 @@ export const head: Http['head'] = Request.head.bind(Request) as Http['head'];
 /** 
  * Download.download
 */
-export const download: Downloder['download'] = Download.download.bind(Download) as Downloder['download'];
+export const download: Downloader['download'] = Download.download.bind(Download) as Downloader['download'];
 
 // ShortLink for Upload
 /**

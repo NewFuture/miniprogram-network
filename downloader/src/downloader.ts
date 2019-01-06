@@ -19,7 +19,7 @@ export interface DownloadOption extends DownloadInit, ExtraConfiguration {
 }
 
 
-export class Downloder extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
+export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
 
     /**
      * 默认下载请求参数转换函数
@@ -40,12 +40,12 @@ export class Downloder extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask,
      * @param filePath 本地文件路径
      * @param options 其他参数
      */
-    public download<T=ReturnType<Downloder['TransformResponseDefault']>>(url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
+    public download<T=ReturnType<Downloader['TransformResponseDefault']>>(url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
     /**
      * Object 参数自定义下载
      * @param options 
      */
-    public download<T=ReturnType<Downloder['TransformResponseDefault']>>(options: DownloadOption): Promise<T>;
+    public download<T=ReturnType<Downloader['TransformResponseDefault']>>(options: DownloadOption): Promise<T>;
     public download<T>(): Promise<T> {
         const is_multi_param = typeof arguments[0] === 'string';
         const options: DownloadOption = is_multi_param ? (arguments[2] || {}) : arguments[0];
