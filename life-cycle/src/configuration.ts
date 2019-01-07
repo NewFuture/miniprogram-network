@@ -108,7 +108,7 @@ export interface ExtraConfiguration {
     /**
      * 是否记录时间戳
      */
-    timestamp: boolean;
+    timestamp?: boolean;
 }
 
 /**
