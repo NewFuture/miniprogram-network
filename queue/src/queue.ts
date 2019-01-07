@@ -162,7 +162,7 @@ interface ExtraOptions {
     /**
      * 记录时间戳
      */
-    timestamp?:boolean;
+    timestamp?: boolean | object;
 }
 
 interface BaseOption {
