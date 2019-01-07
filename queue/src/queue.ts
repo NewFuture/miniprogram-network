@@ -23,7 +23,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
     /**
      * 正在运行的任务
      */
-    private readonly TaskMap = new Map<number, Ttask>();
+    private readonly TaskMap = new Map<number, [Ttask, TimeRecorder?]>();
     // { [key: number]: Ttask } = {};
 
     /**
@@ -80,7 +80,11 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
      */
     private process(id: number, options: QueueOption<Tparam>): Ttask {
         const oldComplete = options.complete;
-        options.complete = (res: any) => {
+        options.complete = (res: { time?: TimeRecorder }) => {
+            if (options.timestamp && this.TaskMap.has(id)) {
+                res.time = this.TaskMap.get(id)![1] || {};
+                res.time.response = Date.now();
+            }
             this.TaskMap.delete(id);
             oldComplete && oldComplete.call(options, res);
             this.next();
@@ -94,7 +98,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
         if (options.onHeadersReceived) {
             task.onHeadersReceived(options.onHeadersReceived);
         }
-        this.TaskMap.set(id, task);
+        this.TaskMap.set(id, [task, options.timestamp ? { send: Date.now() } : undefined]);
         return task;
     }
 
@@ -110,7 +114,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
             // call back complete.
             completeCallback && completeCallback({ errMsg: "request:fail abort" });
         } else if (this.TaskMap.has(taskid)) {
-            this.TaskMap.get(taskid)!.abort();
+            this.TaskMap.get(taskid)![0].abort();
             this.TaskMap.delete(taskid);
         }
     }
@@ -126,7 +130,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
         if (result) {
             result[1].onProgressUpdate = callback;
         } else if (this.TaskMap.has(taskid)) {
-            this.TaskMap.get(taskid)!.onProgressUpdate!(callback as any);
+            this.TaskMap.get(taskid)![0].onProgressUpdate!(callback as any);
         }
     }
 
@@ -135,7 +139,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask>{
         if (result) {
             result[1].onHeadersReceived = callback;
         } else if (this.TaskMap.has(taskid)) {
-            this.TaskMap.get(taskid)!.onHeadersReceived(callback);
+            this.TaskMap.get(taskid)![0].onHeadersReceived(callback);
         }
     }
 };
@@ -214,4 +218,9 @@ declare namespace wx {
          */
         totalBytesExpectedToWrite: number
     }) => void;
+}
+
+export interface TimeRecorder {
+    send?: number,
+    response?: number
 }

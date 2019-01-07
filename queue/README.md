@@ -11,6 +11,7 @@ Features:
 * [x] [取消操作(`abort`)](#abort-取消操作)
 * [x] [进度/header回调](#progress-进度支持)
 * [x] [插队](#jump-插队)
+* [x] 时间戳
 * [ ] 动态收缩扩展
 
 ## Install(安装)
@@ -54,8 +55,19 @@ let task = requestQueue.push({
 
 ### 参数
 
-与官网API参数兼容
+与官网API参数兼容 支持 扩展参数:
+* `onProgressUpdate` 进度回调函数
+* `onHeadersReceived` 响应头回调函数
+* `jump` (默认`false`)是否插队
+* `timestamp` (默认`false`) 是否记录时间戳,是则complete回调中会包含 一个`time`字段
+```ts
+{
+    send: number,
+    response: number
+}
+```
 
+兼容API
 * [request](https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html)
 * [downloadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html)
 * [uploadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html) 
