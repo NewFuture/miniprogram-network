@@ -154,7 +154,15 @@ interface ExtraOptions {
      * 开发者服务器返回的 HTTP Response Header 回调
      */
     onHeadersReceived?(result: { header: object }): void;
+    /**
+     * 是否插队
+     */
     jump?: boolean;
+
+    /**
+     * 记录时间戳
+     */
+    timestamp?:boolean;
 }
 
 interface BaseOption {

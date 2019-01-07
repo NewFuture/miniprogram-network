@@ -18,6 +18,7 @@
 * [x] CancelToken 可取消操作
 * [x] Queue 队列支持
 * [x] Retry 网络错误自动重试
+* [x] Cache 底层缓存支持
 * [x] 每个请求的原生回调接口支持(`onHeadersReceived`事件)和(`onProgressUpdate`事件)
 * [x] Interceptors 拦截器 transform send data / transform response data
 * [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
@@ -71,7 +72,18 @@ setConfig({
 ## Cache 缓存
 
 ```js
-import {getCache,downloadCache,CacheConfig} from 'miniprogram-network';
+import {
+    CacheConfig, // 缓存配置
+    getCache, // 与get方法一致,自动使用cache
+    downloadCache, // 与download方法一致，自动使用cache
+    requestCache, // 与request方法一致,自动使用cache
+    } from 'miniprogram-network';
+
+CacheConfig.expire = 30*60*1000;//设置缓存有效时间
+// 设置缓存条件,默认响应状态为2xx缓存数据
+CacheConfig.resultCondition = function(res){
+    return true;
+}
 
 //getCache 与 Request共用配置
 getCache('xxx').then(resolve);
@@ -80,7 +92,6 @@ getCache('xxx').then(resolve);
 // downloadCache 与 Download共用配置
 downloadCache('xxx').then();
 
-CacheConfig.expire = 30*60*1000;//设置缓存时间
 ```
 
 ## LifeCycle
