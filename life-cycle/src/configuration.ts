@@ -104,6 +104,11 @@ export interface ExtraConfiguration {
      * 是否插队
      */
     jump?: boolean;
+
+    /**
+     * 是否记录时间戳
+     */
+    timestamp: boolean;
 }
 
 /**
