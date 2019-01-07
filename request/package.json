@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-request",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A better Request package for MiniProgram API",
   "keywords": [
     "miniprogram",
