@@ -19,7 +19,7 @@ export type RequestConfig = RequestInit & ExtraConfiguration;
 /**
  * 每个请求的全部配置信息
  */
-export interface RequestOption extends RequestInit, ExtraConfiguration {
+export interface RequestOption<T=any> extends RequestInit, ExtraConfiguration {
     /**
     * 请求的地址
     */
@@ -42,6 +42,6 @@ export interface RequestOption extends RequestInit, ExtraConfiguration {
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/json` 的数据，会对数据进行 JSON 序列化
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
      */
-    data?: any,
+    data?: T,
     // onProgress?: wx.DownloadTask['offProgressUpdate']
 }
