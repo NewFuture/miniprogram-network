@@ -1,4 +1,5 @@
 import { BaseConfiguration, ExtraConfiguration } from "miniprogram-network-life-cycle";
+import { Request } from "..";
 
 /**
  * 默认配置信息
@@ -19,7 +20,7 @@ export type RequestConfig = RequestInit & ExtraConfiguration;
 /**
  * 每个请求的全部配置信息
  */
-export interface RequestOption<T=any> extends RequestInit, ExtraConfiguration {
+export interface RequestOption<T extends string | object | ArrayBuffer = string | object | ArrayBuffer> extends RequestInit, ExtraConfiguration {
     /**
     * 请求的地址
     */

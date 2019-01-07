@@ -34,7 +34,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * Object 参数发起请求
      * @param options 每个请求的全部配置信息，未设置内容使用默认全局配置
      */
-    public request<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(options: RequestOption<TData>): Promise<TReturn>;
+    public request<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(options: RequestOption<TData>): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -42,7 +42,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public request<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(method: string, action: string, data?: TData, config?: RequestConfig): Promise<TReturn>;
+    public request<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(method: string, action: string, data?: TData, config?: RequestConfig): Promise<TReturn>;
     public request<T=ReturnType<Http['TransformResponseDefault']>>(): Promise<T> {
         const arg_num = arguments.length;
         const options: RequestOption = arg_num == 1 ? arguments[0] : (arguments[3] || {});
@@ -62,7 +62,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转为query string
      * @param config 可覆盖默认配置
      */
-    public get<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public get<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
 
@@ -72,7 +72,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public post<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public post<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
 
@@ -82,7 +82,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public put<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public put<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
 
@@ -92,11 +92,11 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public delete<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public delete<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
 
-    public head<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public head<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
 
@@ -108,7 +108,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public patch<TReturn=ReturnType<Http['TransformResponseDefault']>, TData=any>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public patch<TReturn=ReturnType<Http['TransformResponseDefault']>, TData extends string | object | ArrayBuffer = string | object | ArrayBuffer>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
         if (!config) {
             config = {
                 headers: { 'X-HTTP-Method-Override': 'PATCH' },

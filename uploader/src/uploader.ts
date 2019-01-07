@@ -14,10 +14,10 @@ export interface UploadInit extends BaseConfiguration<UploadOption, wx.UploadFil
 /**
  * 全部配置信息
  */
-export interface UploadOption extends UploadInit, ExtraConfiguration {
+export interface UploadOption<T=wx.UploadFileOption['formData']> extends UploadInit, ExtraConfiguration {
     filePath: NonNullable<string>,
     name: NonNullable<string>,
-    data?: wx.UploadFileOption['formData'],
+    data?: T,
     onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback,
 }
 
@@ -48,17 +48,17 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<T=ReturnType<Uploader['TransformResponseDefault']>>(
+    public upload<TReturn=ReturnType<Uploader['TransformResponseDefault']>, TData=object>(
         filePath: string,
         name: string,
         url?: string,
-        data?: any,
-        config?: Omit<UploadOption, 'filePath' | 'name' | 'url' | 'data'>): Promise<T>;
+        data?: TData,
+        config?: Omit<UploadOption, 'filePath' | 'name' | 'url' | 'data'>): Promise<TReturn>;
     /**
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
      */
-    public upload<T=ReturnType<Uploader['TransformResponseDefault']>>(options: UploadOption): Promise<T>;
+    public upload<TReturn=ReturnType<Uploader['TransformResponseDefault']>, TData=object>(options: UploadOption<TData>): Promise<TReturn>;
     public upload<T>(): Promise<T> {
         const arg_num: number = arguments.length;
         const options: UploadOption = arg_num == 1 ? arguments[0] : (arguments[4] || {});
