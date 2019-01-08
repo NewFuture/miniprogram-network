@@ -135,5 +135,5 @@ Download.dowanload<string>('network/','lcoalpath',{
 ## Todo
 * [x] Cache (Network)
 * [x] data 泛型支持
-* [ ] timestamp (queue)
+* [x] timestamp (queue)
 * [ ] resize queue
