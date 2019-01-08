@@ -79,6 +79,11 @@ export interface BaseConfiguration<
      *  @example `res=>res.data`
      */
     transformResponse?: (res: SuccessParam<WxOptions>, config: TFullOptions) => PromiseOrValue<any>;
+
+    /**
+     * 是否记录时间戳
+     */
+    timestamp?: boolean;
 }
 
 /**
@@ -104,11 +109,6 @@ export interface ExtraConfiguration {
      * 是否插队
      */
     jump?: boolean;
-
-    /**
-     * 是否记录时间戳
-     */
-    timestamp?: boolean;
 }
 
 /**
