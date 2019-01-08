@@ -1,4 +1,4 @@
-import { buildParams, Omit } from 'miniprogram-network-utils';
+import { buildParams, Omit, getCommonOptions } from 'miniprogram-network-utils';
 import { DownloadOption } from './downloader';
 // import { wx } from './wx.download.';
 
@@ -13,12 +13,8 @@ export type DownloadParams = Omit<wx.DownloadFileOption, 'success' | 'fail' | 'c
  * @param data 
  */
 export function transfomDownloadSendDefault(data: DownloadOption): DownloadParams {
-    return {
-        url: buildParams(data.url, data.params, data.baseURL),
-        filePath: data.filePath,
-        header: data.headers,
-        jump: data.jump,
-    } as DownloadParams;
+    return getCommonOptions({ url: buildParams(data.url, data.params, data.baseURL) },
+        data, ['filePath', 'header', 'jump', 'timestamp']) as DownloadOption;
 }
 
 /**

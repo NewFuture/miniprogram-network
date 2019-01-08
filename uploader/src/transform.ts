@@ -1,4 +1,4 @@
-import { buildParams, Omit } from 'miniprogram-network-utils';
+import { buildParams, Omit, getCommonOptions } from 'miniprogram-network-utils';
 import { UploadOption } from './uploader';
 
 /**
@@ -12,14 +12,10 @@ export type UploadParams = Omit<wx.UploadFileOption, 'success' | 'fail' | 'compl
  * @param data 
  */
 export function transformUploadSendDefault(data: UploadOption): UploadParams {
-    return {
+    return getCommonOptions({
         url: buildParams(data.url || '', data.params, data.baseURL),
-        filePath: data.filePath,
-        header: data.headers,
         formData: data.data,
-        name: data.name,
-        jump: data.jump,
-    } as UploadParams;
+    }, data, ['filePath', 'name', 'header', 'jump', 'timestamp']) as UploadParams;
 }
 
 /**

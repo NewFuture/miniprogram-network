@@ -1,5 +1,5 @@
 // import { RequestData, RequestOptions } from './configuration';
-import { buildParams, Omit } from 'miniprogram-network-utils';
+import { buildParams, getCommonOptions, Omit } from 'miniprogram-network-utils';
 import { RequestOption } from './configuration';
 
 /**
@@ -13,18 +13,15 @@ export type RequestParams = Omit<wx.RequestOption, 'success' | 'fail' | 'complet
  */
 export function transformRequestSendDefault(data: RequestOption): RequestParams {
     const wxParam: RequestParams = {
-        url: buildParams(data.url, data.params, data.baseURL),
-        data: data.data,
-        method: data.method,
-        header: data.headers,
-        jump: data.jump,
+        url: buildParams(data.url, data.params, data.baseURL)
     } as RequestParams;
+    getCommonOptions(wxParam, data);
     if (data.responseType === 'arraybuffer') {
         wxParam.responseType = 'arraybuffer';
     } else if (data.responseType === 'json') {
         wxParam.dataType = 'json';
     }
-    return wxParam;
+    return getCommonOptions(wxParam, data, ['data', 'method', 'header', 'jump', 'timestamp']);
 }
 
 
