@@ -1,5 +1,4 @@
 import { BaseConfiguration, ExtraConfiguration } from "miniprogram-network-life-cycle";
-import { Request } from "..";
 
 /**
  * 默认配置信息
