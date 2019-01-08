@@ -61,7 +61,7 @@ export abstract class LifeCycle<
         mergeConfig(options, this.Defaults);
         return this.onSend(options)
             .then((param) => {
-                (param as TWxOptions).complete = (res: GeneralCallbackResult) => this.onComplete(res, options);
+                (param as TWxOptions).complete = (res: any) => this.onComplete(res, options);
                 return this.send<T>(param as TWxOptions, options)
             })
     }
@@ -135,7 +135,7 @@ export abstract class LifeCycle<
      * @param res 
      * @param options 
      */
-    private onComplete(res: GeneralCallbackResult, options: TFullOptions) {
+    private onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult, options: TFullOptions) {
         this.Listeners.onComplete.forEach(f => f(res, options));
     }
 
