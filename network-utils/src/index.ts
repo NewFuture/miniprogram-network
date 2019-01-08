@@ -27,7 +27,7 @@ export function buildParams(url: string, params?: { [key: string]: string | numb
  * @param data 
  * @param options 
  */
-export function getCommonOptions<T extends { [key: string]: any }>(data: T, options: { [key: string]: any }, keys: string[] = ['header', 'jump', 'timestamp']): T {
+export function getCommonOptions<T extends { [key: string]: any }>(data: T, options: { [key: string]: any }, keys: string[] = ['jump', 'timestamp']): T {
     keys.forEach(function (v) {
         if (options[v] !== undefined) {
             data[v] = options[v];

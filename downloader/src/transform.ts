@@ -13,8 +13,10 @@ export type DownloadParams = Omit<wx.DownloadFileOption, 'success' | 'fail' | 'c
  * @param data 
  */
 export function transfomDownloadSendDefault(data: DownloadOption): DownloadParams {
-    return getCommonOptions({ url: buildParams(data.url, data.params, data.baseURL) },
-        data, ['filePath', 'header', 'jump', 'timestamp']) as DownloadOption;
+    return getCommonOptions<DownloadParams>({
+        url: buildParams(data.url, data.params, data.baseURL),
+        header: data.headers
+    }, data, ['filePath', 'jump', 'timestamp']);
 }
 
 /**

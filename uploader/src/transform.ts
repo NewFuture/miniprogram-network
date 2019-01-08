@@ -12,10 +12,11 @@ export type UploadParams = Omit<wx.UploadFileOption, 'success' | 'fail' | 'compl
  * @param data 
  */
 export function transformUploadSendDefault(data: UploadOption): UploadParams {
-    return getCommonOptions({
+    return getCommonOptions<Partial<UploadParams>>({
         url: buildParams(data.url || '', data.params, data.baseURL),
         formData: data.data,
-    }, data, ['filePath', 'name', 'header', 'jump', 'timestamp']) as UploadParams;
+        header: data.headers,
+    }, data, ['filePath', 'name', 'jump', 'timestamp']) as UploadParams;
 }
 
 /**

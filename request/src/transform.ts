@@ -13,15 +13,16 @@ export type RequestParams = Omit<wx.RequestOption, 'success' | 'fail' | 'complet
  */
 export function transformRequestSendDefault(data: RequestOption): RequestParams {
     const wxParam: RequestParams = {
-        url: buildParams(data.url, data.params, data.baseURL)
-    } as RequestParams;
+        url: buildParams(data.url, data.params, data.baseURL),
+        header: data.headers,
+    };
     getCommonOptions(wxParam, data);
     if (data.responseType === 'arraybuffer') {
         wxParam.responseType = 'arraybuffer';
     } else if (data.responseType === 'json') {
         wxParam.dataType = 'json';
     }
-    return getCommonOptions(wxParam, data, ['data', 'method', 'header', 'jump', 'timestamp']);
+    return getCommonOptions(wxParam, data, ['data', 'method', 'jump', 'timestamp']);
 }
 
 
