@@ -21,13 +21,13 @@ import {
     UploadParams as NetworkUploadParams,
 } from "miniprogram-uploader";
 
-export { setConfig } from "./src/set-config";
+export { setConfig } from "./set-config";
 export {
     get as getCache,
     request as requestCache,
     download as downloadCache,
     config as CacheConfig,
-} from "./src/cache";
+} from "./cache";
 export {
     Http,
     Request,
