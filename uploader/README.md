@@ -23,13 +23,14 @@
 * [x] `onHeadersReceived` 接收头响应 (_只能请求时设置for single request_) 
 * [x] `jump` 是否插队 (_只能请求时设置for single request_)
 * [x] `url` 上传地址
-* [x] `headers`
-* [x] `params`
-* [x] `baseURL`
-* [x] `retry`
-* [x] `transformSend`
-* [x] `transformResponse`
-    
+* [x] `headers` 请求头
+* [x] `params` URL参数
+* [x] `baseURL` 根URL
+* [x] `retry` 重试次数
+* [x] `timestamp` 是否记录发送和响应时间戳
+* [x] `transformSend` 输入转换函数
+* [x] `transformResponse` 输出转换函数
+
 ### Global Listeners
 
 * [x] `onSend` (before request data send & after request data transformed)
@@ -45,8 +46,8 @@
 ```js
 import {Upload} from 'miniprogram-uploader';
 Upload.upload(localPath,'file','https://upload.site/file')
-        .then(console.log) // 返回数据
-        .catch(err=>wx.showToast({title:'下载失败'}));
+    .then(console.log) // 返回数据
+    .catch(err=>wx.showToast({title:'下载失败'}));
 ```
 
 
@@ -62,14 +63,14 @@ Upload.Defaults.transformResponse=transformUploadResponseOkData;
 Upload.upload(localPath,'file','https://upload.site/file').then(console.log);//打印data
 //TS
 Upload.upload<{url:string}>(localPath,'file','https://upload.site/file')
-        .then(data=>{
-            console.log(data)//打印数据object {url:'xxx'}
-        }) 
+    .then(data=>{
+        console.log(data)//打印数据object {url:'xxx'}
+    }) 
 
 
 //返回完整数据 对当前下载有效
 Upload.upload(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
-        .then(console.log) //打印 返回的Object {errMsg:'xx',data:{url:'xxx'}}
+    .then(console.log) //打印 返回的Object {errMsg:'xx',data:{url:'xxx'}}
 ```
 
 

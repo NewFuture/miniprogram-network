@@ -23,7 +23,25 @@
 * [x] Interceptors 拦截器 transform send data / transform response data
 * [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
 
-## 数据转换
+## 配置 
+
+### 通用配置
+
+* [x] `headers` 请求头
+* [x] `params` URL替换参数
+* [x] `baseURL` 根URL
+* [x] `retry` 重试次数
+* [x] `timestamp` 是否记录发送和响应时间戳
+* [x] `transformSend` 输入转换函数(Request,Download,Upload需分别设置)
+* [x] `transformResponse` 输出转换函数 (Request,Download,Upload需分别设置)
+
+### 不同网络请求单独配置项
+
+* [Request配置项](../request#options)
+* [Download配置项](../downloader#options)
+* [Upload配置项](../uploader#options)
+
+### transform 数据转换
 
 默认的`transformResponse`直接返回小程序原始的返回数据{statusCode,...}
 

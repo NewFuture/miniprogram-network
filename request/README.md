@@ -31,9 +31,10 @@
 * [x] `params` URL参数
 * [x] `baseURL` 根URL
 * [x] `retry` 重试次数
+* [x] `timestamp` 是否记录发送和响应时间戳
 * [x] `transformSend` 输入转换函数
 * [x] `transformResponse` 输出转换函数
-    
+
 ### Global Listeners
 
 * [x] `onSend` (before request data send & after request data transformed)

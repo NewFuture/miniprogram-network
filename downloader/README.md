@@ -21,12 +21,13 @@
 * [x] `onProgressUpdate` 下载进度响应 (_只能请求时设置for single request_) 
 * [x] `onHeadersReceived` 接收头响应 (_只能请求时设置for single request_) 
 * [x] `jump` 是否插队 (_只能请求时设置for single request_)
-* [x] `headers`
-* [x] `params`
-* [x] `baseURL`
-* [x] `retry`
-* [x] `transformSend`
-* [x] `transformResponse`
+* [x] `headers` 请求头
+* [x] `params` URL参数
+* [x] `baseURL` 根URL
+* [x] `retry` 重试次数
+* [x] `timestamp` 是否记录发送和响应时间戳
+* [x] `transformSend` 输入转换函数
+* [x] `transformResponse` 输出转换函数
 
 ### Global Listeners
 

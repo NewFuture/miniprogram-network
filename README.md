@@ -2,7 +2,7 @@
 
 > 小程序全局网络库,提供完整`代码自动提示`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、全局`拦截`、和多`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`Cache``,CancelToken`, global `interceptors`, `event listeners` and more.
+> Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`Cache`,`CancelToken`, global `interceptors`, `event listeners` and more.
 > 
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 > for `JavaScript` & `TypeScript`
