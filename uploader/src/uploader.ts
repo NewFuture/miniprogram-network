@@ -14,7 +14,7 @@ export interface UploadInit extends BaseConfiguration<UploadOption, wx.UploadFil
 /**
  * 全部配置信息
  */
-export interface UploadOption<T=wx.UploadFileOption['formData']> extends UploadInit, ExtraConfiguration {
+export interface UploadOption<T extends object = NonNullable<wx.UploadFileOption['formData']>> extends UploadInit, ExtraConfiguration {
     filePath: NonNullable<string>,
     name: NonNullable<string>,
     data?: T,
@@ -37,7 +37,7 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * @param uploader 操作函数,默认使用上传队列
      */
     constructor(config?: UploadInit, uploader?: (op: wx.UploadFileOption) => wx.UploadTask) {
-        super(uploader || uploadQueue.push.bind(uploader), config);
+        super(uploader || uploadQueue.push.bind(uploadQueue), config);
     }
 
     /**
