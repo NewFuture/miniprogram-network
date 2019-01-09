@@ -58,7 +58,8 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
      */
-    public upload<TReturn=ReturnType<Uploader['TransformResponseDefault']>, TData=object>(options: UploadOption<TData>): Promise<TReturn>;
+    public upload<TReturn=ReturnType<Uploader['TransformResponseDefault']>, TData extends object =object>(
+        options: UploadOption<TData>): Promise<TReturn>;
     public upload<T>(): Promise<T> {
         const arg_num: number = arguments.length;
         const options: UploadOption = arg_num == 1 ? arguments[0] : (arguments[4] || {});
