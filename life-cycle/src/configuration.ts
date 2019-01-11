@@ -8,7 +8,7 @@ export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 export interface WxTask {
     abort(): void;
     /** HTTP Response Header 事件的回调函数 */
-    onHeadersReceived(callback: ExtraConfiguration['onHeadersReceived'], ): void;
+    onHeadersReceived(callback: ExtraConfiguration['onHeadersReceived']): void;
     /** 下载进度变化事件的回调函数 */
     onProgressUpdate?(callback: ExtraConfiguration['onProgressUpdate']): void;
 
