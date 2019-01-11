@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-network-cache",
-  "version": "0.2.4-alpha.0",
+  "version": "0.2.4",
   "description": "minprogram network cache ",
   "keywords": [
     "cache",
@@ -29,6 +29,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "miniprogram-network-life-cycle": "^2.5.2-alpha.0"
+    "miniprogram-network-life-cycle": "^2.6.0-alpha.0"
   }
 }
