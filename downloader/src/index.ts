@@ -1,4 +1,3 @@
-/// <reference path="./wx.download.d.ts"/>
 export { CancelToken } from 'miniprogram-network-life-cycle';
 export { Downloader, DownloadOption, DownloadInit } from "./downloader";
 export { transfomDownloadSendDefault, transformDownloadResponseOkData, DownloadParams } from "./transform";

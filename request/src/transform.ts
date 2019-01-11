@@ -1,6 +1,6 @@
 // import { RequestData, RequestOptions } from './configuration';
 import { buildParams, getCommonOptions, Omit } from 'miniprogram-network-utils';
-import { RequestOption } from './configuration';
+import { RequestOption, wx } from './configuration';
 
 /**
  * 微信请求参数 (不包含回调函数)

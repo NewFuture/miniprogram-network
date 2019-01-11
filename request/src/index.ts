@@ -1,4 +1,3 @@
-/// <reference path="./wx.request.d.ts"/>
 import { Http } from './http';
 export { CancelToken } from 'miniprogram-network-life-cycle';
 export { RequestParams, transformRequestSendDefault, transformRequestResponseOkData } from './transform';

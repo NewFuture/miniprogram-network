@@ -1,4 +1,3 @@
-/// <reference path="./wx.upload.d.ts"/>
 
 import { Uploader } from './uploader';
 export { CancelToken } from 'miniprogram-network-life-cycle';

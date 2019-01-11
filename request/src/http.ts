@@ -1,6 +1,6 @@
 import { LifeCycle } from 'miniprogram-network-life-cycle';
 import { WxQueue } from 'miniprogram-queue';
-import { RequestInit, RequestOption, RequestConfig } from './configuration';
+import { RequestInit, RequestOption, RequestConfig, wx } from './configuration';
 import { transformRequestSendDefault } from './transform';
 
 /**
