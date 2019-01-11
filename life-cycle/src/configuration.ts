@@ -78,7 +78,7 @@ export interface BaseConfiguration<
      * allows changes to the response data to be made before it is passed to then/catch
      *  @example `res=>res.data`
      */
-    transformResponse?: (res: SuccessParam<WxOptions>, config: TFullOptions) => PromiseOrValue<any>;
+    transformResponse?: (res: SuccessParam<TWxOptions>, config: TFullOptions) => PromiseOrValue<any>;
 
     /**
      * 是否记录时间戳
