@@ -91,7 +91,7 @@ setConfig({
 
 ```js
 import {
-    CacheConfig, // 缓存配置
+    cacheConfig, // 缓存配置
     getCache, // 与get方法一致,自动使用cache
     downloadCache, // 与download方法一致，自动使用cache
     requestCache, // 与request方法一致,自动使用cache

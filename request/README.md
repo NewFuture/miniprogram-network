@@ -48,15 +48,15 @@
 ### quick start
 
 ```js
-import {Request} from 'miniprogram-request';
+import {REQUEST} from 'miniprogram-request';
 
 // 设置全局配置，设置一次全部生效
 // 设置请求根地址,可选
-Request.Defaults.baseURL = "https://minipgrogram.newfuture.cc/"
+REQUEST.Defaults.baseURL = "https://minipgrogram.newfuture.cc/"
 // 添加监听时间 可选
-Request.Listeners.onResponse.push(console.log); // 记录每次响应
+REQUEST.Listeners.onResponse.push(console.log); // 记录每次响应
 
-Request.get('items')
+REQUEST.get('items')
         .then(applyFunction) // 返回数据
         .catch(err=>wx.showToast({title:'数据拉取失败'}));
 ```
@@ -64,14 +64,14 @@ Request.get('items')
 ### URL build
 
 ```js
-Request.post('/items',{name:'future'})
+REQUEST.post('/items',{name:'future'})
 // POST /items
 // {name:"future"}
 
-Request.get('/items/{id}',{show_detail:false},{params:{id:12345}})
+REQUEST.get('/items/{id}',{show_detail:false},{params:{id:12345}})
 // GET /items/12345?show_detail=false
 
-Request.put('/items/{id}',{name:'new'},{params:{id:12345}})
+REQUEST.put('/items/{id}',{name:'new'},{params:{id:12345}})
 // PUT /items/12345
 // {name:"new"}
 // --- json 序列化body
@@ -79,7 +79,7 @@ Request.put('/items/{id}',{name:'new'},{params:{id:12345}})
 
 //由于小程序不支持Patch，此处使用X-HTTP-Method-Override实现Patch
 //此功能需要服务器端支持
-Request.patch('/items/{id}',{name:'new'},{params:{id:12345}})
+REQUEST.patch('/items/{id}',{name:'new'},{params:{id:12345}})
 // POST /items/12345
 // X-HTTP-Method-Override: PATCH
 // {name:"new"}
@@ -91,7 +91,7 @@ Request.patch('/items/{id}',{name:'new'},{params:{id:12345}})
 泛型支持
 ```js
 //TS 类型推断
-import { Request } from 'miniprogram-request';
+import { REQUEST } from 'miniprogram-request';
 
 interface Item {
     id: number,
@@ -99,19 +99,19 @@ interface Item {
 }
 
 // 泛型 then的参数值类型为 Item[]
-Request.get<Item[]>('/items')
+REQUEST.get<Item[]>('/items')
     .then(list => list.forEach(i => console.log(i.id + i.name)))
 ```
 
 ### CancelToken (abort)
 可通过cancel token 方式取消请求
 ```js
-import { Request, CancelToken } from 'miniprogram-request';
+import { REQUEST, CancelToken } from 'miniprogram-request';
 
 // 创建一个 tokensource
 const source = CancelToken.source();
 
-Request.get('items', { skip: 100 }, { 
+REQUEST.get('items', { skip: 100 }, { 
     // 配置 cancelToken
     cancelToken: source.token 
 });
@@ -124,7 +124,7 @@ source.cancel('cancel the reqeust');
 
 ### 修改全局配置
 ```js
-Request.Defaults.retry = 2;//设置网络错误时重试次数
+REQUEST.Defaults.retry = 2;//设置网络错误时重试次数
 ```
 
 ### 全部可配置内容
@@ -228,7 +228,7 @@ Request.Defaults.retry = 2;//设置网络错误时重试次数
 /每次请求全部可配置参数
 //已设置的参数会覆盖默认参数
 //仅对此次请求生效
-Request.request({
+REQUEST.request({
     url: 'items',
     method: 'POST',
     data: {},
@@ -243,7 +243,7 @@ Request.request({
 })
 
 // 快速请求配置参数
-Request.post('items', {}, {
+REQUEST.post('items', {}, {
     //除了method,url和 data 不能设置其他均可设置
     cancelToken: null,
     baseURL: 'https://qq.com/',

@@ -56,22 +56,22 @@ Download.download({url:'item/1.jpg'})
 ### 直接返回保存位置
 
 ```js
-import {Download,transformDownloadResponseOkData} from 'miniprogram-downloder';
+import {DOWNLOAD,transformDownloadResponseOkData} from 'miniprogram-downloder';
 // 根据状态码，直接返回保存地址
 //默认配置全局有效
-Download.Defaults.transformResponse=transformDownloadResponseOkData;
+DOWNLOAD.Defaults.transformResponse=transformDownloadResponseOkData;
 
 //js
-Download.download('item/1.jpg').then(console.log);//打印字符串，保存地址 
+DOWNLOAD.download('item/1.jpg').then(console.log);//打印字符串，保存地址 
 //TS
-Download.download<string>('item/1.jpg')
+DOWNLOAD.download<string>('item/1.jpg')
         .then(path=>{
             console.log(path)//path 为保存路径
         }) 
 
 
 //返回完整数据 对当前下载有效
-Download.download(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
+DOWNLOAD.download(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
         .then(console.log) //打印 返回的Object
 ```
 
@@ -81,12 +81,12 @@ Download.download(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
 
 可通过cancel token 方式取消请求
 ```js
-import { Download, CancelToken } from 'miniprogram-request';
+import { DOWNLOAD, CancelToken } from 'miniprogram-request';
 
 // 创建一个 tokensource
 const source = CancelToken.source();
 
-Download.download('items','tempfile' , { 
+DOWNLOAD.download('items','tempfile' , { 
     // 配置 cancelToken
     cancelToken: source.token 
 });

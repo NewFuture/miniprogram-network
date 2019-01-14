@@ -44,8 +44,8 @@
 ### quick start
 
 ```js
-import {Upload} from 'miniprogram-uploader';
-Upload.upload(localPath,'file','https://upload.site/file')
+import {UPLOAD} from 'miniprogram-uploader';
+UPLOAD.upload(localPath,'file','https://upload.site/file')
     .then(console.log) // 返回数据
     .catch(err=>wx.showToast({title:'下载失败'}));
 ```
@@ -54,22 +54,21 @@ Upload.upload(localPath,'file','https://upload.site/file')
 ### 直接返回保存位置
 
 ```js
-import {Upload,transformUploadResponseOkData} from 'miniprogram-downloder';
+import {UPLOAD,transformUploadResponseOkData} from 'miniprogram-downloder';
 // 根据状态码，直接返回保存地址
 //默认配置全局有效
-Upload.Defaults.transformResponse=transformUploadResponseOkData;
+UPLOAD.Defaults.transformResponse=transformUploadResponseOkData;
 
 //js
-Upload.upload(localPath,'file','https://upload.site/file').then(console.log);//打印data
+UPLOAD.upload(localPath,'file','https://upload.site/file').then(console.log);//打印data
 //TS
-Upload.upload<{url:string}>(localPath,'file','https://upload.site/file')
+UPLOAD.upload<{url:string}>(localPath,'file','https://upload.site/file')
     .then(data=>{
         console.log(data)//打印数据object {url:'xxx'}
     }) 
 
-
 //返回完整数据 对当前下载有效
-Upload.upload(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
+UPLOAD.upload(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
     .then(console.log) //打印 返回的Object {errMsg:'xx',data:{url:'xxx'}}
 ```
 
@@ -79,12 +78,12 @@ Upload.upload(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
 
 可通过cancel token 方式取消请求
 ```js
-import { Upload, CancelToken } from 'miniprogram-request';
+import { UPLOAD, CancelToken } from 'miniprogram-request';
 
 // 创建一个 tokensource
 const source = CancelToken.source();
 
-Upload.upload({ 
+UPLOAD.upload({ 
     filePath:localPath,
     file:'tempfile', 
     // 配置 cancelToken

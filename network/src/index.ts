@@ -26,7 +26,7 @@ export {
   get as getCache,
   request as requestCache,
   download as downloadCache,
-  config as CacheConfig
+  config as cacheConfig
 } from './cache';
 export {
   Http,
