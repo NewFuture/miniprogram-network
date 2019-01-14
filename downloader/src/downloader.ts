@@ -12,7 +12,7 @@ export type DownloadInit = BaseConfiguration<DownloadOption, wx.DownloadFileOpti
 /**
  * 全部配置信息
  */
-export interface DownloadOption extends DownloadInit, ExtraConfiguration {
+export interface DownloadOption extends Partial<DownloadInit>, ExtraConfiguration {
     url: NonNullable<string>,
     filePath?: string,
     onProgressUpdate?: wx.DownloadTaskOnProgressUpdateCallback
@@ -21,17 +21,17 @@ export interface DownloadOption extends DownloadInit, ExtraConfiguration {
 
 export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
 
-    /**
-     * 默认下载请求参数转换函数
-     */
-    protected readonly TransformSendDefault = transfomDownloadSendDefault;
+    // /**
+    //  * 默认下载请求参数转换函数
+    //  */
+    // protected readonly TransformSendDefault = transfomDownloadSendDefault;
 
     /**
      * 新建 Http实列
      * @param config 全局默认配置
      */
     public constructor(config?: DownloadInit, downloader?: (o: wx.DownloadFileOption) => wx.DownloadTask) {
-        super(downloader || downloadQueue.push.bind(downloadQueue), config);
+        super(downloader || downloadQueue.push.bind(downloadQueue), config || { transformSend: transfomDownloadSendDefault });
     }
 
     /**

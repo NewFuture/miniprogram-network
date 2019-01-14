@@ -13,36 +13,27 @@ export abstract class LifeCycle<
     TWxOptions extends WxOptions, // 微信操作函数
     TWxTask extends WxTask, // 微信操作的任务类型
     TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
-    TFullOptions extends TInitConfig & ExtraConfiguration, //完整配置项
+    TFullOptions extends Partial<TInitConfig> & ExtraConfiguration, //完整配置项
     >{
     /**
      * 默认全局配置
      */
-    public readonly Defaults: TInitConfig = { retry: 1, headers: {} } as TInitConfig;
+    public readonly Defaults: TInitConfig;
 
     /**
      * 全局Listeners
      */
-    public readonly Listeners: EventListeners<TFullOptions, SuccessParam<TWxOptions>> = new EventListeners;
-
-    /**
-     * 默认数据转换函数
-     */
-    protected abstract readonly TransformSendDefault: NonNullable<TInitConfig['transformSend']>;
+    public readonly Listeners: Readonly<EventListeners<TFullOptions, SuccessParam<TWxOptions>>> = new EventListeners;
 
     /**
      * 微信操作接口
      */
     public readonly handle: (option: TWxOptions) => TWxTask;
 
-    /**
-     * 新建实列
-     * @param config 全局默认配置
-     */
-    protected constructor(operator: (option: TWxOptions) => TWxTask, config?: TInitConfig) {
-        this.handle = operator;
-        if (config) { this.Defaults = config; }
-    }
+    // /**
+    //  * 默认数据转换函数
+    //  */
+    // protected abstract readonly TransformSendDefault: NonNullable<TInitConfig['transformSend']>;
 
     // /**
     //  * 默认输出数据转换函数
@@ -52,6 +43,20 @@ export abstract class LifeCycle<
     //     return res;
     // }
 
+    /**
+     * 新建实列
+     * @param config 全局默认配置
+     */
+    protected constructor(operator: (option: TWxOptions) => TWxTask, config: TInitConfig) {
+        this.handle = operator;
+        this.Defaults = config;
+        if (config.retry === undefined) {
+            this.Defaults.retry = 1;
+        }
+        if (config.headers === undefined) {
+            this.Defaults.headers = {};
+        }
+    }
 
     /**
      * 处理请求
@@ -71,9 +76,9 @@ export abstract class LifeCycle<
      * @param options 
      */
     private onSend(options: TFullOptions): Promise<Omit<TWxOptions, 'complete' | 'success' | 'fail'>> {
-        const data = options.transformSend ?
+        const data: Omit<TWxOptions, 'complete' | 'success' | 'fail'> = options.transformSend ?
             options.transformSend(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>) :
-            this.TransformSendDefault(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>);
+            options as any;
         this.Listeners.onSend.forEach(f => f(options));
         return Promise.resolve(data);
     }

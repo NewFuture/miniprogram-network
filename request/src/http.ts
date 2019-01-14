@@ -15,10 +15,10 @@ const requestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
  */
 export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestInit, RequestOption> {
 
-    /**
-     * 默认请求发送数据转换函数
-     */
-    protected readonly TransformSendDefault = transformRequestSendDefault;
+    // /**
+    //  * 默认请求发送数据转换函数
+    //  */
+    // protected readonly TransformSendDefault = transformRequestSendDefault;
 
     /**
      * 新建 Http实列
@@ -26,7 +26,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param request 请求处理方法，默认使用请求队列处理
      */
     public constructor(config?: RequestInit, request?: (o: wx.RequestOption) => wx.RequestTask) {
-        super(request || requestQueue.push.bind(requestQueue), config);
+        super(request || requestQueue.push.bind(requestQueue), config || { transformSend: transformRequestSendDefault });
     }
 
     /**
@@ -41,7 +41,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public request<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(method: string, action: string, data?: TData, config?: RequestConfig): Promise<TReturn>;
+    public request<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(method: string, action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn>;
     public request<TReturn=SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const arg_num = arguments.length;
         const options: RequestOption = arg_num == 1 ? arguments[0] : (arguments[3] || {});
@@ -61,7 +61,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转为query string
      * @param config 可覆盖默认配置
      */
-    public get<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public get<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
 
@@ -71,7 +71,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public post<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public post<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
 
@@ -81,7 +81,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public put<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public put<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
 
@@ -91,11 +91,11 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public delete<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public delete<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
 
-    public head<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public head<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
 
@@ -107,7 +107,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public patch<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: RequestConfig): Promise<TReturn> {
+    public patch<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         if (!config) {
             config = {
                 headers: { 'X-HTTP-Method-Override': 'PATCH' },
@@ -142,7 +142,8 @@ export type RequestConfig = RequestInit & ExtraConfiguration;
 /**
  * 每个请求的全部配置信息
  */
-export interface RequestOption<T extends BaseData = BaseData> extends RequestInit, ExtraConfiguration {
+export interface RequestOption<T extends BaseData = BaseData> extends Partial<RequestInit>, ExtraConfiguration {
+
     /**
     * 请求的地址
     */
@@ -166,6 +167,7 @@ export interface RequestOption<T extends BaseData = BaseData> extends RequestIni
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
      */
     data?: T,
+
     // onProgress?: wx.DownloadTask['offProgressUpdate']
 }
 

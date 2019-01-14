@@ -30,7 +30,7 @@ export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['succes
  * 所有网络请求的集成类型
  */
 export interface BaseConfiguration<
-    TFullOptions extends BaseConfiguration<TFullOptions, TWxOptions>, //完整配置
+    TFullOptions extends Partial<BaseConfiguration<TFullOptions, TWxOptions>>, //完整配置
     TWxOptions extends WxOptions // 微信请求参数类型
     > {
 
@@ -70,7 +70,7 @@ export interface BaseConfiguration<
      * You may modify the data or headers object before it is sent.
      * @param data 不包含转换函数的所有配置内容
      */
-    transformSend?: (data: Omit<TFullOptions, 'transformSend' | 'transformResponse'>) => PromiseOrValue<Omit<TWxOptions, 'complete' | 'success' | 'fail'>>;
+    transformSend: (data: Omit<TFullOptions, 'transformSend' | 'transformResponse'>) => PromiseOrValue<Omit<TWxOptions, 'complete' | 'success' | 'fail'>>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
@@ -116,7 +116,7 @@ export interface ExtraConfiguration {
  * @param customize 自定义配置，未定义的将被设置为默认值
  * @param defaults 默认值
  */
-export function mergeConfig<T1 extends T2, T2 extends { [key: string]: any }>(customize: T1, defaults: T2): T1 {
+export function mergeConfig<T1 extends Partial<T2>, T2 extends { [key: string]: any }>(customize: T1, defaults: T2): T1 {
     Object.keys(defaults).forEach(key => {
         if (!customize.hasOwnProperty(key)) {
             customize[key] = defaults[key]
