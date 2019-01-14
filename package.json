@@ -20,10 +20,11 @@
 	"author": "NewFuture",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "lerna run build && npm run lint:fix",
+		"build": "npm run build:ts && npm run lint:fix",
+		"build:ts": "lerna run build",
 		"clean": "lerna run clean",
 		"init": "npm run rm:module && lerna bootstrap && lerna run build",
-		"publish": "lerna run clean && npm run build && lerna publish",
+		"publish": "npm run clean && npm run build:ts && npm run lint && lerna publish",
 		"rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
 		"lint": "lerna run lint",
 		"lint:fix": "lerna run lint:fix",
