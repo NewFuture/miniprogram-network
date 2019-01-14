@@ -1,7 +1,7 @@
-import { Download, DownloadInit } from 'miniprogram-downloader';
+import { DOWNLOAD, DownloadInit } from 'miniprogram-downloader';
 import { Omit } from 'miniprogram-network-utils';
-import { Request, RequestInit } from 'miniprogram-request';
-import { Upload, UploadInit } from 'miniprogram-uploader';
+import { REQUEST, RequestInit } from 'miniprogram-request';
+import { UPLOAD, UploadInit } from 'miniprogram-uploader';
 
 /**
  * 公共配置
@@ -24,16 +24,16 @@ function setConfig(): void {
     if (arguments.length === 2) {
         const key: keyof CommonConfig = arguments[0] as keyof CommonConfig;
         const value = arguments[1] as CommonConfig[keyof CommonConfig];
-        Request.Defaults[key] = value;
-        Download.Defaults[key] = value;
-        Upload.Defaults[key] = value;
+        REQUEST.Defaults[key] = value;
+        DOWNLOAD.Defaults[key] = value;
+        UPLOAD.Defaults[key] = value;
     } else if (typeof arguments[0] === 'object') {
         const config: CommonConfig = arguments[0] as CommonConfig;
         Object.keys(config)
             .forEach(function (key) {
-                Request.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-                Download.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-                Upload.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
+                REQUEST.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
+                DOWNLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
+                UPLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
             });
     }
 }

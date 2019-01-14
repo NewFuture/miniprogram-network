@@ -1,6 +1,6 @@
-import { Download, Downloader } from 'miniprogram-downloader';
+import { DOWNLOAD, Downloader } from 'miniprogram-downloader';
 import { CacheOperator, Configuration, isOkResult } from 'miniprogram-network-cache';
-import { Http, Request } from 'miniprogram-request';
+import { Http, REQUEST } from 'miniprogram-request';
 
 /** 缓存配置 */
 export const config: Configuration & {
@@ -19,11 +19,11 @@ export const config: Configuration & {
 /**
  * 网络缓存
  */
-export const cacheHttp = new Http(Request.Defaults, CacheOperator.createHandler(Request.handle, config));
+export const cacheHttp = new Http(REQUEST.Defaults, CacheOperator.createHandler(REQUEST.handle, config));
 /**
  * 下载缓存
  */
-export const cacheDownloader = new Downloader(Download.Defaults, CacheOperator.createHandler(Download.handle, config));
+export const cacheDownloader = new Downloader(DOWNLOAD.Defaults, CacheOperator.createHandler(DOWNLOAD.handle, config));
 
 /**
  * request 缓存

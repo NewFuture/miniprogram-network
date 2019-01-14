@@ -20,7 +20,7 @@
 	"author": "NewFuture",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "lerna run build",
+		"build": "lerna run build && npm run lint:fix",
 		"clean": "lerna run clean",
 		"init": "npm run rm:module && lerna bootstrap && lerna run build",
 		"publish": "lerna run clean && npm run build && lerna publish",
