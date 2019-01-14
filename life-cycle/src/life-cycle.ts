@@ -44,20 +44,20 @@ export abstract class LifeCycle<
         if (config) { this.Defaults = config; }
     }
 
-    /**
-     * 默认输出数据转换函数
-     * 直接返回结果,不做任何处理
-     */
-    protected TransformResponseDefault(res: SuccessParam<TWxOptions>, o: TFullOptions): SuccessParam<TWxOptions> {
-        return res;
-    }
+    // /**
+    //  * 默认输出数据转换函数
+    //  * 直接返回结果,不做任何处理
+    //  */
+    // protected TransformResponseDefault(res: SuccessParam<TWxOptions>, o: TFullOptions): SuccessParam<TWxOptions> {
+    //     return res;
+    // }
 
 
     /**
      * 处理请求
      * @param options 
      */
-    protected process<T=ReturnType<LifeCycle<TWxOptions, TWxTask, TInitConfig, TFullOptions>['TransformResponseDefault']>>(options: TFullOptions): Promise<T> {
+    protected process<T=SuccessParam<TWxOptions>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this.onSend(options)
             .then((param) => {
@@ -116,7 +116,7 @@ export abstract class LifeCycle<
      */
     private onResponse<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
-        const result = options.transformResponse ? options.transformResponse(res, options) : this.TransformResponseDefault(res, options);
+        const result = options.transformResponse ? options.transformResponse(res, options) : res;
         return Promise.resolve(result).catch(reason => this.onFail(reason, options));
     }
 

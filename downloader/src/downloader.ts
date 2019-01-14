@@ -1,5 +1,5 @@
 import { WxQueue } from 'miniprogram-queue';
-import { LifeCycle, BaseConfiguration, ExtraConfiguration } from 'miniprogram-network-life-cycle'
+import { LifeCycle, BaseConfiguration, ExtraConfiguration, SuccessParam } from 'miniprogram-network-life-cycle'
 import { transfomDownloadSendDefault } from './transform';
 import { Omit } from 'miniprogram-network-utils';
 
@@ -40,12 +40,12 @@ export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask
      * @param filePath 本地文件路径
      * @param options 其他参数
      */
-    public download<T=ReturnType<Downloader['TransformResponseDefault']>>(url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
+    public download<T=SuccessParam<wx.DownloadFileOption>>(url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
     /**
      * Object 参数自定义下载
      * @param options 
      */
-    public download<T=ReturnType<Downloader['TransformResponseDefault']>>(options: DownloadOption): Promise<T>;
+    public download<T=SuccessParam<wx.DownloadFileOption>>(options: DownloadOption): Promise<T>;
     public download<T>(): Promise<T> {
         const is_multi_param = typeof arguments[0] === 'string';
         const options: DownloadOption = is_multi_param ? (arguments[2] || {}) : arguments[0];

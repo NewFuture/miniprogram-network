@@ -1,5 +1,5 @@
 
-import { BaseConfiguration, ExtraConfiguration, LifeCycle } from 'miniprogram-network-life-cycle';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
 import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transformUploadSendDefault } from './transform';
@@ -48,7 +48,7 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<TReturn=ReturnType<Uploader['TransformResponseDefault']>, TData=object>(
+    public upload<TReturn=SuccessParam<wx.UploadFileOption>, TData=object>(
         filePath: string,
         name: string,
         url?: string,
@@ -58,7 +58,7 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
      */
-    public upload<TReturn=ReturnType<Uploader['TransformResponseDefault']>, TData extends object =object>(
+    public upload<TReturn=SuccessParam<wx.UploadFileOption>, TData extends object =object>(
         options: UploadOption<TData>): Promise<TReturn>;
     public upload<T>(): Promise<T> {
         const arg_num: number = arguments.length;
