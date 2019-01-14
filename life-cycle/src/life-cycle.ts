@@ -32,19 +32,6 @@ export abstract class LifeCycle<
      */
     public readonly handle: (option: TWxOptions) => TWxTask;
 
-    // /**
-    //  * 默认数据转换函数
-    //  */
-    // protected abstract readonly TransformSendDefault: NonNullable<TInitConfig['transformSend']>;
-
-    // /**
-    //  * 默认输出数据转换函数
-    //  * 直接返回结果,不做任何处理
-    //  */
-    // protected TransformResponseDefault(res: SuccessParam<TWxOptions>, o: TFullOptions): SuccessParam<TWxOptions> {
-    //     return res;
-    // }
-
     /**
      * 新建实列
      * @param config 全局默认配置
@@ -143,6 +130,10 @@ export abstract class LifeCycle<
      * @param options - 全部配置
      */
     private onFail(res: GeneralCallbackResult, options: TFullOptions): Promise<GeneralCallbackResult> {
+        if (typeof res === 'string') {
+            // tslint:disable-next-line: no-parameter-reassignment
+            res = { errMsg: res };
+        }
         this.Listeners.onRejected.forEach(f => { f(res, options); });
         return Promise.reject(res);
     }
@@ -153,6 +144,10 @@ export abstract class LifeCycle<
      * @param options - 全部配置
      */
     private onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult, options: TFullOptions) {
+        if (typeof res === 'string') {
+            // tslint:disable-next-line: no-parameter-reassignment
+            res = { errMsg: res as string } as any;
+        }
         this.Listeners.onComplete.forEach(f => { f(res, options); });
     }
 
@@ -162,6 +157,10 @@ export abstract class LifeCycle<
      * @param options - 全部配置
      */
     private onAbort(reason: any, options: TFullOptions): void {
+        if (typeof reason === 'string') {
+            // tslint:disable-next-line: no-parameter-reassignment
+            reason = { errMsg: reason };
+        }
         this.Listeners.onAbort.forEach(f => { f(reason, options); });
     }
 }
