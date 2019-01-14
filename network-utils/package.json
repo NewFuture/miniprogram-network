@@ -1,6 +1,6 @@
 {
 	"name": "miniprogram-network-utils",
-	"version": "2.1.2",
+	"version": "3.0.0-alpha.0",
 	"description": "",
 	"repository": {
 		"type": "git",
@@ -8,7 +8,11 @@
 	},
 	"license": "Apache-2.0",
 	"author": "New Future",
-	"files": [ "dist/**", "types/**", "src/**" ],
+	"files": [
+		"dist/**",
+		"types/**",
+		"src/**"
+	],
 	"main": "dist/index.js",
 	"types": "types/index.d.ts",
 	"scripts": {

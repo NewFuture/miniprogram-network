@@ -1,8 +1,11 @@
 {
 	"name": "miniprogram-request",
-	"version": "2.7.0-alpha.0",
+	"version": "3.0.0-alpha.0",
 	"description": "A better Request package for MiniProgram API",
-	"keywords": [ "miniprogram", "wx.request" ],
+	"keywords": [
+		"miniprogram",
+		"wx.request"
+	],
 	"homepage": "https://github.com/NewFuture/miniprogram-network/",
 	"bugs": {
 		"url": "https://github.com/NewFuture/miniprogram-network/issues"
@@ -13,7 +16,11 @@
 	},
 	"license": "Apache-2.0",
 	"author": "NewFuture",
-	"files": [ "dist/**", "types/**", "src/**" ],
+	"files": [
+		"dist/**",
+		"types/**",
+		"src/**"
+	],
 	"main": "dist/index.js",
 	"types": "types/index.d.ts",
 	"scripts": {
@@ -24,8 +31,8 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
-		"miniprogram-network-life-cycle": "^2.7.0-alpha.0",
-		"miniprogram-network-utils": "^2.1.2",
-		"miniprogram-queue": "^2.6.3"
+		"miniprogram-network-life-cycle": "^3.0.0-alpha.0",
+		"miniprogram-network-utils": "^3.0.0-alpha.0",
+		"miniprogram-queue": "^3.0.0-alpha.0"
 	}
 }

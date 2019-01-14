@@ -1,8 +1,11 @@
 {
 	"name": "miniprogram-network-cache",
-	"version": "0.2.6-alpha.0",
+	"version": "1.0.0-alpha.0",
 	"description": "minprogram network cache ",
-	"keywords": [ "cache", "miniprogram" ],
+	"keywords": [
+		"cache",
+		"miniprogram"
+	],
 	"homepage": "https://github.com/NewFuture/miniprogram-network/",
 	"bugs": {
 		"url": "https://github.com/NewFuture/miniprogram-network/issues"
@@ -13,7 +16,11 @@
 	},
 	"license": "Apache-2.0",
 	"author": "NewFuture",
-	"files": [ "dist/**", "types/**", "src/**" ],
+	"files": [
+		"dist/**",
+		"types/**",
+		"src/**"
+	],
 	"main": "dist/index.js",
 	"types": "types/index.d.ts",
 	"scripts": {
@@ -24,6 +31,6 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
-		"miniprogram-network-life-cycle": "^2.7.0-alpha.0"
+		"miniprogram-network-life-cycle": "^3.0.0-alpha.0"
 	}
 }

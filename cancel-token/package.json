@@ -1,6 +1,6 @@
 {
 	"name": "miniprogram-cancel-token",
-	"version": "0.2.3",
+	"version": "0.3.0-alpha.0",
 	"description": "cancel-token",
 	"repository": {
 		"type": "git",
@@ -8,7 +8,10 @@
 	},
 	"license": "Apache-2.0",
 	"author": "New Future",
-	"files": [ "dist/**", "src/" ],
+	"files": [
+		"dist/**",
+		"src/"
+	],
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {

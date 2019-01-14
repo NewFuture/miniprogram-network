@@ -1,8 +1,14 @@
 {
 	"name": "miniprogram-queue",
-	"version": "2.6.3",
+	"version": "3.0.0-alpha.0",
 	"description": "Queue Management for Wechat MiniProgram",
-	"keywords": [ "download", "miniprogram", "queue", "request", "upload" ],
+	"keywords": [
+		"download",
+		"miniprogram",
+		"queue",
+		"request",
+		"upload"
+	],
 	"homepage": "https://github.com/NewFuture/miniprogram-network/",
 	"bugs": {
 		"url": "https://github.com/NewFuture/miniprogram-network/issues"
@@ -13,7 +19,11 @@
 	},
 	"license": "Apache-2.0",
 	"author": "NewFuture",
-	"files": [ "dist/**", "types/**", "src/**" ],
+	"files": [
+		"dist/**",
+		"types/**",
+		"src/**"
+	],
 	"main": "dist/index.js",
 	"types": "types/index.d.ts",
 	"scripts": {
