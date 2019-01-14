@@ -6,11 +6,15 @@ interface IFinallyPromise<T> {
 interface Promise<T> extends IFinallyPromise<T> { }
 
 if (!Promise.prototype.finally) {
-    Promise.prototype.finally = function <T>(callback: Function): Promise<T> {
+    Promise.prototype.finally = function <T>(this: Promise<T>, callback: Function): Promise<T> {
+        // tslint:disable-next-line:prefer-type-cast
         const P = this.constructor as PromiseConstructor;
+
         return this.then(
-            value => P.resolve(callback()).then(() => value),
-            reason => P.resolve(callback()).then(() => { throw reason; })
+            value => P.resolve(callback())
+                .then(() => value),
+            reason => P.resolve(callback())
+                .then(() => { throw reason; })
         );
     };
 }

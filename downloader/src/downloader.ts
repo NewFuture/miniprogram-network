@@ -3,6 +3,7 @@ import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transfomDownloadSendDefault } from './transform';
 
+// tslint:disable-next-line: no-use-before-declare
 const downloadQueue = new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
 
 /**
@@ -18,13 +19,10 @@ export interface DownloadOption extends Partial<DownloadInit>, ExtraConfiguratio
     onProgressUpdate?: wx.DownloadTaskOnProgressUpdateCallback;
 }
 
+/**
+ * 下载封装
+ */
 export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
-
-    // /**
-    //  * 默认下载请求参数转换函数
-    //  */
-    // protected readonly TransformSendDefault = transfomDownloadSendDefault;
-
     /**
      * 新建 Http实列
      * @param config 全局默认配置
@@ -39,18 +37,19 @@ export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask
      * @param filePath 本地文件路径
      * @param options 其他参数
      */
-    public download<T= SuccessParam<wx.DownloadFileOption>>(url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
+    public download<T= SuccessParam<wx.DownloadFileOption>>
+        (url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
     /**
      * Object 参数自定义下载
-     * @param options
+     * @param options - 完整下载参数
      */
     public download<T= SuccessParam<wx.DownloadFileOption>>(options: DownloadOption): Promise<T>;
     public download<T>(): Promise<T> {
-        const is_multi_param = typeof arguments[0] === 'string';
-        const options: DownloadOption = is_multi_param ? (arguments[2] || {}) : arguments[0];
-        if (is_multi_param) {
-            options.url = arguments[0];
-            options.filePath = arguments[1];
+        const isMultiParam = typeof arguments[0] === 'string';
+        const options: DownloadOption = isMultiParam ? (arguments[2] as DownloadOption || {}) : arguments[0] as DownloadOption;
+        if (isMultiParam) {
+            options.url = arguments[0] as string;
+            options.filePath = arguments[1] as string;
         }
         return this.process<T>(options);
     }
@@ -75,7 +74,8 @@ export declare namespace wx {
         url: string;
         /** 指定文件下载后存储的路径
          *
-         * 最低基础库： `1.8.0` */
+         * 最低基础库： `1.8.0`
+         */
         filePath?: string;
         /** HTTP 请求的 Header，Header 中不能设置 Referer */
         header?: object;
@@ -85,18 +85,19 @@ export declare namespace wx {
         fail?(res: { errMsg: string }): void;
         /** 接口调用成功的回调函数 */
         success?(result: {
-                /** 开发者服务器返回的 HTTP 状态码 */
-                statusCode: number;
-                /** 临时文件路径。如果没传入 filePath 指定文件存储路径，则下载后的文件会存储到一个临时文件 */
-                tempFilePath: string;
-            }): void;
+            /** 开发者服务器返回的 HTTP 状态码 */
+            statusCode: number;
+            /** 临时文件路径。如果没传入 filePath 指定文件存储路径，则下载后的文件会存储到一个临时文件 */
+            tempFilePath: string;
+        }): void;
     }
     interface DownloadTask {
         /**
          *
          * 中断下载任务
          *
-         * 最低基础库： `1.4.0` */
+         * 最低基础库： `1.4.0`
+         */
         abort(): void;
         // offHeadersReceived(
         //   callback: DownloadTaskOffHeadersReceivedCallback,
@@ -112,7 +113,8 @@ export declare namespace wx {
          *
          * 监听下载进度变化事件
          *
-         * 最低基础库： `1.4.0` */
+         * 最低基础库： `1.4.0`
+         */
         onProgressUpdate(
             /** 下载进度变化事件的回调函数 */
             callback: DownloadTaskOnProgressUpdateCallback

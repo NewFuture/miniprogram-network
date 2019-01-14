@@ -17,10 +17,10 @@ export function buildParams(
 ): string {
     if (url && params) {
         Object.keys(params)
-        .forEach(function (key) {
-            // tslint:disable-next-line:no-parameter-reassignment prefer-type-cast
-            url = url.replace(new RegExp(`{${key}}`, 'g'), params[key] as string);
-        });
+            .forEach(function (key) {
+                // tslint:disable-next-line:no-parameter-reassignment prefer-type-cast
+                url = url.replace(new RegExp(`{${key}}`, 'g'), params[key] as string);
+            });
     }
     // tslint:disable-next-line:no-http-string
     if (url && (url.startsWith('https://') || url.startsWith('http://'))) {

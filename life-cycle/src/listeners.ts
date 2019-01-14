@@ -15,8 +15,8 @@ export class EventListeners<TFullOptions, TResult> {
      */
     public onComplete: OnCompleteListener<TResult, TFullOptions>[] = [];
     /**
-    * 处理失败事件监听
-    */
+     * 处理失败事件监听
+     */
     public onRejected: OnRejectListener<TFullOptions>[] = [];
     /**
      * 请求中断事件监听

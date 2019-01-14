@@ -1,5 +1,6 @@
 import { Cache } from './cache';
 
+// tslint:disable-next-line: no-empty
 function doNothing(): void { }
 export function isOkResult(res: BaseSuccessRes): boolean {
     return res && res.statusCode >= 200 && res.statusCode < 300;
@@ -16,7 +17,7 @@ export class CacheOperator<
     /**
      * 缓存配置
      */
-    public readonly Config: Configuration<TRes, TOptions>;
+    public readonly config: Configuration<TRes, TOptions>;
 
     private readonly op: (option: TOptions) => TTask;
     private readonly cache: Cache<TRes & CacheRes> = new Cache();
@@ -24,7 +25,7 @@ export class CacheOperator<
 
     constructor(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>) {
         this.op = operator;
-        this.Config = config || {
+        this.config = config || {
             expire: 15 * 60 * 1000,
             resultCondition: isOkResult
         };
@@ -41,30 +42,30 @@ export class CacheOperator<
 
     /**
      * 缓存处理
-     * @param options
+     * @param options - 参数
      */
     public handle(options: TOptions): TTask {
-        if (this.Config.paramCondition && !this.Config.paramCondition(options)) {
+        if (this.config.paramCondition && !this.config.paramCondition(options)) {
             // 不缓存
             return this.op(options);
         }
         const key = JSON.stringify(options);
-        const res = this.cache.get(key);
-        if (res) {
+        const result = this.cache.get(key);
+        if (result) {
             // 缓存命中
-            res.cache = (res.cache || 0) + 1;
+            result.cache = (result.cache || 0) + 1;
             try {
-                options.success && options.success(res);
+                if (options.success) { options.success(result); }
             } catch (error) {
                 this.cache.delete(key);
             }
-            options.complete && options.complete(res);
+            if (options.complete) { options.complete(result); }
         } else if (this.callbackMapList[key]) {
             // 请求已发送过
             const callback = this.callbackMapList[key];
-            options.success && callback.success.push(options.success);
-            options.fail && callback.fail.push(options.fail);
-            options.complete && callback.complete.push(options.complete);
+            if (options.success) { callback.success.push(options.success); }
+            if (options.fail) { callback.fail.push(options.fail); }
+            if (options.complete) { callback.complete.push(options.complete); }
         } else {
             // 请求未发送过
             this.callbackMapList[key] = {
@@ -73,8 +74,8 @@ export class CacheOperator<
                 complete: options.complete ? [options.complete] : []
             };
             options.success = (res: TRes) => {
-                if (this.Config.resultCondition(res)) {
-                    this.cache.set(key, res, this.Config.expire);
+                if (this.config.resultCondition(res)) {
+                    this.cache.set(key, res, this.config.expire);
                 }
                 this.callbackMapList[key].success.forEach(function (v) { v(res); });
             };
@@ -83,10 +84,12 @@ export class CacheOperator<
             };
             options.complete = (res: TRes) => {
                 this.callbackMapList[key].complete.forEach(function (v) { v(res); });
+                // tslint:disable-next-line: no-dynamic-delete
                 delete this.callbackMapList[key];
             };
             return this.op(options);
         }
+        // tslint:disable-next-line: no-object-literal-type-assertion
         return {
             abort: doNothing,
             onHeadersReceived: doNothing as TTask['onHeadersReceived'],

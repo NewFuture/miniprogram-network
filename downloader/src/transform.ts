@@ -8,21 +8,26 @@ export type DownloadParams = Omit<wx.DownloadFileOption, 'success' | 'fail' | 'c
 
 /**
  * 默认下载请求参数构建方法
- * @param data
+ * @param data - 完整配置参数
  */
 export function transfomDownloadSendDefault(data: DownloadOption): DownloadParams {
-    return getCommonOptions<DownloadParams>({
-        url: buildParams(data.url, data.params, data.baseURL),
-        header: data.headers
-    },                                      data, ['filePath', 'jump', 'timestamp']);
+    return getCommonOptions<DownloadParams>(
+        {
+            url: buildParams(data.url, data.params, data.baseURL),
+            header: data.headers
+        },
+        data,
+        ['filePath', 'jump', 'timestamp']
+    );
 }
 
 /**
  * 正确返回返回数据处理方式
- * @param res
- * @param config
+ * @param res - 返回结果
+ * @param config - 完整参数
  */
-export function transformDownloadResponseOkData(res: Parameters<NonNullable<wx.DownloadFileOption['success']>>[0], options: DownloadOption): string {
+export function transformDownloadResponseOkData(res: Parameters<NonNullable<wx.DownloadFileOption['success']>>[0], options: DownloadOption)
+    : string {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }

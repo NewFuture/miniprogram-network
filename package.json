@@ -2,7 +2,12 @@
 	"name": "miniprogram-untils",
 	"version": "1.0.0",
 	"description": "Fetch API polyfill for Wechat MiniProgram",
-	"keywords": [ "fetch", "miniprogram", "promise", "request" ],
+	"keywords": [
+		"fetch",
+		"miniprogram",
+		"promise",
+		"request"
+	],
 	"homepage": "https://github.com/NewFuture/miniprogram-fetch#readme",
 	"bugs": {
 		"url": "https://github.com/NewFuture/miniprogram-fetch/issues"

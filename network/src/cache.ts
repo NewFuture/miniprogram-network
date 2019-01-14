@@ -8,7 +8,7 @@ export const config: Configuration & {
     excludeMethod: MethodParam['method'][];
 } = {
     expire: 10 * 60 * 1000,
-    /**GET,HEAD,OPTIONS默认缓存 */
+    /** GET,HEAD,OPTIONS默认缓存 */
     excludeMethod: ['POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT'],
     paramCondition: function (param) {
         return config.excludeMethod.indexOf((param as MethodParam).method) < 0;
@@ -19,24 +19,25 @@ export const config: Configuration & {
 /**
  * 网络缓存
  */
-export const CacheHttp = new Http(Request.Defaults, CacheOperator.createHandler(Request.handle, config));
+export const cacheHttp = new Http(Request.Defaults, CacheOperator.createHandler(Request.handle, config));
 /**
  * 下载缓存
  */
-export const CacheDownloader = new Downloader(Download.Defaults, CacheOperator.createHandler(Download.handle, config));
+export const cacheDownloader = new Downloader(Download.Defaults, CacheOperator.createHandler(Download.handle, config));
 
 /**
  * request 缓存
  */
-export const request: Http['request'] = CacheHttp.request.bind(CacheHttp) as Http['request'];
+export const request: Http['request'] = cacheHttp.request.bind(cacheHttp) as Http['request'];
 /**
  * GET 缓存
  */
-export const get: Http['get'] = CacheHttp.get.bind(CacheHttp) as Http['get'];
+// tslint:disable-next-line: no-reserved-keywords
+export const get: Http['get'] = cacheHttp.get.bind(cacheHttp) as Http['get'];
 /**
  * 下载缓存
  */
-export const download: Downloader['download'] = CacheDownloader.download.bind(CacheDownloader) as Downloader['download'];
+export const download: Downloader['download'] = cacheDownloader.download.bind(cacheDownloader) as Downloader['download'];
 
 interface MethodParam {
     method?: 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';

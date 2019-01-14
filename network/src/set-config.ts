@@ -22,20 +22,19 @@ function setConfig(config: CommonConfig): void;
 function setConfig<T extends keyof CommonConfig>(key: T, value: CommonConfig[T]): void;
 function setConfig(): void {
     if (arguments.length === 2) {
-        const key: keyof CommonConfig = arguments[0];
-        const value = arguments[1];
+        const key: keyof CommonConfig = arguments[0] as keyof CommonConfig;
+        const value = arguments[1] as CommonConfig[keyof CommonConfig];
         Request.Defaults[key] = value;
         Download.Defaults[key] = value;
         Upload.Defaults[key] = value;
     } else if (typeof arguments[0] === 'object') {
-        const config: CommonConfig = arguments[0];
-        for (const key in config) {
-            if (config.hasOwnProperty(key)) {
+        const config: CommonConfig = arguments[0] as CommonConfig;
+        Object.keys(config)
+            .forEach(function (key) {
                 Request.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
                 Download.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
                 Upload.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-            }
-        }
+            });
     }
 }
 

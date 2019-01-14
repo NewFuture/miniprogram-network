@@ -9,4 +9,4 @@ export {
  * 于定义全局Download
  */
 import { Downloader } from './downloader';
-export const Download = new Downloader();
+export const DOWNLOAD = new Downloader();

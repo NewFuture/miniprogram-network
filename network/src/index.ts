@@ -57,6 +57,7 @@ export const request: Http['request'] = Request.request.bind(
 /**
  * Request.get
  */
+// tslint:disable-next-line: no-reserved-keywords
 export const get: Http['get'] = Request.get.bind(Request) as Http['get'];
 /**
  * Request.post

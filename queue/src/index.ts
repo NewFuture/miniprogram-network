@@ -22,7 +22,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
   /**
    * 正在运行的任务
    */
-  private readonly TaskMap = new Map<number, [Ttask, TimeRecorder?]>();
+  private readonly taskMap = new Map<number, [Ttask, TimeRecorder?]>();
   // { [key: number]: Ttask } = {};
 
   /**
@@ -46,7 +46,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    */
   public push(param: QueueOption<Tparam>): Ttask {
     const id = ++this.taskid;
-    if (this.TaskMap.size < this.MAX) {
+    if (this.taskMap.size < this.MAX) {
       // task队列未满
       return this.process(id, param);
     } else if (param.jump) {
@@ -55,10 +55,11 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
     } else {
       this.todo.push([id, param]);
     }
+
     return {
-      abort: () => this.abort(id),
-      onProgressUpdate: (callback: any) => this.onProgress(id, callback),
-      onHeadersReceived: (callback: any) => this.onHeaders(id, callback)
+      abort: (): void => { this.abort(id); },
+      onProgressUpdate: (callback: ExtraOptions['onProgressUpdate']) => { this.onProgress(id, callback); },
+      onHeadersReceived: (callback: ExtraOptions['onHeadersReceived']) => { this.onHeaders(id, callback); }
     } as any;
   }
 
@@ -66,7 +67,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * check and do next task
    */
   private next(): void {
-    if (this.todo.length > 0 && this.TaskMap.size < this.MAX) {
+    if (this.todo.length > 0 && this.taskMap.size < this.MAX) {
       const [taskid, taskOptions] = this.todo.shift()!;
       this.process(taskid, taskOptions);
     }
@@ -80,12 +81,14 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
   private process(id: number, options: QueueOption<Tparam>): Ttask {
     const oldComplete = options.complete;
     options.complete = (res: { time?: TimeRecorder }) => {
-      if (options.timestamp && this.TaskMap.has(id)) {
-        res.time = this.TaskMap.get(id)![1] || {};
+      if (options.timestamp && this.taskMap.has(id)) {
+        res.time = this.taskMap.get(id)![1] || {};
         res.time.response = Date.now();
       }
-      this.TaskMap.delete(id);
-      oldComplete && oldComplete.call(options, res);
+      this.taskMap.delete(id);
+      if (oldComplete) {
+        oldComplete.call(options, res);
+      }
       this.next();
     };
     const task = this.operator(options);
@@ -97,10 +100,11 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
     if (options.onHeadersReceived) {
       task.onHeadersReceived(options.onHeadersReceived);
     }
-    this.TaskMap.set(id, [
+    this.taskMap.set(id, [
       task,
       options.timestamp ? { send: Date.now() } : undefined
     ]);
+
     return task;
   }
 
@@ -114,17 +118,19 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
       const completeCallback = this.todo[index][1].complete;
       this.todo.splice(index, 1);
       // call back complete.
-      completeCallback && completeCallback({ errMsg: 'request:fail abort' });
-    } else if (this.TaskMap.has(taskid)) {
-      this.TaskMap.get(taskid)![0].abort();
-      this.TaskMap.delete(taskid);
+      if (completeCallback) {
+        completeCallback({ errMsg: 'request:fail abort' });
+      }
+    } else if (this.taskMap.has(taskid)) {
+      this.taskMap.get(taskid)![0].abort();
+      this.taskMap.delete(taskid);
     }
   }
 
   /**
    * progress update callback
    * https://developers.weixin.qq.com/miniprogram/dev/api/network/download/DownloadTask.onProgressUpdate.html
-   * @param taskid
+   * @param taskid - task id
    * @param callback 回调操作
    */
   private onProgress(
@@ -134,8 +140,8 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
     const result = this.todo.find(v => v[0] === taskid);
     if (result) {
       result[1].onProgressUpdate = callback;
-    } else if (this.TaskMap.has(taskid)) {
-      this.TaskMap.get(taskid)![0].onProgressUpdate!(callback as any);
+    } else if (this.taskMap.has(taskid)) {
+      this.taskMap.get(taskid)![0].onProgressUpdate!(callback as any);
     }
   }
 
@@ -146,8 +152,8 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
     const result = this.todo.find(v => v[0] === taskid);
     if (result) {
       result[1].onHeadersReceived = callback;
-    } else if (this.TaskMap.has(taskid)) {
-      this.TaskMap.get(taskid)![0].onHeadersReceived(callback);
+    } else if (this.taskMap.has(taskid)) {
+      this.taskMap.get(taskid)![0].onHeadersReceived(callback);
     }
   }
 }
@@ -162,8 +168,8 @@ interface ExtraOptions {
    * progress 回调
    */
   onProgressUpdate?:
-    | wx.UploadTaskOnProgressUpdateCallback
-    | wx.DownloadTaskOnProgressUpdateCallback;
+  | wx.UploadTaskOnProgressUpdateCallback
+  | wx.DownloadTaskOnProgressUpdateCallback;
   /**
    * 是否插队
    */

@@ -122,6 +122,7 @@ export function mergeConfig<T1 extends Partial<T2>, T2 extends { [key: string]: 
     Object.keys(defaults)
         .forEach((key) => {
             if (!customize.hasOwnProperty(key)) {
+                // tslint:disable-next-line: no-unsafe-any
                 customize[key] = defaults[key];
             }
         });

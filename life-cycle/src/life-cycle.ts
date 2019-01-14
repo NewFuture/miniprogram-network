@@ -18,12 +18,14 @@ export abstract class LifeCycle<
     /**
      * 默认全局配置
      */
+    // tslint:disable-next-line:variable-name
     public readonly Defaults: TInitConfig;
 
     /**
-     * 全局Listeners
+     * 全局 Listeners
      */
-    public readonly Listeners: Readonly<EventListeners<TFullOptions, SuccessParam<TWxOptions>>> = new EventListeners;
+    // tslint:disable-next-line:variable-name
+    public readonly Listeners: Readonly<EventListeners<TFullOptions, SuccessParam<TWxOptions>>> = new EventListeners();
 
     /**
      * 微信操作接口
@@ -60,43 +62,54 @@ export abstract class LifeCycle<
 
     /**
      * 处理请求
-     * @param options
+     * @param options - 请求参数,不包括默认参数
      */
     protected process<T= SuccessParam<TWxOptions>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this.onSend(options)
             .then((param) => {
-                (param as TWxOptions).complete = (res: any) => this.onComplete(res, options);
+                (param as TWxOptions).complete = (res: GeneralCallbackResult) => { this.onComplete(res as any, options); };
                 return this.send<T>(param as TWxOptions, options);
             });
     }
 
     /**
      * 请求发送之前处理数据
-     * @param options
+     * @param options - 完整参数
      */
     private onSend(options: TFullOptions): Promise<Omit<TWxOptions, 'complete' | 'success' | 'fail'>> {
         const data: Omit<TWxOptions, 'complete' | 'success' | 'fail'> = options.transformSend ?
             options.transformSend(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>) :
             options as any;
-        this.Listeners.onSend.forEach(f => f(options));
+        this.Listeners.onSend.forEach(f => { f(options); });
         return Promise.resolve(data);
     }
 
     /**
      * 发送网络请求,并自动重试
-     * @param data
-     * @param options
+     * @param data - 发送微信参数
+     * @param options - 全部配置
      */
     private send<T>(data: TWxOptions, options: TFullOptions): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             const cancelToken = options.cancelToken;
-            cancelToken && cancelToken.throwIfRequested();
-
-            data.success = (res: SuccessParam<TWxOptions>) => { this.onResponse<T>(res, options).then(resolve); };
+            if (cancelToken) {
+                cancelToken.throwIfRequested();
+            }
+            data.success = (res: SuccessParam<TWxOptions>) => {
+                this.onResponse<T>(res, options)
+                    .then(resolve, reject);
+            };
             // retry
-            data.fail = (res: GeneralCallbackResult) =>
-                options.retry!-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
+            data.fail = (res: GeneralCallbackResult) => {
+                if (options.retry!-- > 0) {
+                    this.send<T>(data, options)
+                        .then(resolve, reject);
+                } else {
+                    this.onFail(res, options)
+                        .then(reject, reject);
+                }
+            };
 
             const task = this.handle(data);
             if (options.onHeadersReceived) {
@@ -106,50 +119,49 @@ export abstract class LifeCycle<
                 task.onProgressUpdate(options.onProgressUpdate);
             }
             if (cancelToken) {
-                cancelToken.promise.then(reason => {
-                    task.abort();
-                    this.onAbort(reason, options);
-                });
+                cancelToken.promise
+                    .then(reason => { task.abort(); this.onAbort(reason, options); }, reject);
             }
         });
     }
 
     /**
      * 处理服务器返回数据
-     * @param res
-     * @param options
+     * @param res - 返回参数
+     * @param options - 全部配置
      */
     private onResponse<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
-        this.Listeners.onResponse.forEach(f => f(res, options));
+        this.Listeners.onResponse.forEach(f => { f(res, options); });
         const result = options.transformResponse ? options.transformResponse(res, options) : res;
-        return Promise.resolve(result).catch(reason => this.onFail(reason, options));
+        return Promise.resolve(result)
+            .catch((reason: GeneralCallbackResult) => this.onFail(reason, options));
     }
 
     /**
      * 请求发送失败
-     * @param res
-     * @param options
+     * @param res - 返回参数
+     * @param options - 全部配置
      */
     private onFail(res: GeneralCallbackResult, options: TFullOptions): Promise<GeneralCallbackResult> {
-        this.Listeners.onRejected.forEach(f => f(res, options));
+        this.Listeners.onRejected.forEach(f => { f(res, options); });
         return Promise.reject(res);
     }
 
     /**
      * 请求完成
-     * @param res
-     * @param options
+     * @param res - 返回参数
+     * @param options - 全部配置
      */
     private onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult, options: TFullOptions) {
-        this.Listeners.onComplete.forEach(f => f(res, options));
+        this.Listeners.onComplete.forEach(f => { f(res, options); });
     }
 
     /**
      * 请求完成
-     * @param res
-     * @param options
+     * @param res - 返回参数
+     * @param options - 全部配置
      */
     private onAbort(reason: any, options: TFullOptions): void {
-        this.Listeners.onAbort.forEach(f => f(reason, options));
+        this.Listeners.onAbort.forEach(f => { f(reason, options); });
     }
 }

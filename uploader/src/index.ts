@@ -9,4 +9,4 @@ export {
 /**
  * 预定义全局 Upload 对象
  */
-export const Upload = new Uploader();
+export const UPLOAD = new Uploader();
