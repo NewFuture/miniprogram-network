@@ -1,27 +1,27 @@
 /**
  * 监听事件列表
  */
-export class EventListeners<TFullOptions, TResult>{
+export class EventListeners<TFullOptions, TResult> {
     /**
      * 发送之前事件监听
      */
-    onSend: OnSendListener<TFullOptions>[] = [];
+    public onSend: OnSendListener<TFullOptions>[] = [];
     /**
      * 收到数据事件监听
      */
-    onResponse: OnResponseListener<TResult, TFullOptions>[] = [];
+    public onResponse: OnResponseListener<TResult, TFullOptions>[] = [];
     /**
      * 请求完成事件监听
      */
-    onComplete: OnCompleteListener<TResult, TFullOptions>[] = [];
+    public onComplete: OnCompleteListener<TResult, TFullOptions>[] = [];
     /**
     * 处理失败事件监听
     */
-    onRejected: OnRejectListener<TFullOptions>[] = [];
+    public onRejected: OnRejectListener<TFullOptions>[] = [];
     /**
      * 请求中断事件监听
      */
-    onAbort: OnAbortListener<TFullOptions>[] = [];
+    public onAbort: OnAbortListener<TFullOptions>[] = [];
     // onResolved: Function[]
 }
 
@@ -57,7 +57,7 @@ interface CommonCompleteResult {
         send?: number;
         /** 结束时间戳 */
         response?: number;
-    },
+    };
     /** 缓存命中次数,仅对使用缓存有效 */
-    cache?: number,
+    cache?: number;
 }

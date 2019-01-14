@@ -1,34 +1,33 @@
 {
-  "name": "miniprogram-untils",
-  "version": "1.0.0",
-  "description": "Fetch API polyfill for Wechat MiniProgram",
-  "keywords": [
-    "fetch",
-    "miniprogram",
-    "promise",
-    "request"
-  ],
-  "homepage": "https://github.com/NewFuture/miniprogram-fetch#readme",
-  "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram-fetch/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram-fetch.git"
-  },
-  "license": "Apache-2.0",
-  "author": "NewFuture",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "lerna run build",
-    "clean": "lerna run clean",
-    "init": "npm run rm:module && lerna bootstrap && lerna run build",
-    "publish": "lerna run clean && npm run build && lerna publish",
-    "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "devDependencies": {
-    "lerna": "^3.9.0",
-    "typescript": "^3.2.2"
-  }
+	"name": "miniprogram-untils",
+	"version": "1.0.0",
+	"description": "Fetch API polyfill for Wechat MiniProgram",
+	"keywords": [ "fetch", "miniprogram", "promise", "request" ],
+	"homepage": "https://github.com/NewFuture/miniprogram-fetch#readme",
+	"bugs": {
+		"url": "https://github.com/NewFuture/miniprogram-fetch/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NewFuture/miniprogram-fetch.git"
+	},
+	"license": "Apache-2.0",
+	"author": "NewFuture",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "lerna run build",
+		"clean": "lerna run clean",
+		"init": "npm run rm:module && lerna bootstrap && lerna run build",
+		"publish": "lerna run clean && npm run build && lerna publish",
+		"rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
+		"lint": "lerna run lint",
+		"lint:fix": "lerna run lint:fix",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"devDependencies": {
+		"lerna": "^3.9.0",
+		"tslint": "^5.12.1",
+		"tslint-microsoft-contrib": "^6.0.0",
+		"typescript": "^3.2.2"
+	}
 }

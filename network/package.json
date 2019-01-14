@@ -29,6 +29,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist && rm -rf types",
+    "lint": "tslint -p . -c ../tslint.json",
+		"lint:fix": "tslint --fix -p . -c ../tslint.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

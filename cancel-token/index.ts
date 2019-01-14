@@ -1,8 +1,8 @@
 
 /**
- * CancelTokenSource
+ * ICancelTokenSource
  */
-export interface CancelTokenSource {
+export interface ICancelTokenSource<T= any> {
     /**
      * token
      */
@@ -10,7 +10,7 @@ export interface CancelTokenSource {
     /**
      * 取消函数
      */
-    readonly cancel: (reason?: any) => any;
+    cancel(reason?: T): void;
 }
 
 /**
@@ -22,15 +22,16 @@ export class CancelToken {
      * Promise of CancelToken
      */
     public readonly promise: Promise<any>;
-    private reason: string | any = undefined;
+    private reason: string | any;
 
     /**
      * 生成CancelToken
-     * @param executor 
+     * @param executor - callback
      */
-    private constructor(executor: (cancel: CancelTokenSource['cancel']) => void) {
-        let resolve: CancelTokenSource['cancel'];
-        this.promise = new Promise<any>((res) => resolve = res);
+    private constructor(executor: (cancel: ICancelTokenSource['cancel']) => void) {
+        let resolve: ICancelTokenSource['cancel'];
+        // tslint:disable-next-line:promise-must-complete
+        this.promise = new Promise<any>((res: ICancelTokenSource['cancel']) => { resolve = res; });
         executor((reason?: any) => {
             if (this.reason === undefined) {
                 return;
@@ -38,6 +39,20 @@ export class CancelToken {
             this.reason = reason === undefined ? 'Canceled' : reason;
             resolve(this.reason);
         });
+    }
+
+    /**
+     * Create TokenSoure
+     * @returns 生成一个CancelTokenSource
+     */
+    public static source(): ICancelTokenSource {
+        let cancel: ICancelTokenSource['cancel'];
+        const token = new CancelToken((c) => {
+            cancel = c;
+        });
+
+        ///@ts-ignore
+        return { token, cancel };
     }
 
     /**
@@ -55,17 +70,5 @@ export class CancelToken {
         if (this.reason !== undefined) {
             throw this.reason;
         }
-    }
-
-    /**
-     * Create TokenSoure
-     * @returns 生成一个CancelTokenSource
-     */
-    static source(): CancelTokenSource {
-        let cancel: CancelTokenSource['cancel'] = null as any;
-        const token = new CancelToken((c) => {
-            cancel = c;
-        });
-        return { token, cancel };
     }
 }

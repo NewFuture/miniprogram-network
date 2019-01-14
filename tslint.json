@@ -1,0 +1,22 @@
+{
+    "extends": "tslint-microsoft-contrib",
+    "rulesDirectory": [
+        "node_modules/tslint-microsoft-contrib"
+    ],
+    "defaultSeverity": "warn",
+    "jsRules": {},
+    "rules": {
+        "no-any": false,
+        "interface-name": false,
+        "typedef": false,
+        "function-name": false,
+        "no-single-line-block-comment": false,
+        "no-relative-imports": false,
+        "no-function-expression": false
+    },
+    "linterOptions": {
+        "exclude": [
+            "types/*.d.ts"
+        ]
+    }
+}

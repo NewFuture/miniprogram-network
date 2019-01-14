@@ -1,34 +1,29 @@
 {
-  "name": "miniprogram-network-cache",
-  "version": "0.2.6-alpha.0",
-  "description": "minprogram network cache ",
-  "keywords": [
-    "cache",
-    "miniprogram"
-  ],
-  "homepage": "https://github.com/NewFuture/miniprogram-network/",
-  "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram-network/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
-  },
-  "license": "Apache-2.0",
-  "author": "NewFuture",
-  "files": [
-    "dist/**",
-    "types/**",
-    "src/**"
-  ],
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "clean": "rm -rf dist && rm -rf types",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "miniprogram-network-life-cycle": "^2.7.0-alpha.0"
-  }
+	"name": "miniprogram-network-cache",
+	"version": "0.2.6-alpha.0",
+	"description": "minprogram network cache ",
+	"keywords": [ "cache", "miniprogram" ],
+	"homepage": "https://github.com/NewFuture/miniprogram-network/",
+	"bugs": {
+		"url": "https://github.com/NewFuture/miniprogram-network/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NewFuture/miniprogram-network.git"
+	},
+	"license": "Apache-2.0",
+	"author": "NewFuture",
+	"files": [ "dist/**", "types/**", "src/**" ],
+	"main": "dist/index.js",
+	"types": "types/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"clean": "rm -rf dist && rm -rf types",
+		"lint": "tslint -p . -c ../tslint.json",
+		"lint:fix": "tslint --fix -p . -c ../tslint.json",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"miniprogram-network-life-cycle": "^2.7.0-alpha.0"
+	}
 }

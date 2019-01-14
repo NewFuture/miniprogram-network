@@ -1,4 +1,4 @@
-import { LifeCycle, BaseConfiguration, ExtraConfiguration, SuccessParam } from 'miniprogram-network-life-cycle';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
 import { WxQueue } from 'miniprogram-queue';
 import { transformRequestSendDefault } from './transform';
 
@@ -7,10 +7,9 @@ import { transformRequestSendDefault } from './transform';
  */
 const requestQueue = new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
-
 /**
  * 小程序HTTP请求生命周期封装
- * @example 
+ * @example
  *    `const http = new Http({ baseURL: 'https://api.newfuture.cc/', retry: 3 });`
  */
 export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestInit, RequestOption> {
@@ -33,7 +32,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * Object 参数发起请求
      * @param options 每个请求的全部配置信息，未设置内容使用默认全局配置
      */
-    public request<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(options: RequestOption<TData>): Promise<TReturn>;
+    public request<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(options: RequestOption<TData>): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -41,8 +40,8 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public request<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(method: string, action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn>;
-    public request<TReturn=SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
+    public request<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(method: string, action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn>;
+    public request<TReturn= SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const arg_num = arguments.length;
         const options: RequestOption = arg_num == 1 ? arguments[0] : (arguments[3] || {});
         if (arg_num > 1) {
@@ -61,7 +60,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转为query string
      * @param config 可覆盖默认配置
      */
-    public get<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public get<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
 
@@ -71,7 +70,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public post<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public post<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
 
@@ -81,7 +80,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public put<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public put<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
 
@@ -91,11 +90,11 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 可转未query string
      * @param config 可覆盖默认配置
      */
-    public delete<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public delete<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
 
-    public head<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public head<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
 
@@ -107,10 +106,10 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
      */
-    public patch<TReturn=SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public patch<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>(action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
         if (!config) {
             config = {
-                headers: { 'X-HTTP-Method-Override': 'PATCH' },
+                headers: { 'X-HTTP-Method-Override': 'PATCH' }
             };
         } else if (!config.headers) {
             config.headers = { 'X-HTTP-Method-Override': 'PATCH' };
@@ -119,8 +118,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
         }
         return this.request<TReturn>('POST', action, data, config);
     }
-};
-
+}
 
 type BaseData = string | object | ArrayBuffer;
 /**
@@ -131,7 +129,7 @@ export interface RequestInit extends BaseConfiguration<RequestOption, wx.Request
     /**
      * response data type
      */
-    responseType?: "json" | "text" | "arraybuffer";
+    responseType?: 'json' | 'text' | 'arraybuffer';
 }
 
 /**
@@ -147,13 +145,13 @@ export interface RequestOption<T extends BaseData = BaseData> extends Partial<Re
     /**
     * 请求的地址
     */
-    url: string,
+    url: string;
 
     /**
     * 请求方法
     * HTTP request mthod: GET POST ...
     */
-    method?: wx.RequestOption['method'],
+    method?: wx.RequestOption['method'];
 
     /**
      * 请求数据
@@ -166,7 +164,7 @@ export interface RequestOption<T extends BaseData = BaseData> extends Partial<Re
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/json` 的数据，会对数据进行 JSON 序列化
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
      */
-    data?: T,
+    data?: T;
 
     // onProgress?: wx.DownloadTask['offProgressUpdate']
 }
@@ -176,12 +174,6 @@ export declare namespace wx {
     interface RequestOption {
         /** 开发者服务器接口地址 */
         url: string;
-        /** 接口调用结束的回调函数（调用成功、失败都会执行） */
-        complete?: (res: { errMsg: string }) => void;
-        /** 接口调用失败的回调函数 */
-        fail?: (res: { errMsg: string }) => void;
-        /** 接口调用成功的回调函数 */
-        success?: (result: RequestSuccessCallbackResult) => void;
         /** 响应的数据类型
          *
          * 可选值：
@@ -222,6 +214,12 @@ export declare namespace wx {
         header?: object;
         /** 请求的参数 */
         data?: string | object | ArrayBuffer;
+        /** 接口调用结束的回调函数（调用成功、失败都会执行） */
+        complete?(res: { errMsg: string }): void;
+        /** 接口调用失败的回调函数 */
+        fail?(res: { errMsg: string }): void;
+        /** 接口调用成功的回调函数 */
+        success?(result: RequestSuccessCallbackResult): void;
     }
     interface RequestTask {
         /** [RequestTask.abort()](RequestTask.abort.md)
@@ -246,7 +244,7 @@ export declare namespace wx {
          * 最低基础库： `2.1.0` */
         onHeadersReceived(
             /** HTTP Response Header 事件的回调函数 */
-            callback: (result?: { header: object }) => void,
+            callback: (result?: { header: object }) => void
         ): void;
     }
     interface RequestSuccessCallbackResult {
@@ -260,11 +258,11 @@ export declare namespace wx {
         data: string | object | ArrayBuffer;
         /** cookie信息2.4.2以上版本有 */
         cookies?: {
-            domain: string,
-            httpOnly: boolean,
-            name: string,
-            path: string,
-            value: string
+            domain: string;
+            httpOnly: boolean;
+            name: string;
+            path: string;
+            value: string;
         }[];
     }
 }

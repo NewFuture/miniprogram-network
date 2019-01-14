@@ -9,23 +9,22 @@ const uploadQueue = new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFil
  * 默认配置信息
  */
 export interface UploadInit extends BaseConfiguration<UploadOption, wx.UploadFileOption> {
-    url?: string,
-};
+    url?: string;
+}
 /**
  * 全部配置信息
  */
 export interface UploadOption<T extends object = NonNullable<wx.UploadFileOption['formData']>> extends Partial<UploadInit>, ExtraConfiguration {
-    filePath: NonNullable<string>,
-    name: NonNullable<string>,
-    data?: T,
-    onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback,
+    filePath: NonNullable<string>;
+    name: NonNullable<string>;
+    data?: T;
+    onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback;
 }
 
 /**
  * 上传管理
  */
-export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, UploadInit, UploadOption>
-{
+export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, UploadInit, UploadOption> {
     /**
      * 默认上传请求参数转换函数
      */
@@ -48,7 +47,7 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * @param data 附加formData数据，可选
      * @param options 其他参数
      */
-    public upload<TReturn=SuccessParam<wx.UploadFileOption>, TData=object>(
+    public upload<TReturn= SuccessParam<wx.UploadFileOption>, TData= object>(
         filePath: string,
         name: string,
         url?: string,
@@ -58,7 +57,7 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
      */
-    public upload<TReturn=SuccessParam<wx.UploadFileOption>, TData extends object =object>(
+    public upload<TReturn= SuccessParam<wx.UploadFileOption>, TData extends object = object>(
         options: UploadOption<TData>): Promise<TReturn>;
     public upload<T>(): Promise<T> {
         const arg_num: number = arguments.length;
@@ -71,7 +70,7 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
         }
         return this.process<T>(options);
     }
-};
+}
 
 export declare namespace wx {
     function uploadFile(option: UploadFileOption): UploadTask;
@@ -85,16 +84,16 @@ export declare namespace wx {
         filePath: string;
         /** 开发者服务器地址 */
         url: string;
-        /** 接口调用结束的回调函数（调用成功、失败都会执行） */
-        complete?: (res: GeneralCallbackResult) => void;
-        /** 接口调用失败的回调函数 */
-        fail?: (res: GeneralCallbackResult) => void;
-        /** 接口调用成功的回调函数 */
-        success?: (result: UploadFileSuccessCallbackResult) => void;
         /** HTTP 请求中其他额外的 form data */
         formData?: object;
         /** HTTP 请求 Header，Header 中不能设置 Referer */
         header?: object;
+        /** 接口调用结束的回调函数（调用成功、失败都会执行） */
+        complete?(res: GeneralCallbackResult): void;
+        /** 接口调用失败的回调函数 */
+        fail?(res: GeneralCallbackResult): void;
+        /** 接口调用成功的回调函数 */
+        success?(result: UploadFileSuccessCallbackResult): void;
     }
     interface UploadTask {
         /** [UploadTask.abort()](UploadTask.abort.md)
@@ -134,8 +133,8 @@ export declare namespace wx {
                 result: {
                     /** 开发者服务器返回的 HTTP Response Header */
                     header: object;
-                },
-            ) => void,
+                }
+            ) => void
         ): void;
         /** [UploadTask.onProgressUpdate(function callback)](UploadTask.onProgressUpdate.md)
          *
@@ -161,5 +160,5 @@ export declare namespace wx {
             totalBytesExpectedToSend: number;
             /** 已经上传的数据长度，单位 Bytes */
             totalBytesSent: number;
-        }) => void
+        }) => void;
 }

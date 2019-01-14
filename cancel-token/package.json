@@ -1,22 +1,21 @@
 {
-  "name": "miniprogram-cancel-token",
-  "version": "0.2.3",
-  "description": "cancel-token",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
-  },
-  "license": "Apache-2.0",
-  "author": "New Future",
-  "files": [
-    "dist/**",
-    "src/"
-  ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "clean": "rm -rf dist && rm -rf types",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
+	"name": "miniprogram-cancel-token",
+	"version": "0.2.3",
+	"description": "cancel-token",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NewFuture/miniprogram-network.git"
+	},
+	"license": "Apache-2.0",
+	"author": "New Future",
+	"files": [ "dist/**", "src/" ],
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"clean": "rm -rf dist && rm -rf types",
+		"lint": "tslint -p . -c ../tslint.json",
+		"lint:fix": "tslint --fix -p . -c ../tslint.json",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	}
 }

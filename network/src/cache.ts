@@ -1,11 +1,11 @@
-import { CacheOperator, Configuration, isOkResult } from 'miniprogram-network-cache';
-import { Request, Http } from 'miniprogram-request';
 import { Download, Downloader } from 'miniprogram-downloader';
+import { CacheOperator, Configuration, isOkResult } from 'miniprogram-network-cache';
+import { Http, Request } from 'miniprogram-request';
 
 /** 缓存配置 */
-export const config: Configuration & { 
+export const config: Configuration & {
     /** 不缓存方法 */
-    excludeMethod: Array<MethodParam['method']> 
+    excludeMethod: MethodParam['method'][];
 } = {
     expire: 10 * 60 * 1000,
     /**GET,HEAD,OPTIONS默认缓存 */
@@ -13,8 +13,8 @@ export const config: Configuration & {
     paramCondition: function (param) {
         return config.excludeMethod.indexOf((param as MethodParam).method) < 0;
     },
-    resultCondition: isOkResult,
-}
+    resultCondition: isOkResult
+};
 
 /**
  * 网络缓存

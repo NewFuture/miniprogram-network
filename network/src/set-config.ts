@@ -1,7 +1,7 @@
-import { Request, RequestInit } from "miniprogram-request";
-import { Upload, UploadInit } from "miniprogram-uploader";
-import { Download, DownloadInit } from "miniprogram-downloader";
-import { Omit } from "miniprogram-network-utils";
+import { Download, DownloadInit } from 'miniprogram-downloader';
+import { Omit } from 'miniprogram-network-utils';
+import { Request, RequestInit } from 'miniprogram-request';
+import { Upload, UploadInit } from 'miniprogram-uploader';
 
 /**
  * 公共配置
@@ -29,7 +29,7 @@ function setConfig(): void {
         Upload.Defaults[key] = value;
     } else if (typeof arguments[0] === 'object') {
         const config: CommonConfig = arguments[0];
-        for (let key in config) {
+        for (const key in config) {
             if (config.hasOwnProperty(key)) {
                 Request.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
                 Download.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
@@ -40,5 +40,5 @@ function setConfig(): void {
 }
 
 export {
-    setConfig,
-}
+    setConfig
+};

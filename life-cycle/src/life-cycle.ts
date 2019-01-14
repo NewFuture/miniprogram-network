@@ -1,20 +1,20 @@
-import { BaseConfiguration, WxOptions, ExtraConfiguration, WxTask, mergeConfig, SuccessParam, Omit } from './configuration';
-import { EventListeners } from "./listeners";
+import { BaseConfiguration, ExtraConfiguration, mergeConfig, Omit, SuccessParam, WxOptions, WxTask } from './configuration';
+import { EventListeners } from './listeners';
 
 type GeneralCallbackResult = {
     errMsg: string;
-}
+};
 
 /**
  * 网络请求的完整生命周期
- * 
+ *
  */
 export abstract class LifeCycle<
     TWxOptions extends WxOptions, // 微信操作函数
     TWxTask extends WxTask, // 微信操作的任务类型
     TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
     TFullOptions extends Partial<TInitConfig> & ExtraConfiguration, //完整配置项
-    >{
+    > {
     /**
      * 默认全局配置
      */
@@ -60,20 +60,20 @@ export abstract class LifeCycle<
 
     /**
      * 处理请求
-     * @param options 
+     * @param options
      */
-    protected process<T=SuccessParam<TWxOptions>>(options: TFullOptions): Promise<T> {
+    protected process<T= SuccessParam<TWxOptions>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this.onSend(options)
             .then((param) => {
                 (param as TWxOptions).complete = (res: any) => this.onComplete(res, options);
-                return this.send<T>(param as TWxOptions, options)
-            })
+                return this.send<T>(param as TWxOptions, options);
+            });
     }
 
     /**
      * 请求发送之前处理数据
-     * @param options 
+     * @param options
      */
     private onSend(options: TFullOptions): Promise<Omit<TWxOptions, 'complete' | 'success' | 'fail'>> {
         const data: Omit<TWxOptions, 'complete' | 'success' | 'fail'> = options.transformSend ?
@@ -85,16 +85,16 @@ export abstract class LifeCycle<
 
     /**
      * 发送网络请求,并自动重试
-     * @param data 
-     * @param options 
+     * @param data
+     * @param options
      */
     private send<T>(data: TWxOptions, options: TFullOptions): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             const cancelToken = options.cancelToken;
             cancelToken && cancelToken.throwIfRequested();
 
-            data.success = (res: SuccessParam<TWxOptions>) => { this.onResponse<T>(res, options).then(resolve) };
-            // retry 
+            data.success = (res: SuccessParam<TWxOptions>) => { this.onResponse<T>(res, options).then(resolve); };
+            // retry
             data.fail = (res: GeneralCallbackResult) =>
                 options.retry!-- > 0 ? this.send<T>(data, options).then(resolve, reject) : this.onFail(res, options).then(reject);
 
@@ -116,8 +116,8 @@ export abstract class LifeCycle<
 
     /**
      * 处理服务器返回数据
-     * @param res 
-     * @param options 
+     * @param res
+     * @param options
      */
     private onResponse<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => f(res, options));
@@ -127,8 +127,8 @@ export abstract class LifeCycle<
 
     /**
      * 请求发送失败
-     * @param res 
-     * @param options 
+     * @param res
+     * @param options
      */
     private onFail(res: GeneralCallbackResult, options: TFullOptions): Promise<GeneralCallbackResult> {
         this.Listeners.onRejected.forEach(f => f(res, options));
@@ -137,8 +137,8 @@ export abstract class LifeCycle<
 
     /**
      * 请求完成
-     * @param res 
-     * @param options 
+     * @param res
+     * @param options
      */
     private onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult, options: TFullOptions) {
         this.Listeners.onComplete.forEach(f => f(res, options));
@@ -146,10 +146,10 @@ export abstract class LifeCycle<
 
     /**
      * 请求完成
-     * @param res 
-     * @param options 
+     * @param res
+     * @param options
      */
     private onAbort(reason: any, options: TFullOptions): void {
         this.Listeners.onAbort.forEach(f => f(reason, options));
     }
-};
+}

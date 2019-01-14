@@ -1,36 +1,31 @@
 {
-  "name": "miniprogram-uploader",
-  "version": "2.7.0-alpha.0",
-  "description": "miniprogram upload package",
-  "keywords": [
-    "miniprogram",
-    "wx.uploadFile"
-  ],
-  "homepage": "https://github.com/NewFuture/miniprogram-network/",
-  "bugs": {
-    "url": "https://github.com/NewFuture/miniprogram-network/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewFuture/miniprogram-network.git"
-  },
-  "license": "Apache-2.0",
-  "author": "NewFuture",
-  "files": [
-    "dist/**",
-    "types/**",
-    "src/**"
-  ],
-  "main": "dist/index.js",
-  "types": "types/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "clean": "rm -rf dist && rm -rf types",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "miniprogram-network-life-cycle": "^2.7.0-alpha.0",
-    "miniprogram-network-utils": "^2.1.2",
-    "miniprogram-queue": "^2.6.3"
-  }
+	"name": "miniprogram-uploader",
+	"version": "2.7.0-alpha.0",
+	"description": "miniprogram upload package",
+	"keywords": [ "miniprogram", "wx.uploadFile" ],
+	"homepage": "https://github.com/NewFuture/miniprogram-network/",
+	"bugs": {
+		"url": "https://github.com/NewFuture/miniprogram-network/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NewFuture/miniprogram-network.git"
+	},
+	"license": "Apache-2.0",
+	"author": "NewFuture",
+	"files": [ "dist/**", "types/**", "src/**" ],
+	"main": "dist/index.js",
+	"types": "types/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"clean": "rm -rf dist && rm -rf types",
+		"lint": "tslint -p . -c ../tslint.json",
+		"lint:fix": "tslint --fix -p . -c ../tslint.json",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"miniprogram-network-life-cycle": "^2.7.0-alpha.0",
+		"miniprogram-network-utils": "^2.1.2",
+		"miniprogram-queue": "^2.6.3"
+	}
 }

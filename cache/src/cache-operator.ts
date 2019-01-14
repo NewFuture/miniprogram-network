@@ -1,10 +1,9 @@
 import { Cache } from './cache';
 
-function doNothing(): void { };
+function doNothing(): void { }
 export function isOkResult(res: BaseSuccessRes): boolean {
     return res && res.statusCode >= 200 && res.statusCode < 300;
 }
-
 
 /**
  * 缓存操作
@@ -12,7 +11,7 @@ export function isOkResult(res: BaseSuccessRes): boolean {
 export class CacheOperator<
     TRes extends BaseSuccessRes = BaseSuccessRes,
     TOptions extends WxOptions= WxOptions, // 微信操作函数
-    TTask extends WxTask=WxTask, // 微信操作的任务类型
+    TTask extends WxTask= WxTask, // 微信操作的任务类型
     > {
     /**
      * 缓存配置
@@ -21,21 +20,30 @@ export class CacheOperator<
 
     private readonly op: (option: TOptions) => TTask;
     private readonly cache: Cache<TRes & CacheRes> = new Cache();
-    private readonly callbackMapList: { [key: string]: { success: Function[], fail: Function[], complete: Function[] } } = {};
+    private readonly callbackMapList: { [key: string]: { success: Function[]; fail: Function[]; complete: Function[] } } = {};
 
     constructor(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>) {
         this.op = operator;
         this.Config = config || {
             expire: 15 * 60 * 1000,
-            resultCondition: isOkResult,
-        }
+            resultCondition: isOkResult
+        };
+    }
+
+    public static createHandler<
+        TRes extends BaseSuccessRes= BaseSuccessRes,
+        TOptions extends WxOptions= WxOptions, // 微信操作函数
+        TTask extends WxTask= WxTask, // 微信操作的任务类型
+        >(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>): CacheOperator<TRes, TOptions, TTask>['handle'] {
+        const cacheOperator = new CacheOperator(operator, config);
+        return cacheOperator.handle.bind(cacheOperator);
     }
 
     /**
      * 缓存处理
-     * @param options 
+     * @param options
      */
-    handle(options: TOptions): TTask {
+    public handle(options: TOptions): TTask {
         if (this.Config.paramCondition && !this.Config.paramCondition(options)) {
             // 不缓存
             return this.op(options);
@@ -46,7 +54,7 @@ export class CacheOperator<
             // 缓存命中
             res.cache = (res.cache || 0) + 1;
             try {
-                options.success && options.success(res)
+                options.success && options.success(res);
             } catch (error) {
                 this.cache.delete(key);
             }
@@ -62,47 +70,38 @@ export class CacheOperator<
             this.callbackMapList[key] = {
                 success: options.success ? [options.success] : [],
                 fail: options.fail ? [options.fail] : [],
-                complete: options.complete ? [options.complete] : [],
-            }
+                complete: options.complete ? [options.complete] : []
+            };
             options.success = (res: TRes) => {
                 if (this.Config.resultCondition(res)) {
                     this.cache.set(key, res, this.Config.expire);
                 }
-                this.callbackMapList[key].success.forEach(function (v) { v(res) });
-            }
+                this.callbackMapList[key].success.forEach(function (v) { v(res); });
+            };
             options.fail = (res: { errMsg: string }) => {
-                this.callbackMapList[key].fail.forEach(function (v) { v(res) });
-            }
+                this.callbackMapList[key].fail.forEach(function (v) { v(res); });
+            };
             options.complete = (res: TRes) => {
-                this.callbackMapList[key].complete.forEach(function (v) { v(res) });
+                this.callbackMapList[key].complete.forEach(function (v) { v(res); });
                 delete this.callbackMapList[key];
-            }
+            };
             return this.op(options);
         }
         return {
             abort: doNothing,
             onHeadersReceived: doNothing as TTask['onHeadersReceived'],
-            onProgressUpdate: doNothing as TTask['onProgressUpdate'],
-        } as TTask
-    }
-
-    static createHandler<
-        TRes extends BaseSuccessRes=BaseSuccessRes,
-        TOptions extends WxOptions= WxOptions, // 微信操作函数
-        TTask extends WxTask=WxTask, // 微信操作的任务类型
-        >(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>): CacheOperator<TRes, TOptions, TTask>['handle'] {
-        const cacheOperator = new CacheOperator(operator, config);
-        return cacheOperator.handle.bind(cacheOperator);
+            onProgressUpdate: doNothing as TTask['onProgressUpdate']
+        } as TTask;
     }
 }
 
 interface CacheRes {
-    cache?: number
+    cache?: number;
 }
-export interface Configuration<TRes=BaseSuccessRes, TOptions=WxOptions> {
-    expire: number,
-    resultCondition: (res: TRes) => boolean,
-    paramCondition?: (options: TOptions) => boolean,
+export interface Configuration<TRes= BaseSuccessRes, TOptions= WxOptions> {
+    expire: number;
+    resultCondition(res: TRes): boolean;
+    paramCondition?(options: TOptions): boolean;
 }
 
 interface WxTask {
@@ -112,7 +111,7 @@ interface WxTask {
     /** 下载进度变化事件的回调函数 */
     onProgressUpdate?(callback: (res: any) => any): void;
 
-};
+}
 
 interface WxOptions {
     /** 开发者服务器接口地址 */
@@ -122,10 +121,10 @@ interface WxOptions {
     /** 接口调用失败的回调函数 */
     fail?: Function;
     /** 接口调用成功的回调函数 */
-    success?: (res: any) => any;
-};
+    success?(res: any): any;
+}
 
 interface BaseSuccessRes {
     errMsg: string;
-    statusCode: number
+    statusCode: number;
 }
