@@ -3,6 +3,6 @@ export {
   ExtraConfiguration,
   SuccessParam
 } from './configuration';
-export { EventListeners } from './listeners';
+export { Listeners } from './listeners';
 export { LifeCycle } from './life-cycle';
 export { CancelToken } from 'miniprogram-cancel-token';

@@ -1,5 +1,5 @@
 import { BaseConfiguration, ExtraConfiguration, mergeConfig, Omit, SuccessParam, WxOptions, WxTask } from './configuration';
-import { EventListeners } from './listeners';
+import { Listeners } from './listeners';
 
 type GeneralCallbackResult = {
     errMsg: string;
@@ -25,7 +25,7 @@ export abstract class LifeCycle<
      * 全局 Listeners
      */
     // tslint:disable-next-line:variable-name
-    public readonly Listeners: Readonly<EventListeners<TFullOptions, SuccessParam<TWxOptions>>> = new EventListeners();
+    public readonly Listeners: Readonly<Listeners<TFullOptions, SuccessParam<TWxOptions>>> = new Listeners();
 
     /**
      * 微信操作接口

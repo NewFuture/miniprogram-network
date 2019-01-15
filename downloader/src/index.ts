@@ -5,8 +5,10 @@ export {
   transformDownloadResponseOkData,
   DownloadParams
 } from './transform';
-/**
- * 于定义全局Download
- */
+
 import { Downloader } from './downloader';
+/**
+ * 预定义全局Download
+ */
+// tslint:disable-next-line: export-name
 export const DOWNLOAD = new Downloader();

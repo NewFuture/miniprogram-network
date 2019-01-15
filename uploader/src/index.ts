@@ -9,4 +9,5 @@ export {
 /**
  * 预定义全局 Upload 对象
  */
+// tslint:disable-next-line: export-name
 export const UPLOAD = new Uploader();

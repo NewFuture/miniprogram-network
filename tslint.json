@@ -10,6 +10,10 @@
             true,
             "CRLF"
         ],
+        "file-name-casing": [
+            true,
+            "kebab-case"
+        ],
         "function-name": [
             true,
             {
@@ -18,6 +22,15 @@
                 "protected-method-regex": "^[a-z][\\w\\d]+$",
                 "static-method-regex": "^[a-z][\\w\\d]+$",
                 "function-regex": "^[a-z][\\w\\d]+$"
+            }
+        ],
+        "export-name": [
+            false,
+            {
+                "ignore-case": true,
+                "allow": [
+                    "-"
+                ]
             }
         ],
         "no-any": false,
@@ -29,7 +42,6 @@
         "prefer-type-cast": false,
         "no-non-null-assertion": false,
         "newline-before-return": false,
-        "export-name": false,
         "strict-boolean-expressions": false,
         "promise-function-async": false,
         "use-named-parameter": false
