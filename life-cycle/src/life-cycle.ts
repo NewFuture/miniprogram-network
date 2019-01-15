@@ -65,11 +65,12 @@ export abstract class LifeCycle<
      * @param options - 完整参数
      */
     private onSend(options: TFullOptions): Promise<Omit<TWxOptions, 'complete' | 'success' | 'fail'>> {
-        const data: Omit<TWxOptions, 'complete' | 'success' | 'fail'> = options.transformSend ?
-            options.transformSend(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>) :
-            options as any;
+        // const data: Omit<TWxOptions, 'complete' | 'success' | 'fail'> = options.transformSend ?
+        //     options.transformSend(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>) :
+        //     options as any;
         this.Listeners.onSend.forEach(f => { f(options); });
-        return Promise.resolve(data);
+        return Promise.resolve(options)
+            .then(options.transformSend);
     }
 
     /**
@@ -119,9 +120,17 @@ export abstract class LifeCycle<
      */
     private onResponse<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => { f(res, options); });
-        const result = options.transformResponse ? options.transformResponse(res, options) : res;
-        return Promise.resolve(result)
-            .catch((reason: GeneralCallbackResult) => this.onFail(reason, options));
+        if (options.transformResponse) {
+            return Promise
+                .resolve(res)
+                .then(
+                    // tslint:disable-next-line: no-unsafe-any
+                    (result) => options.transformResponse!(result, options),
+                    (reason: GeneralCallbackResult) => this.onFail(reason, options)
+                );
+        } else {
+            return Promise.resolve(res);
+        }
     }
 
     /**

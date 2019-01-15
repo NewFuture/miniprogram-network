@@ -6,6 +6,10 @@
     "defaultSeverity": "warn",
     "jsRules": {},
     "rules": {
+        "linebreak-style": [
+            true,
+            "CRLF"
+        ],
         "no-any": false,
         "interface-name": false,
         "typedef": false,
