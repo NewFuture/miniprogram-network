@@ -48,7 +48,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
     const id = ++this.taskid;
     if (this.taskMap.size < this.MAX) {
       // task队列未满
-      return this.process(id, param);
+      return this._process(id, param);
     } else if (param.jump) {
       // 插队
       this.todo.unshift([id, param]);
@@ -57,19 +57,19 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
     }
 
     return {
-      abort: (): void => { this.abort(id); },
-      onProgressUpdate: (callback: ExtraOptions['onProgressUpdate']) => { this.onProgress(id, callback); },
-      onHeadersReceived: (callback: ExtraOptions['onHeadersReceived']) => { this.onHeaders(id, callback); }
+      abort: (): void => { this._abort(id); },
+      onProgressUpdate: (callback: ExtraOptions['onProgressUpdate']) => { this._onProgress(id, callback); },
+      onHeadersReceived: (callback: ExtraOptions['onHeadersReceived']) => { this._onHeaders(id, callback); }
     } as any;
   }
 
   /**
    * check and do next task
    */
-  private next(): void {
+  private _next(): void {
     if (this.todo.length > 0 && this.taskMap.size < this.MAX) {
       const [taskid, taskOptions] = this.todo.shift()!;
-      this.process(taskid, taskOptions);
+      this._process(taskid, taskOptions);
     }
   }
 
@@ -78,7 +78,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * @param id task ID
    * @param options  task param
    */
-  private process(id: number, options: QueueOption<Tparam>): Ttask {
+  private _process(id: number, options: QueueOption<Tparam>): Ttask {
     const oldComplete = options.complete;
     options.complete = (res: { time?: TimeRecorder }) => {
       if (options.timestamp && this.taskMap.has(id)) {
@@ -89,7 +89,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
       if (oldComplete) {
         oldComplete.call(options, res);
       }
-      this.next();
+      this._next();
     };
     const task = this.operator(options);
     // task progress polyfill
@@ -112,7 +112,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * stop and remove a task
    * @param taskid - the id of task to abort
    */
-  private abort(taskid: number) {
+  private _abort(taskid: number) {
     const index = this.todo.findIndex(v => v[0] === taskid);
     if (index >= 0) {
       const completeCallback = this.todo[index][1].complete;
@@ -133,7 +133,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * @param taskid - task id
    * @param callback 回调操作
    */
-  private onProgress(
+  private _onProgress(
     taskid: number,
     callback: ExtraOptions['onProgressUpdate']
   ): void {
@@ -145,7 +145,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
     }
   }
 
-  private onHeaders(
+  private _onHeaders(
     taskid: number,
     callback: ExtraOptions['onHeadersReceived']
   ) {

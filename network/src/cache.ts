@@ -10,9 +10,7 @@ export const config: Configuration & {
     expire: 10 * 60 * 1000,
     /** GET,HEAD,OPTIONS默认缓存 */
     excludeMethod: ['POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT'],
-    paramCondition: function (param) {
-        return config.excludeMethod.indexOf((param as MethodParam).method) < 0;
-    },
+    paramCondition: (param) => (config.excludeMethod.indexOf((param as MethodParam).method) < 0),
     resultCondition: isOkResult
 };
 

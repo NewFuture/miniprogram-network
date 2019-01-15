@@ -17,7 +17,7 @@ export function buildParams(
 ): string {
     if (url && params) {
         Object.keys(params)
-            .forEach(function (key) {
+            .forEach((key) => {
                 // tslint:disable-next-line:no-parameter-reassignment prefer-type-cast
                 url = url.replace(new RegExp(`{${key}}`, 'g'), params[key] as string);
             });
@@ -40,7 +40,7 @@ export function getCommonOptions<T extends { [key: string]: any }>(
     options: { [key: string]: any },
     keys: string[] = ['jump', 'timestamp']
 ): T {
-    keys.forEach(function (v) {
+    keys.forEach((v) => {
         if (options[v] !== undefined) {
             data[v] = options[v];
         }

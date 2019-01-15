@@ -30,7 +30,7 @@ function setConfig(): void {
     } else if (typeof arguments[0] === 'object') {
         const config: CommonConfig = arguments[0] as CommonConfig;
         Object.keys(config)
-            .forEach(function (key) {
+            .forEach((key) => {
                 REQUEST.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
                 DOWNLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
                 UPLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];

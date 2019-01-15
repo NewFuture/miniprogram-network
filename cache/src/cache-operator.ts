@@ -77,13 +77,13 @@ export class CacheOperator<
                 if (this.config.resultCondition(res)) {
                     this.cache.set(key, res, this.config.expire);
                 }
-                this.callbackMapList[key].success.forEach(function (v) { v(res); });
+                this.callbackMapList[key].success.forEach((v) => { v(res); });
             };
             options.fail = (res: { errMsg: string }) => {
-                this.callbackMapList[key].fail.forEach(function (v) { v(res); });
+                this.callbackMapList[key].fail.forEach((v) => { v(res); });
             };
             options.complete = (res: TRes) => {
-                this.callbackMapList[key].complete.forEach(function (v) { v(res); });
+                this.callbackMapList[key].complete.forEach((v) => { v(res); });
                 // tslint:disable-next-line: no-dynamic-delete
                 delete this.callbackMapList[key];
             };

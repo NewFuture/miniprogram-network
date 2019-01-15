@@ -10,13 +10,21 @@
             true,
             "CRLF"
         ],
+        "function-name": [
+            true,
+            {
+                "method-regex": "^[a-z][\\w\\d]+$",
+                "private-method-regex": "^_[a-z][\\w\\d]+$",
+                "protected-method-regex": "^[a-z][\\w\\d]+$",
+                "static-method-regex": "^[a-z][\\w\\d]+$",
+                "function-regex": "^[a-z][\\w\\d]+$"
+            }
+        ],
         "no-any": false,
         "interface-name": false,
         "typedef": false,
-        "function-name": false,
         "no-single-line-block-comment": false,
         "no-relative-imports": false,
-        "no-function-expression": false,
         "no-increment-decrement": false,
         "prefer-type-cast": false,
         "no-non-null-assertion": false,
