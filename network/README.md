@@ -23,6 +23,11 @@
 * [x] Interceptors 拦截器 transform send data / transform response data
 * [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
 
+## 安装
+```
+npm i miniprogram-network
+```
+
 ## 配置 
 
 ### 通用配置

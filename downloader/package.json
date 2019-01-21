@@ -6,7 +6,7 @@
 		"miniprogram",
 		"wx.downloadFile"
 	],
-	"homepage": "https://github.com/NewFuture/miniprogram-network/",
+	"homepage": "https://miniprogram-network.newfuture.cc/downloader/",
 	"bugs": {
 		"url": "https://github.com/NewFuture/miniprogram-network/issues"
 	},

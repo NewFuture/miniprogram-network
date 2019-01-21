@@ -7,9 +7,11 @@
     "network",
     "wx.downloadFile",
     "wx.request",
-    "wx.uploadFile"
+    "wx.uploadFile",
+    "axios",
+    "request"
   ],
-  "homepage": "https://github.com/NewFuture/miniprogram-network/",
+  "homepage": "https://miniprogram-network.newfuture.cc/",
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram-network/issues"
   },

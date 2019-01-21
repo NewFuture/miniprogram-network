@@ -6,7 +6,7 @@
 		"miniprogram",
 		"wx.uploadFile"
 	],
-	"homepage": "https://github.com/NewFuture/miniprogram-network/",
+	"homepage": "https://miniprogram-network.newfuture.cc/uploader/",
 	"bugs": {
 		"url": "https://github.com/NewFuture/miniprogram-network/issues"
 	},
