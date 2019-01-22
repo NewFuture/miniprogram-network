@@ -22,9 +22,12 @@
 		"src/**"
 	],
 	"main": "dist/index.js",
+	"module": "es/index.js",
 	"types": "types/index.d.ts",
 	"scripts": {
-		"build": "tsc",
+		"build": "npm run build:es5 && npm run build:es6",
+		"build:es5": "tsc --declarationDir types",
+		"build:es6": "tsc -m es6 --outDir es",
 		"clean": "rm -rf dist && rm -rf types",
 		"lint": "tslint -p . -c ../tslint.json",
 		"lint:fix": "tslint --fix -p . -c ../tslint.json",
