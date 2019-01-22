@@ -39,6 +39,13 @@
 
 ## Usage
 
+### install
+
+```
+npm i miniprogram-downloader
+```
+
+
 ### quick start
 
 ```js

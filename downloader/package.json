@@ -1,12 +1,12 @@
 {
 	"name": "miniprogram-downloader",
-	"version": "3.1.0-alpha.0",
+	"version": "3.1.0",
 	"description": "minprogram download package ",
 	"keywords": [
 		"miniprogram",
 		"wx.downloadFile"
 	],
-	"homepage": "https://github.com/NewFuture/miniprogram-network/",
+	"homepage": "https://miniprogram-network.newfuture.cc/downloader/",
 	"bugs": {
 		"url": "https://github.com/NewFuture/miniprogram-network/issues"
 	},
@@ -34,8 +34,8 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
-		"miniprogram-network-life-cycle": "^3.1.0-alpha.0",
-		"miniprogram-network-utils": "^3.1.0-alpha.0",
-		"miniprogram-queue": "^3.1.0-alpha.0"
+		"miniprogram-network-life-cycle": "^3.1.0",
+		"miniprogram-network-utils": "^3.1.0",
+		"miniprogram-queue": "^3.1.0"
 	}
 }

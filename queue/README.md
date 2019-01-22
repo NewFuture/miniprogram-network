@@ -17,7 +17,7 @@ Features:
 ## Install(安装)
 
 ```
-npm i miniprogram-queue -S
+npm i miniprogram-queue
 ```
 
 ## Usage(使用)

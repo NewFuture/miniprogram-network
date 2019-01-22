@@ -8,13 +8,13 @@
 		"promise",
 		"request"
 	],
-	"homepage": "https://github.com/NewFuture/miniprogram-fetch#readme",
+	"homepage": "https://miniprogram-network.newfuture.cc/",
 	"bugs": {
-		"url": "https://github.com/NewFuture/miniprogram-fetch/issues"
+		"url": "https://github.com/NewFuture/miniprogram-network/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/NewFuture/miniprogram-fetch.git"
+		"url": "git+https://github.com/NewFuture/miniprogram-network.git"
 	},
 	"license": "Apache-2.0",
 	"author": "NewFuture",

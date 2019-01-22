@@ -45,6 +45,11 @@
 
 ## Usage
 
+## install
+```
+npm i miniprogram-request
+```
+
 ### quick start
 
 ```js

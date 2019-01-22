@@ -10,6 +10,11 @@
 ## Examples 示例代码
 
 
+### 安装
+```
+npm i miniprogram-network
+```
+
 ### JavaScript
 
 ```js
@@ -21,19 +26,16 @@ Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
 
 Network.get('index.html')
     .then(res=>console.log(res))
-    .catch(console.error)
     .finally(()=>{console.info('done')}); //支持 finally操作
 
 Network.patch('items/{id}',{dataKey:'dataValue'},{
         params: {id:123456}, // 绑定参数
-        transformResponse: Network.transformRequestResponseOkData,// 响应2xx操作成功直接返回数据
+        retry:3,// 重试3次
     }).then((item)=>console.log(item))
-    .catch(console.error);
 
 Network.dowanload('network/','lcoalpath',{
-        onProgressUpdate:progressUpdateCallBack,// 进度回调
-        retry:3,// 重试3次
-        transformResponse: Network.transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
+        onProgressUpdate:progressUpdateCallBack,//进度回调
+        transformResponse: Network.transformDownloadResponseOkData, //状态码2xx成功,返回本地路径
     }).then(path=>console.log(path))
     .catch(console.error);
 ```
@@ -51,19 +53,16 @@ setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
 
 Request.get('index.html')
     .then(res=>console.log(res))
-    .catch(console.error);
     .finally(()=>{console.info('done')}); //支持 finally操作
 
 Request.patch<Item>('items/{id}',{dataKey:'dataValue'},{
         params: {id:123456}, // 绑定参数
-        transformResponse:transformRequestResponseOkData, // 响应2xx操作成功直接返回数据
+        retry:3,// 重试3次
     }).then((item:Item)=>console.log(item))
-    .catch(console.error);
 
 Download.dowanload<string>('network/','lcoalpath',{
-        onProgressUpdate:progressUpdateCallBack,// 进度回调
-        retry:3,// 重试3次
-        transformResponse: transformDownloadResponseOkData, // 根据状态码只返回2xx对应的本地文件名
+        onProgressUpdate:progressUpdateCallBack, //进度回调
+        transformResponse: transformDownloadResponseOkData, //状态码2xx成功,返回本地路径
     }).then((path:string)=>console.log(path))
     .catch(console.error);
 ```

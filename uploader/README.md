@@ -41,6 +41,11 @@
 
 ## Usage
 
+### install
+```
+npm i miniprogram-uploader
+```
+
 ### quick start
 
 ```js
