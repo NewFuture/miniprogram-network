@@ -1,8 +1,8 @@
 # miniprogram-downloader [![npm version](https://badge.fury.io/js/miniprogram-downloader.svg)](https://npmjs.com/package/miniprogram-downloader)
 
-> An axios API like `Download` package for MiniProgram [alpha]
+> An axios API like `Download` package for MiniProgram 
 >
-> 小程序下载封装 [alpha]
+> 小程序下载封装
 > 小程序网络库[miniprogram-network](https://github.com/NewFuture/miniprogram-network) 核心库之一
 
 
