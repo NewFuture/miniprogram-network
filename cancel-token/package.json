@@ -1,6 +1,6 @@
 {
 	"name": "miniprogram-cancel-token",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "cancel-token",
 	"repository": {
 		"type": "git",
@@ -11,8 +11,8 @@
 	"files": [
 		"dist/",
 		"types/",
-        "src/",
-        "es/"
+		"src/",
+		"es/"
 	],
 	"main": "dist/index.js",
 	"module": "es/index.js",

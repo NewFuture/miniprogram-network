@@ -1,6 +1,6 @@
 {
 	"name": "miniprogram-network-cache",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "minprogram network cache ",
 	"keywords": [
 		"netork-cache",
@@ -19,8 +19,8 @@
 	"files": [
 		"dist/",
 		"types/",
-        "src/",
-        "es/"
+		"src/",
+		"es/"
 	],
 	"main": "dist/index.js",
 	"module": "es/index.js",
@@ -35,6 +35,6 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
-		"miniprogram-network-life-cycle": "^3.2.0"
+		"miniprogram-network-life-cycle": "^3.2.1"
 	}
 }
