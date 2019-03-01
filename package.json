@@ -23,17 +23,18 @@
 		"build": "npm run build:ts && npm run lint:fix",
 		"build:ts": "lerna run build",
 		"clean": "lerna run clean",
-		"init": "npm run rm:module && lerna bootstrap && lerna run build",
+		"start": "npm run rm:module && lerna bootstrap && lerna run build",
 		"publish": "npm run clean && npm run build:ts && npm run lint && lerna publish",
 		"rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
 		"lint": "lerna run lint",
 		"lint:fix": "lerna run lint:fix",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "npm run lint && npm start"
 	},
+	"private": true,
 	"devDependencies": {
-		"lerna": "^3.9.0",
-		"tslint": "^5.12.1",
+		"lerna": "^3.13.1",
+		"tslint": "^5.13.1",
 		"tslint-microsoft-contrib": "^6.0.0",
-		"typescript": "^3.2.2"
+		"typescript": "^3.3.3333"
 	}
 }

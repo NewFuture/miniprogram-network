@@ -53,36 +53,36 @@ export {
  */
 export const request: Http['request'] = REQUEST.request.bind(
   REQUEST
-) as Http['request'];
+);
 /**
  * Request.get
  */
 // tslint:disable-next-line: no-reserved-keywords
-export const get: Http['get'] = REQUEST.get.bind(REQUEST) as Http['get'];
+export const get: Http['get'] = REQUEST.get.bind(REQUEST);
 /**
  * Request.post
  */
-export const post: Http['post'] = REQUEST.post.bind(REQUEST) as Http['post'];
+export const post: Http['post'] = REQUEST.post.bind(REQUEST);
 /**
  * Request.put
  */
-export const put: Http['put'] = REQUEST.put.bind(REQUEST) as Http['put'];
+export const put: Http['put'] = REQUEST.put.bind(REQUEST);
 /**
  * Request.delete
  */
 export const del: Http['delete'] = REQUEST.delete.bind(
   REQUEST
-) as Http['delete'];
+);
 /**
  * Request.patch
  */
 export const patch: Http['patch'] = REQUEST.patch.bind(
   REQUEST
-) as Http['patch'];
+);
 /**
  * Request.head
  */
-export const head: Http['head'] = REQUEST.head.bind(REQUEST) as Http['head'];
+export const head: Http['head'] = REQUEST.head.bind(REQUEST);
 
 // Short Link for Download
 /**
@@ -90,7 +90,7 @@ export const head: Http['head'] = REQUEST.head.bind(REQUEST) as Http['head'];
  */
 export const download: Downloader['download'] = DOWNLOAD.download.bind(
   DOWNLOAD
-) as Downloader['download'];
+);
 
 // ShortLink for Upload
 /**
@@ -98,7 +98,7 @@ export const download: Downloader['download'] = DOWNLOAD.download.bind(
  */
 export const upload: Uploader['upload'] = UPLOAD.upload.bind(
   UPLOAD
-) as Uploader['upload'];
+);
 
 export declare namespace Network {
   /**

@@ -26,16 +26,16 @@ export const cacheDownloader = new Downloader(DOWNLOAD.Defaults, CacheOperator.c
 /**
  * request 缓存
  */
-export const request: Http['request'] = cacheHttp.request.bind(cacheHttp) as Http['request'];
+export const request: Http['request'] = cacheHttp.request.bind(cacheHttp);
 /**
  * GET 缓存
  */
 // tslint:disable-next-line: no-reserved-keywords
-export const get: Http['get'] = cacheHttp.get.bind(cacheHttp) as Http['get'];
+export const get: Http['get'] = cacheHttp.get.bind(cacheHttp);
 /**
  * 下载缓存
  */
-export const download: Downloader['download'] = cacheDownloader.download.bind(cacheDownloader) as Downloader['download'];
+export const download: Downloader['download'] = cacheDownloader.download.bind(cacheDownloader);
 
 interface MethodParam {
     method?: 'OPTIONS' | 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'TRACE' | 'CONNECT';
