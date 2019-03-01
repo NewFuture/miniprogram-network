@@ -1,40 +1,44 @@
 {
-	"name": "miniprogram-utils",
-	"version": "1.0.0",
-	"description": "Fetch API polyfill for Wechat MiniProgram",
-	"keywords": [
-		"fetch",
-		"miniprogram",
-		"promise",
-		"request"
-	],
-	"homepage": "https://miniprogram-network.newfuture.cc/",
-	"bugs": {
-		"url": "https://github.com/NewFuture/miniprogram-network/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/NewFuture/miniprogram-network.git"
-	},
-	"license": "Apache-2.0",
-	"author": "NewFuture",
-	"main": "dist/index.js",
-	"scripts": {
-		"build": "npm run build:ts && npm run lint:fix",
-		"build:ts": "lerna run build",
-		"clean": "lerna run clean",
-		"start": "npm run rm:module && lerna bootstrap && lerna run build",
-		"publish": "npm run clean && npm run build:ts && npm run lint && lerna publish",
-		"rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
-		"lint": "lerna run lint",
-		"lint:fix": "lerna run lint:fix",
-		"test": "npm run lint && npm start"
-	},
-	"private": true,
-	"devDependencies": {
-		"lerna": "^3.13.1",
-		"tslint": "^5.13.1",
-		"tslint-microsoft-contrib": "^6.0.0",
-		"typescript": "^3.3.3333"
-	}
+    "name": "miniprogram-utils",
+    "version": "1.0.0",
+    "description": "Fetch API polyfill for Wechat MiniProgram",
+    "keywords": [
+        "fetch",
+        "miniprogram",
+        "promise",
+        "request"
+    ],
+    "homepage": "https://miniprogram-network.newfuture.cc/",
+    "bugs": {
+        "url": "https://github.com/NewFuture/miniprogram-network/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NewFuture/miniprogram-network.git"
+    },
+    "license": "Apache-2.0",
+    "author": {
+        "name": "NewFuture",
+        "email": "npm@newfuture.cc",
+        "url": "https://newfuture.cc"
+    },
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "npm run build:ts && npm run lint:fix",
+        "build:ts": "lerna run build",
+        "clean": "lerna run clean",
+        "start": "npm run rm:module && lerna bootstrap && lerna run build",
+        "publish": "npm run clean && npm run build:ts && npm run lint && lerna publish",
+        "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
+        "lint": "lerna run lint",
+        "lint:fix": "lerna run lint:fix",
+        "test": "npm run lint && npm start"
+    },
+    "private": true,
+    "devDependencies": {
+        "lerna": "^3.13.1",
+        "tslint": "^5.13.1",
+        "tslint-microsoft-contrib": "^6.0.0",
+        "typescript": "^3.3.3333"
+    }
 }
