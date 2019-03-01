@@ -9,8 +9,10 @@
 	"license": "Apache-2.0",
 	"author": "New Future",
 	"files": [
-		"dist/**",
-		"src/"
+		"dist/",
+		"types/",
+        "src/",
+        "es/"
 	],
 	"main": "dist/index.js",
 	"module": "es/index.js",

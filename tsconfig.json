@@ -11,6 +11,8 @@
         "declarationMap": true,
         "listEmittedFiles": true,
         "declaration": true,
+        "esModuleInterop": false,
+        "noEmitHelpers": true,
     },
     "exclude": [
         "node_modules"

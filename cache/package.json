@@ -17,9 +17,10 @@
 	"license": "Apache-2.0",
 	"author": "NewFuture",
 	"files": [
-		"dist/**",
-		"types/**",
-		"src/**"
+		"dist/",
+		"types/",
+        "src/",
+        "es/"
 	],
 	"main": "dist/index.js",
 	"module": "es/index.js",
