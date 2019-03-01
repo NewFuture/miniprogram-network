@@ -28,7 +28,7 @@
         "build:ts": "lerna run build",
         "clean": "lerna run clean",
         "start": "npm run rm:module && lerna bootstrap && lerna run build",
-        "prepublish": "npm run clean && npm run build:ts && npm run lint",
+        "prepublishOnly": "npm run clean && npm run build:ts && npm run lint",
         "publish": "lerna publish",
         "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
         "lint": "lerna run lint",
