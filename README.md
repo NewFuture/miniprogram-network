@@ -122,7 +122,7 @@ Download.dowanload<string>('network/','lcoalpath',{
     * [x] OnProgressUpdate 进度回调
     * [x] OnHeadersReceived 响应头回调
     * [x] 支持插队
-* [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch)
+* [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch) [![Greenkeeper badge](https://badges.greenkeeper.io/NewFuture/miniprogram-network.svg)](https://greenkeeper.io/)
     * [x] 自动队列支持
 * ~~[miniprogram-promise](promise) 小程序异步API转Promise~~
     * [x] Finally Promise (支持finally)
