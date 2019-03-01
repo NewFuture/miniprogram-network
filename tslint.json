@@ -7,8 +7,8 @@
     "jsRules": {},
     "rules": {
         "linebreak-style": [
-            true,
-            "CRLF"
+            false,
+            "LF"
         ],
         "file-name-casing": [
             true,

@@ -28,11 +28,13 @@
         "build:ts": "lerna run build",
         "clean": "lerna run clean",
         "start": "npm run rm:module && lerna bootstrap && lerna run build",
-        "publish": "npm run clean && npm run build:ts && npm run lint && lerna publish",
+        "prepublish": "npm run clean && npm run build:ts && npm run lint",
+        "publish": "lerna publish",
         "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
         "lint": "lerna run lint",
         "lint:fix": "lerna run lint:fix",
-        "test": "npm run lint && npm start"
+        "pretest": "lerna bootstrap --no-ci",
+        "test": "npm run lint && lerna run build"
     },
     "private": true,
     "devDependencies": {
