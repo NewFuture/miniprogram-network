@@ -1,0 +1,21 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "cache/package.json",
+        "cancel-token/package.json",
+        "downloader/package.json",
+        "fetch/package.json",
+        "life-cycle/package.json",
+        "network-utils/package.json",
+        "network/package.json",
+        "package.json",
+        "promise/package.json",
+        "queue/package.json",
+        "request/package.json",
+        "socket/package.json",
+        "uploader/package.json"
+      ]
+    }
+  }
+}
