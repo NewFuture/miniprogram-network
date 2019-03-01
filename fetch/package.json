@@ -16,6 +16,6 @@
 		"build": "tsc fetch.ts --moduleResolution node --target es6 --outDir dist -d"
 	},
 	"dependencies": {
-		"miniprogram-queue": "^1.0.0-alpha.0"
+		"miniprogram-queue": "^3.2.1"
 	}
 }
