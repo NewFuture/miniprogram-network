@@ -1,6 +1,6 @@
 {
 	"name": "miniprogram-fetch",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"description": "Fetch API polyfill for Wechat MiniProgram",
 	"keywords": [
 		"fetch",
