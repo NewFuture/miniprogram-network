@@ -83,7 +83,7 @@ Download.dowanload<string>('network/','lcoalpath',{
 对于TypeScript提供泛型支持,可完整的进行静态类型检查。
 
 
-## Main Packages 所有包
+## Main Packages 所有包 [![Greenkeeper badge](https://badges.greenkeeper.io/NewFuture/miniprogram-network.svg)](https://greenkeeper.io/)
 
 * [miniprogram-network](network) All in one 小程序网络库库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
     * `Request` from [`miniprogram-request` npm](https://npmjs.com/package/miniprogram-request)
@@ -122,7 +122,7 @@ Download.dowanload<string>('network/','lcoalpath',{
     * [x] OnProgressUpdate 进度回调
     * [x] OnHeadersReceived 响应头回调
     * [x] 支持插队
-* [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch) [![Greenkeeper badge](https://badges.greenkeeper.io/NewFuture/miniprogram-network.svg)](https://greenkeeper.io/)
+* [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch)
     * [x] 自动队列支持
 * ~~[miniprogram-promise](promise) 小程序异步API转Promise~~
     * [x] Finally Promise (支持finally)
