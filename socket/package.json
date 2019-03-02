@@ -21,7 +21,7 @@
     "url": "git+https://github.com/NewFuture/miniprogram.git"
   },
   "dependencies": {
-    "miniprogram-network-utils": "^1.0.0"
+    "miniprogram-network-utils": "^3.2.1"
   },
   "bugs": {
     "url": "https://github.com/NewFuture/miniprogram-network/issues"
