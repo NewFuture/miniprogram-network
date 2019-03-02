@@ -83,7 +83,7 @@ Download.dowanload<string>('network/','lcoalpath',{
 对于TypeScript提供泛型支持,可完整的进行静态类型检查。
 
 
-## Main Packages 所有包 [![Greenkeeper badge](https://badges.greenkeeper.io/NewFuture/miniprogram-network.svg)](https://greenkeeper.io/)
+## Main Packages 所有包
 
 * [miniprogram-network](network) All in one 小程序网络库库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
     * `Request` from [`miniprogram-request` npm](https://npmjs.com/package/miniprogram-request)
