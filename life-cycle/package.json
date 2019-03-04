@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-network-life-cycle",
-    "version": "3.2.4",
+    "version": "3.3.1",
     "description": "miniprogram-network",
     "repository": {
         "type": "git",
@@ -27,6 +27,6 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "miniprogram-cancel-token": "^3.2.4"
+        "miniprogram-cancel-token": "^3.3.1"
     }
 }

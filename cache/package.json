@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-network-cache",
-    "version": "3.2.4",
+    "version": "3.3.1",
     "description": "minprogram network cache ",
     "keywords": [
         "netork-cache",
@@ -33,6 +33,5 @@
         "lint": "tslint -p . -c ../tslint.json",
         "lint:fix": "tslint --fix -p . -c ../tslint.json",
         "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "dependencies": {}
+    }
 }
