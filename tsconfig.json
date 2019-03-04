@@ -13,6 +13,7 @@
         "declaration": true,
         "esModuleInterop": false,
         "noEmitHelpers": false, // 注入 helper function
+        // "importHelpers": true,
     },
     "exclude": [
         "node_modules"
