@@ -12,7 +12,7 @@
         "listEmittedFiles": true,
         "declaration": true,
         "esModuleInterop": false,
-        "noEmitHelpers": true,
+        "noEmitHelpers": false, // 注入 helper function
     },
     "exclude": [
         "node_modules"
