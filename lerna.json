@@ -1,24 +1,28 @@
 {
-  "packages": [
-    "queue",
-    "promise",
-    "network-utils",
-    "cancel-token",
-    "life-cycle",
-    "fetch",
-    "uploader",
-    "downloader",
-    "request",
-    "network",
-    "cache"
-  ],
-  "command": {
-    "bootstrap": {
-      "npmClientArgs": [
-        "--no-package-lock"
-      ]
-      
-    }
-  },
-  "version": "independent"
+    "packages": [
+        "queue",
+        "network-utils",
+        "cancel-token",
+        "life-cycle",
+        "fetch",
+        "uploader",
+        "downloader",
+        "request",
+        "network",
+        "cache"
+    ],
+    "command": {
+        "bootstrap": {
+            "npmClientArgs": [
+                "--no-package-lock"
+            ]
+        },
+        "version": {
+            "allowBranch": "master"
+        },
+        "publish": {
+            "message": "chore(release): publish %v"
+        }
+    },
+    "version": "3.2.3"
 }
