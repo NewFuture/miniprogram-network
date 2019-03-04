@@ -1,15 +1,15 @@
 {
     "packages": [
-        "queue",
-        "network-utils",
+        "cache",
         "cancel-token",
-        "life-cycle",
-        "fetch",
-        "uploader",
         "downloader",
-        "request",
+        "fetch",
+        "life-cycle",
         "network",
-        "cache"
+        "network-utils",
+        "queue",
+        "request",
+        "uploader"
     ],
     "command": {
         "bootstrap": {
@@ -24,5 +24,5 @@
             "message": "chore(release): publish %v"
         }
     },
-    "version": "3.2.3"
+    "version": "3.2.4"
 }
