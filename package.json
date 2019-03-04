@@ -1,5 +1,4 @@
 {
-    "name": "miniprogram-utils",
     "version": "1.0.0",
     "description": "Fetch API polyfill for Wechat MiniProgram",
     "keywords": [
@@ -36,7 +35,6 @@
         "pretest": "lerna bootstrap --no-ci",
         "test": "npm run lint && lerna run build"
     },
-    "private": true,
     "devDependencies": {
         "lerna": "^3.13.1",
         "tslint": "^5.13.1",
