@@ -85,6 +85,8 @@ Download.dowanload<string>('network/','lcoalpath',{
 
 ## Main Packages 所有包
 
+![network-dependencies-graph](https://user-images.githubusercontent.com/6290356/53808057-35143980-3f8c-11e9-8618-4d6e7c5eaa1e.png)
+
 * [miniprogram-network](network) All in one 小程序网络库库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
     * `Request` from [`miniprogram-request` npm](https://npmjs.com/package/miniprogram-request)
     * `Upload` from [`miniprogram-uploader` npm](https://npmjs.com/package/miniprogram-uploader)
