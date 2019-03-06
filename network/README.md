@@ -5,7 +5,7 @@
 > 小程序底层网络库封装
 
 
-## Todo
+## Integration
 * [x] [request](https://www.npmjs.com/package/miniprogram-request)
 * [x] [upload](https://www.npmjs.com/package/miniprogram-uploader)
 * [x] [download](https://www.npmjs.com/package/miniprogram-downloader)
@@ -54,22 +54,22 @@ npm i miniprogram-network
 
 ```js
 import {
-    Request, transformRequestResponseOkData,
-    Download, transformDownloadResponseOkData,
-    Upload, transformUploadResponseOkData,
+    REQUEST, transformRequestResponseOkData,
+    DOWNLOAD, transformDownloadResponseOkData,
+    UPLOAD, transformUploadResponseOkData,
 } from 'miniprogram-network';
 
 // Request的默认响应拦设为成transformRequestResponseOkData,
 // 正常2xx返回data部分，否则rejected
-Request.Defaults.transformResponse = transformRequestResponseOkData;
+REQUEST.Defaults.transformResponse = transformRequestResponseOkData;
 // Download的默认响应拦设为transformDownloadResponseOkData，
 // 正常2xx返回string,否则rejected
-Download.Defaults.transformResponse = transformDownloadResponseOkData;
+DOWNLOAD.Defaults.transformResponse = transformDownloadResponseOkData;
 // Upload默认响应拦截transformUploadResponseOkData,
 //正常2xx返回data,否则rejected
-Upload.Defaults.transformResponse = transformUploadResponseOkData;
+UPLOAD.Defaults.transformResponse = transformUploadResponseOkData;
 
-Download.download('url')
+DOWNLOAD.download('url')
     .then(path=>{
         console.log(path);//string
     }).catch(res=>{
