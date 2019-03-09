@@ -41,44 +41,44 @@ export {
 /**
  * Request.request
  */
-export const request: Http['request'] = REQUEST.request.bind(REQUEST);
+export const request: Http['request'] = /*@__PURE__*/ REQUEST.request.bind(REQUEST);
 /**
  * Request.get
  */
 // tslint:disable-next-line: no-reserved-keywords
-export const get: Http['get'] = REQUEST.get.bind(REQUEST);
+export const get: Http['get'] = /*@__PURE__*/ REQUEST.get.bind(REQUEST);
 /**
  * Request.post
  */
-export const post: Http['post'] = REQUEST.post.bind(REQUEST);
+export const post: Http['post'] = /*@__PURE__*/ REQUEST.post.bind(REQUEST);
 /**
  * Request.put
  */
-export const put: Http['put'] = REQUEST.put.bind(REQUEST);
+export const put: Http['put'] = /*@__PURE__*/ REQUEST.put.bind(REQUEST);
 /**
  * Request.delete
  */
-export const del: Http['delete'] = REQUEST.delete.bind(REQUEST);
+export const del: Http['delete'] = /*@__PURE__*/ REQUEST.delete.bind(REQUEST);
 /**
  * Request.patch
  */
-export const patch: Http['patch'] = REQUEST.patch.bind(REQUEST);
+export const patch: Http['patch'] = /*@__PURE__*/ REQUEST.patch.bind(REQUEST);
 /**
  * Request.head
  */
-export const head: Http['head'] = REQUEST.head.bind(REQUEST);
+export const head: Http['head'] = /*@__PURE__*/ REQUEST.head.bind(REQUEST);
 
 // Short Link for Download
 /**
  * Download.download
  */
-export const download: Downloader['download'] = DOWNLOAD.download.bind(DOWNLOAD);
+export const download: Downloader['download'] = /*@__PURE__*/ DOWNLOAD.download.bind(DOWNLOAD);
 
 // ShortLink for Upload
 /**
  * Upload.upload
  */
-export const upload: Uploader['upload'] = UPLOAD.upload.bind(UPLOAD);
+export const upload: Uploader['upload'] = /*@__PURE__*/ UPLOAD.upload.bind(UPLOAD);
 
 export declare namespace Network {
     /**

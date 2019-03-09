@@ -12,4 +12,4 @@ export { Http, RequestOption, RequestConfig, RequestInit } from './http';
  * 预定义全局 REQUEST 对象
  */
 // tslint:disable-next-line: export-name
-export const REQUEST = new Http();
+export const REQUEST = /*@__PURE__*/ new Http();
