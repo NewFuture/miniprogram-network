@@ -97,9 +97,9 @@ setConfig({
 ```js
 import {
     cacheConfig, // 缓存配置
-    getCache, // 与get方法一致,自动使用cache
-    downloadCache, // 与download方法一致，自动使用cache
-    requestCache, // 与request方法一致,自动使用cache
+    cacheGet, // 与get方法一致,自动使用cache
+    cacheDownload, // 与download方法一致，自动使用cache
+    cacheRequest, // 与request方法一致,自动使用cache
     } from 'miniprogram-network';
 
 CacheConfig.expire = 30*60*1000;//设置缓存有效时间
@@ -108,12 +108,12 @@ CacheConfig.resultCondition = function(res){
     return true;
 }
 
-//getCache 与 Request共用配置
-getCache('xxx').then(resolve);
-getCache('xxx').then(resolve);
+//cacheGet 与 Request共用配置
+cacheGet('xxx').then(resolve);
+cacheGet('xxx').then(resolve);
 
-// downloadCache 与 Download共用配置
-downloadCache('xxx').then();
+// cacheDownload 与 Download共用配置
+cacheDownload('xxx').then();
 
 ```
 
