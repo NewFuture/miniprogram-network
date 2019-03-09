@@ -4,7 +4,7 @@ import { WxQueue } from 'miniprogram-queue';
 import { transfomDownloadSendDefault } from './transform';
 
 // tslint:disable-next-line: no-use-before-declare
-const downloadQueue = /*@__PURE__*/ new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
+const downloadQueue = /*#__PURE__*/ new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
 
 /**
  * 默认配置信息

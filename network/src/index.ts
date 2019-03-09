@@ -5,6 +5,7 @@ import {
     DownloadOption as NetworkDownloadOption,
     DownloadParams as NetworkDownloadParams
 } from 'miniprogram-downloader';
+
 import {
     Http,
     REQUEST,
@@ -20,9 +21,6 @@ import {
     UploadOption as NetworkUploadOption,
     UploadParams as NetworkUploadParams
 } from 'miniprogram-uploader';
-
-export { setConfig } from './set-config';
-export { get as getCache, request as requestCache, download as downloadCache, config as cacheConfig } from './cache';
 export {
     Http,
     REQUEST,
@@ -30,55 +28,86 @@ export {
     transformRequestSendDefault,
     CancelToken
 } from 'miniprogram-request';
-export { Uploader, UPLOAD, transformUploadResponseOkData, transformUploadSendDefault } from 'miniprogram-uploader';
+export {
+    Uploader,
+    UPLOAD,
+    transformUploadResponseOkData,
+    transformUploadSendDefault
+} from 'miniprogram-uploader';
 export {
     Downloader,
     DOWNLOAD,
     transformDownloadResponseOkData,
     transfomDownloadSendDefault
 } from 'miniprogram-downloader';
+export {
+    get as cacheGet,
+    request as cacheRequest,
+    download as cacheDownload,
+    config as cacheConfig
+} from './cache';
+export { setConfig } from './set-config';
+
 // ShortLink for Request
 /**
- * Request.request
+ * REQUEST.request
  */
-export const request: Http['request'] = /*@__PURE__*/ REQUEST.request.bind(REQUEST);
+export const request: Http['request'] =
+    /*#__PURE__*/
+    REQUEST.request.bind(REQUEST);
 /**
- * Request.get
+ * REQUEST.get
  */
 // tslint:disable-next-line: no-reserved-keywords
-export const get: Http['get'] = /*@__PURE__*/ REQUEST.get.bind(REQUEST);
+export const get: Http['get'] =
+    /*#__PURE__*/
+    REQUEST.get.bind(REQUEST);
 /**
- * Request.post
+ * REQUEST.post
  */
-export const post: Http['post'] = /*@__PURE__*/ REQUEST.post.bind(REQUEST);
+export const post: Http['post'] =
+    /*#__PURE__*/
+    REQUEST.post.bind(REQUEST);
 /**
- * Request.put
+ * REQUEST.put
  */
-export const put: Http['put'] = /*@__PURE__*/ REQUEST.put.bind(REQUEST);
+export const put: Http['put'] =
+    /*#__PURE__*/
+    REQUEST.put.bind(REQUEST);
 /**
- * Request.delete
+ * REQUEST.delete
  */
-export const del: Http['delete'] = /*@__PURE__*/ REQUEST.delete.bind(REQUEST);
+export const del: Http['delete'] =
+    /*#__PURE__*/
+    REQUEST.delete.bind(REQUEST);
 /**
- * Request.patch
+ * REQUEST.patch
  */
-export const patch: Http['patch'] = /*@__PURE__*/ REQUEST.patch.bind(REQUEST);
+export const patch: Http['patch'] =
+    /*#__PURE__*/
+    REQUEST.patch.bind(REQUEST);
 /**
- * Request.head
+ * REQUEST.head
  */
-export const head: Http['head'] = /*@__PURE__*/ REQUEST.head.bind(REQUEST);
+export const head: Http['head'] =
+    /*#__PURE__*/
+    REQUEST.head.bind(REQUEST);
 
 // Short Link for Download
 /**
- * Download.download
+ * DOWNLOAD.download
  */
-export const download: Downloader['download'] = /*@__PURE__*/ DOWNLOAD.download.bind(DOWNLOAD);
+export const download: Downloader['download'] =
+    /*#__PURE__*/
+    DOWNLOAD.download.bind(DOWNLOAD);
 
 // ShortLink for Upload
 /**
- * Upload.upload
+ * UPLOAD.upload
  */
-export const upload: Uploader['upload'] = /*@__PURE__*/ UPLOAD.upload.bind(UPLOAD);
+export const upload: Uploader['upload'] =
+    /*#__PURE__*/
+    UPLOAD.upload.bind(UPLOAD);
 
 export declare namespace Network {
     /**

@@ -6,7 +6,7 @@ import { transformRequestSendDefault } from './transform';
  * 请求队列
  */
 // tslint:disable-next-line: no-use-before-declare
-const requestQueue = /*@__PURE__*/ new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
+const requestQueue = /*#__PURE__*/ new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
 /**
  * 小程序HTTP 请求生命周期封装

@@ -2,6 +2,7 @@
     "compilerOptions": {
         "target": "es5",
         "sourceMap": true,
+        "removeComments": false,
         "strict": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,

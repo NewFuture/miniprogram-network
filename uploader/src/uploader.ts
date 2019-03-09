@@ -5,7 +5,7 @@ import { WxQueue } from 'miniprogram-queue';
 import { transformUploadSendDefault } from './transform';
 
 // tslint:disable-next-line: no-use-before-declare
-const uploadQueue = /*@__PURE__*/ new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFile);
+const uploadQueue = /*#__PURE__*/ new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFile);
 /**
  * 默认配置信息
  */
