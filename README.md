@@ -7,11 +7,11 @@
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 > for `JavaScript` & `TypeScript`
 
-## Examples 示例代码
-
+## Examples 示例
 
 ### 安装
-```
+
+```sh
 npm i miniprogram-network
 ```
 
@@ -21,12 +21,13 @@ npm i miniprogram-network
 const Network = require('miniprogram-network');
 
 // setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
-// 也可Network.Request.Defaults,Network.Download.Defaults,Network.Upload.Defaults 分别设置不同默认配置
 Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
+// 也可Network.REQUEST.Defaults,Network.DOWNLOAD.Defaults,Network.UPLOAD.Defaults 分别设置不同默认配置
+Network.REQUEST.Defaults.transformResponse = Network.transformRequestResponseOkData
 
 Network.get('index.html')
     .then(res=>console.log(res))
-    .finally(()=>{console.info('done')}); //支持 finally操作
+    .finally(()=>{console.info('done')}) //支持 finally操作
 
 Network.patch('items/{id}',{dataKey:'dataValue'},{
         params: {id:123456}, // 绑定参数
@@ -37,31 +38,32 @@ Network.dowanload('network/','lcoalpath',{
         onProgressUpdate:progressUpdateCallBack,//进度回调
         transformResponse: Network.transformDownloadResponseOkData, //状态码2xx成功,返回本地路径
     }).then(path=>console.log(path))
-    .catch(console.error);
+    .catch(console.error)
 ```
 
 ### TypeScript
 
 > 装完即用，无需额外配置和类型声明
 
-```js
-import {setConfig,Request,Download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
+```ts
+import {setConfig,REQUEST,download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
 
 // setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
-// 也可通过Request.Defaults,Download.Defaults,Upload.Defaults 分别设置不同默认配置
-setConfig('baseURL','https://miniprogram-network.newfuture.cc/');
+setConfig('baseURL', 'https://miniprogram-network.newfuture.cc/');
+// 也可通过 REQUEST.Defaults,DOWNLOAD.Defaults,UPLOAD.Defaults 分别设置不同默认配置
+REQUEST.Defaults.transformResponse = transformRequestResponseOkData;
 
-Request.get('index.html')
+REQUEST.get('index.html')
     .then(res=>console.log(res))
     .finally(()=>{console.info('done')}); //支持 finally操作
 
-Request.patch<Item>('items/{id}',{dataKey:'dataValue'},{
+REQUEST.patch<Item>('items/{id}',{dataKey:'dataValue'},{
         params: {id:123456}, // 绑定参数
         retry:3,// 重试3次
-    }).then((item:Item)=>console.log(item))
+    }).then((item:Item)=>console.log(item));
 
-Download.dowanload<string>('network/','lcoalpath',{
-        onProgressUpdate:progressUpdateCallBack, //进度回调
+download<string>('network/','lcoalpath',{
+        onProgressUpdate: (res)=>console.log(res), //进度回调
         transformResponse: transformDownloadResponseOkData, //状态码2xx成功,返回本地路径
     }).then((path:string)=>console.log(path))
     .catch(console.error);
@@ -83,7 +85,8 @@ Download.dowanload<string>('network/','lcoalpath',{
 对于TypeScript提供泛型支持,可完整的进行静态类型检查。
 
 
-## Main Packages 所有包
+## Main Packages 所有包 [![Build Status](https://travis-ci.com/NewFuture/miniprogram-network.svg?branch=master)](https://travis-ci.com/NewFuture/miniprogram-network)
+
 
 ![network-dependencies-graph](https://user-images.githubusercontent.com/6290356/53808057-35143980-3f8c-11e9-8618-4d6e7c5eaa1e.png)
 
@@ -124,13 +127,13 @@ Download.dowanload<string>('network/','lcoalpath',{
     * [x] OnProgressUpdate 进度回调
     * [x] OnHeadersReceived 响应头回调
     * [x] 支持插队
+* [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
+![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
 * [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch)
     * [x] 自动队列支持
 * ~~[miniprogram-promise](promise) 小程序异步API转Promise~~
     * [x] Finally Promise (支持finally)
     * [x] cancelable/abort (可取消的Promise)
-* [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
-![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
 
 
 ## Todo
