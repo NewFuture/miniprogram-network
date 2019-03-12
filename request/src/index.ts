@@ -2,11 +2,16 @@ import { Http } from './http';
 
 export { CancelToken } from 'miniprogram-network-life-cycle';
 export {
+  Http,
+  RequestConfig,
+  RequestInit,
+  RequestOption
+} from './http';
+export {
   RequestParams,
-  transformRequestSendDefault,
-  transformRequestResponseOkData
+  transformRequestResponseOkData,
+  transformRequestSendDefault
 } from './transform';
-export { Http, RequestOption, RequestConfig, RequestInit } from './http';
 
 /**
  * 预定义全局 REQUEST 对象
