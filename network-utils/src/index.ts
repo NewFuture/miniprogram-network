@@ -1,3 +1,5 @@
+/// <reference lib="es5"/>
+/// <reference lib="es2015.core"/>
 // tslint:disable-next-line:no-import-side-effect
 import './promise.finally';
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;

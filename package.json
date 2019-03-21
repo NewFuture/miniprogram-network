@@ -37,8 +37,8 @@
     },
     "devDependencies": {
         "lerna": "^3.13.1",
-        "tslint": "^5.13.1",
-        "tslint-microsoft-contrib": "^6.0.0",
-        "typescript": "^3.3.3333"
+        "tslint": "^5.14.0",
+        "tslint-microsoft-contrib": "^6.1.0",
+        "typescript": "^3.3.4000"
     }
 }

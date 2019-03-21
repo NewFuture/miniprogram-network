@@ -37,7 +37,7 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param config 可覆盖默认配置
      */
     public request<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (method: NonNullable<wx.RequestOption["method"]>, action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn>;
+        (method: NonNullable<wx.RequestOption['method']>, action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn>;
     public request<TReturn= SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const argNum = arguments.length;
         // tslint:disable-next-line: no-unsafe-any
