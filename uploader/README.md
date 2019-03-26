@@ -65,7 +65,7 @@ import {UPLOAD,transformUploadResponseOkData} from 'miniprogram-downloder';
 UPLOAD.Defaults.transformResponse=transformUploadResponseOkData;
 
 //js
-UPLOAD.upload(localPath,'file','https://upload.site/file').then(console.log);//打印data
+UPLOAD.upload(localPath,'file','https://upload.site/file').then(console.log);//打印data string
 //TS
 UPLOAD.upload<{url:string}>(localPath,'file','https://upload.site/file')
     .then(data=>{
@@ -74,7 +74,7 @@ UPLOAD.upload<{url:string}>(localPath,'file','https://upload.site/file')
 
 //返回完整数据 对当前下载有效
 UPLOAD.upload(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
-    .then(console.log) //打印 返回的Object {errMsg:'xx',data:{url:'xxx'}}
+    .then(console.log) //打印 返回的Object {errMsg:'xx',data:"{url:'xxx'}"}
 ```
 
 

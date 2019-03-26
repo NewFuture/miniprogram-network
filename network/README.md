@@ -66,7 +66,8 @@ REQUEST.Defaults.transformResponse = transformRequestResponseOkData;
 // 正常2xx返回string,否则rejected
 DOWNLOAD.Defaults.transformResponse = transformDownloadResponseOkData;
 // Upload默认响应拦截transformUploadResponseOkData,
-//正常2xx返回data,否则rejected
+// 与小程序wx.uploadFile 不同之处会尝试进行JSON.parse反序列化字符串
+// 正常2xx返回data,否则rejected
 UPLOAD.Defaults.transformResponse = transformUploadResponseOkData;
 
 DOWNLOAD.download('url')
