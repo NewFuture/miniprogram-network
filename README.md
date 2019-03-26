@@ -30,7 +30,7 @@ Network.get('index.html')
     .finally(()=>{console.info('done')}) //支持 finally操作
 
 Network.patch('items/{id}',{dataKey:'dataValue'},{
-        params: {id:123456}, // 绑定参数
+        params: {id:123456}, // 绑定模板参数
         retry:3,// 重试3次
     }).then((item)=>console.log(item))
 

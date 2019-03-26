@@ -76,6 +76,14 @@ DOWNLOAD.download('url')
     }).catch(res=>{
         console.error(res);//objct
     });
+
+// 参数绑定
+Network.put('items/{id}',data,{
+        params: {id:123456}, // Object绑定模板参数
+    }).then(console.log)
+Network.put('items/{0}',data,{
+        params: [123456], // 数组绑定模板参数
+    }).then(console.log)
 ```
 
 ## 快速配置 setConfig

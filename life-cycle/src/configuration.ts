@@ -1,6 +1,7 @@
 import { CancelToken } from 'miniprogram-cancel-token';
 
-type KeyBasicValuePair = { [key: string]: string | number | boolean | null };
+type KeyBasicValuePair = Record<string, string | number | boolean | null | undefined>;
+export type ParamsType = Record<string, string | number | boolean> | (string | number | boolean)[];
 type PromiseOrValue<T> = T | PromiseLike<T>;
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
@@ -30,7 +31,7 @@ export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['succes
  */
 export interface BaseConfiguration<
     TFullOptions extends Partial<BaseConfiguration<TFullOptions, TWxOptions>>, //完整配置
-    TWxOptions extends WxOptions // 微信请求参数类型
+    TWxOptions extends WxOptions, // 微信请求参数类型
     > {
     /**
      * 请求的根目录
@@ -53,7 +54,7 @@ export interface BaseConfiguration<
      *  param = {ID: 12345}
      *  request url will be /1234/status
      */
-    params?: KeyBasicValuePair;
+    params?: ParamsType;
 
     /**
      * 重试次数
