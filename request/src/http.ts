@@ -1,4 +1,4 @@
-import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam, ParamsType } from 'miniprogram-network-life-cycle';
 import { WxQueue } from 'miniprogram-queue';
 import { transformRequestSendDefault } from './transform';
 
@@ -26,18 +26,35 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
     /**
      * Object 参数发起请求
      * @param options 每个请求的全部配置信息，未设置内容使用默认全局配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData request请求参数的格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public request<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (options: RequestOption<TData>): Promise<TReturn>;
+    public request<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(options: RequestOption<TData> & { params?: TParams }): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
      * @param action 请求操作URL,支持{name}格式参数
      * @param data 可转未query string
      * @param config 可覆盖默认配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData request请求参数的格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public request<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (method: NonNullable<wx.RequestOption['method']>, action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn>;
+    public request<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(
+            method: NonNullable<wx.RequestOption['method']>,
+            action: string,
+            data?: TData,
+            config?: Partial<RequestConfig>
+        ): Promise<TReturn>;
     public request<TReturn= SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const argNum = arguments.length;
         // tslint:disable-next-line: no-unsafe-any
@@ -58,10 +75,20 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param action 请求操作URL,支持{name}格式参数
      * @param data 可转为query string
      * @param config 可覆盖默认配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData get query data请求参数的格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     // tslint:disable-next-line: no-reserved-keywords
-    public get<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public get<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(
+            action: string,
+            data?: TData,
+            config?: Partial<RequestConfig> & { params?: TParams }
+        ): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
 
@@ -70,9 +97,19 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param action 请求操作URL,支持{name}格式参数
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData post data参数格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public post<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public post<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(
+            action: string,
+            data?: TData,
+            config?: Partial<RequestConfig> & { params?: TParams }
+        ): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
 
@@ -81,26 +118,62 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param action 请求操作URL,支持{name}格式参数
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData post data数据格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public put<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public put<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(
+            action: string,
+            data?: TData,
+            config?: Partial<RequestConfig> & { params?: TParams }
+        ): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
 
     /**
      * DELETE 操作
      * @param action 请求操作URL,支持{name}格式参数
-     * @param data 可转未query string
+     * @param data 可转为query string
      * @param config 可覆盖默认配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData put query data参数格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     // tslint:disable-next-line: no-reserved-keywords
-    public delete<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public delete<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(
+            action: string,
+            data?: TData,
+            config?: Partial<RequestConfig> & { params?: TParams }
+        ): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
 
-    public head<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    /**
+     * HEAD 操作
+     * @param action 请求操作URL,支持{name}格式参数
+     * @param data 可转为query string
+     * @param config 可覆盖默认配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData head query data参数格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
+     */
+    public head<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(
+            action: string,
+            data?: TData,
+            config?: Partial<RequestConfig> & { params?: TParams }
+        ): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
 
@@ -111,9 +184,19 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @param action 请求操作URL,支持{name}格式参数
      * @param data 操作数据,默认会以json方式上传
      * @param config 可覆盖默认配置
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData patch data参数格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public patch<TReturn= SuccessParam<wx.RequestOption>, TData extends BaseData = BaseData>
-        (action: string, data?: TData, config?: Partial<RequestConfig>): Promise<TReturn> {
+    public patch<
+        TReturn= SuccessParam<wx.RequestOption>,
+        TData extends BaseData = BaseData,
+        TParams extends ParamsType = ParamsType,
+        >(
+            action: string,
+            data?: TData,
+            config?: Partial<RequestConfig> & { params?: TParams }
+        ): Promise<TReturn> {
         if (!config) {
             // tslint:disable-next-line: no-parameter-reassignment
             config = {

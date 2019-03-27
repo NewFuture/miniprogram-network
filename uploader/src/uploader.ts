@@ -1,5 +1,5 @@
 
-import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam, ParamsType } from 'miniprogram-network-life-cycle';
 import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transformUploadSendDefault } from './transform';
@@ -48,19 +48,33 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * @param url 上传地址可选
      * @param data 附加formData数据，可选
      * @param options 其他参数
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData 上传 query data参数格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public upload<TReturn= SuccessParam<wx.UploadFileOption>, TData= object>(
-        filePath: string,
-        name: string,
-        url?: string,
-        data?: TData,
-        config?: Omit<UploadOption, 'filePath' | 'name' | 'url' | 'data'>): Promise<TReturn>;
+    public upload<
+        TReturn= SuccessParam<wx.UploadFileOption>,
+        TData= object,
+        TParams extends ParamsType = ParamsType,
+        >(
+            filePath: string,
+            name: string,
+            url?: string,
+            data?: TData,
+            config?: Omit<UploadOption, 'filePath' | 'name' | 'url' | 'data'> & { params?: TParams }
+        ): Promise<TReturn>;
     /**
      * 自定义上传
      * @param options 全部配置信息:filePath,name,为必填字段
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData 上传 query data参数格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public upload<TReturn= SuccessParam<wx.UploadFileOption>, TData extends object = object>(
-        options: UploadOption<TData>): Promise<TReturn>;
+    public upload<
+        TReturn= SuccessParam<wx.UploadFileOption>,
+        TData extends object = object,
+        TParams extends ParamsType = ParamsType,
+        >(options: UploadOption<TData> & { params?: TParams }): Promise<TReturn>;
     public upload<T>(): Promise<T> {
         const argNum: number = arguments.length;
         const options: UploadOption = argNum === 1 ? arguments[0] as UploadOption : (arguments[4] as UploadOption || {});

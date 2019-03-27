@@ -1,4 +1,4 @@
-import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam, ParamsType } from 'miniprogram-network-life-cycle';
 import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transfomDownloadSendDefault } from './transform';
@@ -32,26 +32,39 @@ export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask
     }
 
     /**
+     * 使用自定义参数下载
+     * @param options - 完整下载参数
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
+     */
+    public download<
+        TReturn = SuccessParam<wx.DownloadFileOption>,
+        TParams extends ParamsType = ParamsType, // 参数类型
+        >(options: DownloadOption & { params?: TParams }): Promise<TReturn>;
+    /**
      * 快速下载
      * @param url 下载地址
      * @param filePath 本地文件路径
      * @param options 其他参数
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
-    public download<T= SuccessParam<wx.DownloadFileOption>>
-        (url: string, filePath?: string, options?: Omit<DownloadOption, 'url' | 'filePath'>): Promise<T>;
-    /**
-     * Object 参数自定义下载
-     * @param options - 完整下载参数
-     */
-    public download<T= SuccessParam<wx.DownloadFileOption>>(options: DownloadOption): Promise<T>;
-    public download<T>(): Promise<T> {
+    public download<
+        TReturn = SuccessParam<wx.DownloadFileOption>,
+        TParams extends ParamsType = ParamsType, // 参数类型
+        >(
+            url: string,
+            filePath?: string,
+            options?: Omit<DownloadOption, 'url' | 'filePath'> & { params?: TParams }
+        ): Promise<TReturn>;
+    public download<TReturn>(): Promise<TReturn> {
         const isMultiParam = typeof arguments[0] === 'string';
         const options: DownloadOption = isMultiParam ? (arguments[2] as DownloadOption || {}) : arguments[0] as DownloadOption;
         if (isMultiParam) {
             options.url = arguments[0] as string;
             options.filePath = arguments[1] as string;
         }
-        return this.process<T>(options);
+        return this.process<TReturn>(options);
     }
 }
 
