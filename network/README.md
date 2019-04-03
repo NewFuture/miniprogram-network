@@ -86,9 +86,27 @@ Network.put('items/{0}',data,{
     }).then(console.log)
 ```
 
+### 取消操作 CancelToken (abort)
+
+可通过cancel token 方式取消请求
+```js
+import { get, CancelToken } from 'miniprogram-network';
+
+// 创建一个 tokensource
+const source = CancelToken.source();
+
+get('items', { skip: 100 }, { 
+    // 配置 cancelToken
+    cancelToken: source.token 
+});
+
+// 需要取消操作时
+source.cancel('cancel the get');
+```
+
 ## 快速配置 setConfig
 
-```js
+```ts
 import { setConfig } from 'miniprogram-network';
 
 //将Request,Upload,Download的默认baseURL设置为'https://api.newfuture.cc'
@@ -125,6 +143,7 @@ cacheGet('xxx').then(resolve);
 cacheDownload('xxx').then();
 
 ```
+
 
 ## LifeCycle
 

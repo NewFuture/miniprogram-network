@@ -59,7 +59,7 @@ UPLOAD.upload(localPath,'file','https://upload.site/file')
 ### 直接返回保存位置
 
 ```js
-import {UPLOAD,transformUploadResponseOkData} from 'miniprogram-downloder';
+import {UPLOAD,transformUploadResponseOkData} from 'miniprogram-uploader';
 // 根据状态码，直接返回保存地址
 //默认配置全局有效
 UPLOAD.Defaults.transformResponse=transformUploadResponseOkData;
@@ -83,7 +83,7 @@ UPLOAD.upload(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
 
 可通过cancel token 方式取消请求
 ```js
-import { UPLOAD, CancelToken } from 'miniprogram-request';
+import { UPLOAD, CancelToken } from 'miniprogram-uploader';
 
 // 创建一个 tokensource
 const source = CancelToken.source();

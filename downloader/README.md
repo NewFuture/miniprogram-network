@@ -88,7 +88,7 @@ DOWNLOAD.download(url:'item/1.jpg',null,{transformResponse:(res,o)=>res})
 
 可通过cancel token 方式取消请求
 ```js
-import { DOWNLOAD, CancelToken } from 'miniprogram-request';
+import { DOWNLOAD, CancelToken } from 'miniprogram-downloader';
 
 // 创建一个 tokensource
 const source = CancelToken.source();
