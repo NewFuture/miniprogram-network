@@ -85,7 +85,7 @@ export abstract class LifeCycle<
                 cancelToken.throwIfRequested();
             }
             data.success = (res: SuccessParam<TWxOptions>) => {
-                this._onResponse<T>(res, options)
+                this._response<T>(res, options)
                     .then(resolve, reject);
             };
             // retry
@@ -118,7 +118,7 @@ export abstract class LifeCycle<
      * @param res - 返回参数
      * @param options - 全部配置
      */
-    private _onResponse<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
+    private _response<T>(res: SuccessParam<TWxOptions>, options: TFullOptions): Promise<T> {
         this.Listeners.onResponse.forEach(f => { f(res, options); });
         if (options.transformResponse) {
             return Promise
