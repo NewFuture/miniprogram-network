@@ -42,7 +42,7 @@ export abstract class LifeCycle<
         if (config.retry === undefined) {
             this.Defaults.retry = 1;
         }
-        if (config.headers === undefined) {
+        if (!config.headers) {
             this.Defaults.headers = {};
         }
     }
@@ -51,7 +51,7 @@ export abstract class LifeCycle<
      * 处理请求
      * @param options - 请求参数,不包括默认参数
      */
-    protected process<T= SuccessParam<TWxOptions>>(options: TFullOptions): Promise<T> {
+    protected process<T = SuccessParam<TWxOptions>>(options: TFullOptions): Promise<T> {
         mergeConfig(options, this.Defaults);
         return this._onSend(options)
             .then((param) => {
