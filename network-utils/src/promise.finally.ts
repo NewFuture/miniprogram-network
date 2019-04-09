@@ -1,5 +1,3 @@
-
-/// <reference no-default-lib="true"/>
 /// <reference lib="es2015.promise"/>
 /// <reference lib="es2018.promise"/>
 interface Promise<T> {
