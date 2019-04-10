@@ -34,7 +34,14 @@ export class CacheOperator<
 
     private readonly op: (option: TOptions) => TTask;
     private readonly cache: Cache<TRes & CacheRes> = new Cache();
+    /**
+     * 正在处理的回调
+     */
     private readonly callbackMapList: { [key: string]: { success: Function[]; fail: Function[]; complete: Function[] } } = {};
+    /**
+     * 处理完的回调,待删除
+     */
+    private readonly completeMapList: { [key: string]: Function[] } = {};
 
     constructor(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>) {
         this.op = operator;
@@ -92,15 +99,17 @@ export class CacheOperator<
                     if (this.config.resultCondition(res)) {
                         this.cache.set(key, res, this.config.expire);
                     }
-                    this.callbackMapList[key].success.forEach((v) => { v(res); });
+                    this._getMapBeforeComplete(key).success
+                        .forEach((v) => { v(res); });
                 },
                 fail: (res: { errMsg: string }) => {
-                    this.callbackMapList[key].fail.forEach((v) => { v(res); });
+                    this._getMapBeforeComplete(key).fail
+                        .forEach((v) => { v(res); });
                 },
                 complete: (res: TRes) => {
-                    this.callbackMapList[key].complete.forEach((v) => { v(res); });
+                    this.completeMapList[key].forEach((v) => { v(res); });
                     // tslint:disable-next-line: no-dynamic-delete
-                    delete this.callbackMapList[key];
+                    delete this.completeMapList[key];
                 }
             };
             return this.op(data);
@@ -112,19 +121,36 @@ export class CacheOperator<
                     if (options.success) {
                         arrayRemove(this.callbackMapList[key].success, options.success);
                     }
+                    const callbackList = [];
                     if (options.fail) {
                         arrayRemove(this.callbackMapList[key].fail, options.fail);
-                        options.fail({ errMsg: 'request:fail abort', cancel: true, source: CacheOperator.name });
+                        callbackList.push(options.fail);
                     }
                     if (options.complete) {
-                        options.complete({ errMsg: 'request:fail abort', cancel: true, source: CacheOperator.name });
                         arrayRemove(this.callbackMapList[key].complete, options.complete);
+                        callbackList.push(options.complete);
                     }
+                    const res = { errMsg: 'request:fail abort', cancel: true, source: CacheOperator.name };
+                    callbackList.forEach(f => { f(res); });
                 }
             },
             onHeadersReceived: doNothing as TTask['onHeadersReceived'],
             onProgressUpdate: doNothing as TTask['onProgressUpdate']
         } as TTask;
+    }
+
+    /**
+     * fixed #10
+     * 在回调中再次发起操作前清除任务
+     * @param key cacheKey
+     */
+    private _getMapBeforeComplete(key: string): { success: Function[]; fail: Function[]; complete: Function[] } {
+        // remove the MapList from the `callbackMapList`
+        const list = this.callbackMapList[key];
+        // tslint:disable-next-line: no-dynamic-delete
+        delete this.callbackMapList[key];
+        this.completeMapList[key] = list.complete;
+        return list;
     }
 }
 
