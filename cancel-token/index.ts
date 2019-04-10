@@ -2,7 +2,7 @@
 /**
  * ICancelTokenSource
  */
-export interface ICancelTokenSource<T= string> {
+export interface ICancelTokenSource<T = string> {
     /**
      * token
      */
@@ -70,7 +70,7 @@ export class CancelToken {
      */
     public throwIfRequested(): void | never {
         if (this.reason !== undefined) {
-            throw typeof this.reason === 'string' ? { errMsg: this.reason, cancel: true } : this.reason;
+            throw typeof this.reason === 'string' ? { errMsg: this.reason, cancel: true, source: CancelToken.name } : this.reason;
         }
     }
 }

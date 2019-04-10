@@ -119,7 +119,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
       this.todo.splice(index, 1);
       // call back complete.
       if (completeCallback) {
-        completeCallback({ errMsg: 'request:fail abort' });
+        completeCallback({ errMsg: 'request:fail abort', cancel: true, source: WxQueue.name });
       }
     } else if (this.taskMap.has(taskid)) {
       this.taskMap.get(taskid)![0].abort();

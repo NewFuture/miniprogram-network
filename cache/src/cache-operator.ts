@@ -2,6 +2,19 @@ import { Cache } from './cache';
 
 // tslint:disable-next-line: no-empty
 function doNothing(): void { }
+
+/**
+ * 删除数组中的元素
+ * @param array 数组
+ * @param value 值
+ */
+function arrayRemove<T>(array: T[], value: T): void {
+    const index = array.indexOf(value);
+    if (index >= 0) {
+        array.splice(index, 1);
+    }
+}
+
 export function isOkResult(res: BaseSuccessRes): boolean {
     return res && res.statusCode >= 200 && res.statusCode < 300;
 }
@@ -11,8 +24,8 @@ export function isOkResult(res: BaseSuccessRes): boolean {
  */
 export class CacheOperator<
     TRes extends BaseSuccessRes = BaseSuccessRes,
-    TOptions extends WxOptions= WxOptions, // 微信操作函数
-    TTask extends WxTask= WxTask, // 微信操作的任务类型
+    TOptions extends WxOptions = WxOptions, // 微信操作函数
+    TTask extends WxTask = WxTask, // 微信操作的任务类型
     > {
     /**
      * 缓存配置
@@ -32,9 +45,9 @@ export class CacheOperator<
     }
 
     public static createHandler<
-        TRes extends BaseSuccessRes= BaseSuccessRes,
-        TOptions extends WxOptions= WxOptions, // 微信操作函数
-        TTask extends WxTask= WxTask, // 微信操作的任务类型
+        TRes extends BaseSuccessRes = BaseSuccessRes,
+        TOptions extends WxOptions = WxOptions, // 微信操作函数
+        TTask extends WxTask = WxTask, // 微信操作的任务类型
         >(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>): CacheOperator<TRes, TOptions, TTask>['handle'] {
         const cacheOperator = new CacheOperator(operator, config);
         return cacheOperator.handle.bind(cacheOperator);
@@ -73,25 +86,42 @@ export class CacheOperator<
                 fail: options.fail ? [options.fail] : [],
                 complete: options.complete ? [options.complete] : []
             };
-            options.success = (res: TRes) => {
-                if (this.config.resultCondition(res)) {
-                    this.cache.set(key, res, this.config.expire);
+            const data = {
+                ...options,
+                success: (res: TRes) => {
+                    if (this.config.resultCondition(res)) {
+                        this.cache.set(key, res, this.config.expire);
+                    }
+                    this.callbackMapList[key].success.forEach((v) => { v(res); });
+                },
+                fail: (res: { errMsg: string }) => {
+                    this.callbackMapList[key].fail.forEach((v) => { v(res); });
+                },
+                complete: (res: TRes) => {
+                    this.callbackMapList[key].complete.forEach((v) => { v(res); });
+                    // tslint:disable-next-line: no-dynamic-delete
+                    delete this.callbackMapList[key];
                 }
-                this.callbackMapList[key].success.forEach((v) => { v(res); });
             };
-            options.fail = (res: { errMsg: string }) => {
-                this.callbackMapList[key].fail.forEach((v) => { v(res); });
-            };
-            options.complete = (res: TRes) => {
-                this.callbackMapList[key].complete.forEach((v) => { v(res); });
-                // tslint:disable-next-line: no-dynamic-delete
-                delete this.callbackMapList[key];
-            };
-            return this.op(options);
+            return this.op(data);
         }
         // tslint:disable-next-line: no-object-literal-type-assertion
         return {
-            abort: doNothing,
+            abort: () => {
+                if (this.callbackMapList[key]) {
+                    if (options.success) {
+                        arrayRemove(this.callbackMapList[key].success, options.success);
+                    }
+                    if (options.fail) {
+                        arrayRemove(this.callbackMapList[key].fail, options.fail);
+                        options.fail({ errMsg: 'request:fail abort', cancel: true, source: CacheOperator.name });
+                    }
+                    if (options.complete) {
+                        options.complete({ errMsg: 'request:fail abort', cancel: true, source: CacheOperator.name });
+                        arrayRemove(this.callbackMapList[key].complete, options.complete);
+                    }
+                }
+            },
             onHeadersReceived: doNothing as TTask['onHeadersReceived'],
             onProgressUpdate: doNothing as TTask['onProgressUpdate']
         } as TTask;
@@ -101,7 +131,7 @@ export class CacheOperator<
 interface CacheRes {
     cache?: number;
 }
-export interface Configuration<TRes= BaseSuccessRes, TOptions= WxOptions> {
+export interface Configuration<TRes = BaseSuccessRes, TOptions = WxOptions> {
     expire: number;
     resultCondition(res: TRes): boolean;
     paramCondition?(options: TOptions): boolean;
