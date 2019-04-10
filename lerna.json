@@ -24,5 +24,8 @@
             "message": "chore(release): publish %v"
         }
     },
-    "version": "4.2.2"
+    "version": "4.2.2",
+    "changelog": {
+        "cacheDir": ".changelog"
+    }
 }
