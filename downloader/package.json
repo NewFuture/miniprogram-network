@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-downloader",
-    "version": "4.2.2",
+    "version": "4.2.3",
     "description": "minprogram download package ",
     "keywords": [
         "miniprogram",
@@ -35,8 +35,8 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "miniprogram-network-life-cycle": "^4.2.2",
+        "miniprogram-network-life-cycle": "^4.2.3",
         "miniprogram-network-utils": "^4.2.2",
-        "miniprogram-queue": "^4.1.0"
+        "miniprogram-queue": "^4.2.3"
     }
 }
