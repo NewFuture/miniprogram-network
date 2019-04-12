@@ -81,7 +81,8 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * @param options  task param
    */
   private _process(id: number, options: QueueOption<Tparam>): Ttask {
-    const oldComplete = options.complete;
+    let oldComplete = options.complete;
+    let timeoutFailHandle: Timeout;
     options.complete = (res: { time?: TimeRecorder }) => {
       if (timeoutFailHandle) {
           clearTimeout(timeoutFailHandle);
@@ -97,10 +98,12 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
       this._next();
     };
     const task = this.operator(options);
-    let timeoutFailHandle: Timeout;
-    if (options.timeout) {
+
+    if (options.timeout && options.timeout > 0) {
         timeoutFailHandle = setTimeout(
             () => {
+                options.complete = undefined;
+                oldComplete = undefined;
                 task.abort();
                 if (options.fail) {
                     options.fail({ errMsg: 'request:fail timeout', timeout: true, source: WxQueue.name });

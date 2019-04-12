@@ -103,6 +103,11 @@ export interface ExtraConfiguration {
     jump?: boolean;
 
     /**
+     * 超时时间
+     */
+    timeout?: number;
+
+    /**
      * 接收到响应头回调
      */
     onHeadersReceived?(result: { header: object }): void;
@@ -115,7 +120,7 @@ export interface ExtraConfiguration {
     /**
      * 超时回调
      */
-    onTimeout?(retryTimes: number, remained: number): void;
+    onTimeout?(errMsg: string): void;
 }
 
 /**
