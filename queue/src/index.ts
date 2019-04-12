@@ -1,4 +1,6 @@
 /// <reference lib="es6"/>
+import Timeout = NodeJS.Timeout;
+
 /**
  * 微信小程序操作队列封装管理
  * @example var rq = new WxQueue(wx.requst);
@@ -81,6 +83,9 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
   private _process(id: number, options: QueueOption<Tparam>): Ttask {
     const oldComplete = options.complete;
     options.complete = (res: { time?: TimeRecorder }) => {
+      if (timeoutFailHandle) {
+          clearTimeout(timeoutFailHandle);
+      }
       if (options.timestamp && this.taskMap.has(id)) {
         res.time = this.taskMap.get(id)![1] || {};
         res.time.response = Date.now();
@@ -92,6 +97,18 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
       this._next();
     };
     const task = this.operator(options);
+    let timeoutFailHandle: Timeout;
+    if (options.timeout) {
+        timeoutFailHandle = setTimeout(
+            () => {
+                task.abort();
+                if (options.fail) {
+                    options.fail({ errMsg: 'request:fail timeout', timeout: true, source: WxQueue.name });
+                }
+                },
+            options.timeout);
+    }
+
     // task progress polyfill
     if (options.onProgressUpdate && task.onProgressUpdate) {
       task.onProgressUpdate(options.onProgressUpdate);
@@ -174,6 +191,11 @@ interface ExtraOptions {
    * 是否插队
    */
   jump?: boolean;
+
+  /**
+   * 自定义超时时间
+   */
+  timeout?: number;
 
   /**
    * 记录时间戳

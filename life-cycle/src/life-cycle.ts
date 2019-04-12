@@ -3,6 +3,7 @@ import { Listeners } from './listeners';
 
 type GeneralCallbackResult = {
     errMsg: string;
+    timeout?: boolean;
 };
 
 /**
@@ -80,8 +81,9 @@ export abstract class LifeCycle<
      * 发送网络请求,并自动重试
      * @param data - 发送微信参数
      * @param options - 全部配置
+     * @param retriedTimes - 重试的次数
      */
-    private _send<T>(data: TWxOptions, options: TFullOptions): Promise<T> {
+    private _send<T>(data: TWxOptions, options: TFullOptions, retriedTimes: number = 0): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             const cancelToken = options.cancelToken;
             if (cancelToken) {
@@ -93,8 +95,12 @@ export abstract class LifeCycle<
             };
             // retry
             data.fail = (res: GeneralCallbackResult) => {
+                const retried = retriedTimes + 1;
+                if (res.timeout){
+                    this._onTimeout({retried, remain: options.retry}, options);
+                }
                 if (options.retry!-- > 0) {
-                    this._send<T>(data, options)
+                    this._send<T>(data, options, retried)
                         .then(resolve, reject);
                 } else {
                     this._onFail(res, options)
@@ -174,5 +180,17 @@ export abstract class LifeCycle<
             reason = { errMsg: reason };
         }
         this.Listeners.onAbort.forEach(f => { f(reason, options); });
+    }
+
+    /**
+     * 请求超时
+     * @param remainedRetry - 剩余重试次数
+     * @param options - 全部配置
+     */
+    private _onTimeout(remainedRetry: any, options: TFullOptions): void {
+        if (options.onTimeout) {
+            options.onTimeout(remainedRetry.retry, remainedRetry.remain);
+        }
+        this.Listeners.onTimeout.forEach(f => { f(remainedRetry, options); });
     }
 }

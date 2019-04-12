@@ -22,6 +22,10 @@ export class Listeners<TFullOptions, TResult> {
      * 请求中断事件监听
      */
     public onAbort: OnAbortListener<TFullOptions>[] = [];
+    /**
+     * 请求超时事件监听
+     */
+    public onTimeout: OnTimeoutListener<TFullOptions>[] = [];
     // onResolved: Function[]
 }
 
@@ -45,6 +49,11 @@ type OnRejectListener<TFullOptions> = (res: { errMsg: string } | any, options: T
  * 操作取消时
  */
 type OnAbortListener<TFullOptions> = (reason: any, options: TFullOptions) => any;
+
+/**
+ * 操作超时后
+ */
+type OnTimeoutListener<TFullOptions> = (res: { errMsg: string } | any, options: TFullOptions) => any;
 
 // type OnResolvedListener = ()=>any;
 
