@@ -91,12 +91,14 @@ export class CacheOperator<
      * 缓存处理
      * @param options - 参数
      */
-    public handle(options: TOptions): TTask {
-        if (this.config.paramCondition && !this.config.paramCondition(options)) {
+    public handle(options: TOptions & Partial<Configuration<TRes, TOptions>>): TTask {
+        const paramCondition = options.paramCondition || this.config.paramCondition;
+        if (paramCondition && !paramCondition(options)) {
             // 不缓存
             return this.op(options);
         }
-        const key = (this.config.headerBuilder && options.header ? this.config.headerBuilder(options.header) : '') + buildCacheKey(options);
+        const headerBuilder = options.headerBuilder || this.config.headerBuilder;
+        const key = (headerBuilder && options.header ? headerBuilder(options.header) : '') + buildCacheKey(options);
         const result = this.cache.get(key);
         if (result) {
             // 缓存命中
@@ -123,8 +125,8 @@ export class CacheOperator<
             const data = {
                 ...options,
                 success: (res: TRes) => {
-                    if (this.config.resultCondition(res)) {
-                        this.cache.set(key, res, this.config.expire);
+                    if ((options.resultCondition || this.config.resultCondition)(res)) {
+                        this.cache.set(key, res, options.expire || this.config.expire);
                     }
                     this._getMapBeforeComplete(key).success
                         .forEach((v) => { v(res); });
