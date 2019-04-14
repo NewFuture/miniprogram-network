@@ -16,25 +16,24 @@ function arrayRemove<T>(array: T[], value: T): void {
 }
 
 /**
- * 缓存的请求字段
- * https://developers.weixin.qq.com/miniprogram/dev/api/wx.request.html
- */
-const CACHE_FIELDS = [
-    'url', // all
-    'method', // request
-    'responseType', // request
-    'dataType', // request
-    'filePath', // download
-    'name'// upload
-    // 'header'
-    // 'data'
-];
-
-/**
  * 生成缓存索引
  * @param opts 请求参数对象
  */
 function buildCacheKey<TOptions extends WxOptions = WxOptions>(opts: TOptions): string {
+    /**
+     * 缓存的请求字段
+     * https://developers.weixin.qq.com/miniprogram/dev/api/wx.request.html
+     */
+    const CACHE_FIELDS = [
+        'url', // all
+        'method', // request
+        'responseType', // request
+        'dataType', // request
+        'filePath', // download
+        'name'// upload
+        // 'header'
+        // 'data'
+    ];
     const data = (opts as { data?: any }).data || (opts as { formData?: any }).formData;
     return JSON.stringify(opts, CACHE_FIELDS) + (data ? JSON.stringify(data) : '');
 }
@@ -65,11 +64,11 @@ export class CacheOperator<
     /**
      * 正在处理的回调
      */
-    private readonly callbackMapList: { [key: string]: { success: Function[]; fail: Function[]; complete: Function[] } } = {};
+    private readonly callbackListMap: { [key: string]: { success: Function[]; fail: Function[]; complete: Function[] } } = {};
     /**
      * 处理完的回调,待删除
      */
-    private readonly completeMapList: { [key: string]: Function[] } = {};
+    private readonly completeMap: { [key: string]: Function[] } = {};
 
     constructor(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>) {
         this.op = operator;
@@ -108,15 +107,15 @@ export class CacheOperator<
                 this.cache.delete(key);
             }
             if (options.complete) { options.complete(result); }
-        } else if (this.callbackMapList[key]) {
+        } else if (this.callbackListMap[key]) {
             // 请求已发送过
-            const callback = this.callbackMapList[key];
+            const callback = this.callbackListMap[key];
             if (options.success) { callback.success.push(options.success); }
             if (options.fail) { callback.fail.push(options.fail); }
             if (options.complete) { callback.complete.push(options.complete); }
         } else {
             // 请求未发送过
-            this.callbackMapList[key] = {
+            this.callbackListMap[key] = {
                 success: options.success ? [options.success] : [],
                 fail: options.fail ? [options.fail] : [],
                 complete: options.complete ? [options.complete] : []
@@ -135,9 +134,9 @@ export class CacheOperator<
                         .forEach((v) => { v(res); });
                 },
                 complete: (res: TRes) => {
-                    this.completeMapList[key].forEach((v) => { v(res); });
+                    this.completeMap[key].forEach((v) => { v(res); });
                     // tslint:disable-next-line: no-dynamic-delete
-                    delete this.completeMapList[key];
+                    delete this.completeMap[key];
                 }
             };
             return this.op(data);
@@ -145,17 +144,17 @@ export class CacheOperator<
         // tslint:disable-next-line: no-object-literal-type-assertion
         return {
             abort: () => {
-                if (this.callbackMapList[key]) {
+                if (this.callbackListMap[key]) {
                     if (options.success) {
-                        arrayRemove(this.callbackMapList[key].success, options.success);
+                        arrayRemove(this.callbackListMap[key].success, options.success);
                     }
                     const callbackList = [];
                     if (options.fail) {
-                        arrayRemove(this.callbackMapList[key].fail, options.fail);
+                        arrayRemove(this.callbackListMap[key].fail, options.fail);
                         callbackList.push(options.fail);
                     }
                     if (options.complete) {
-                        arrayRemove(this.callbackMapList[key].complete, options.complete);
+                        arrayRemove(this.callbackListMap[key].complete, options.complete);
                         callbackList.push(options.complete);
                     }
                     const res = { errMsg: 'request:fail abort', cancel: true, source: CacheOperator.name };
@@ -174,10 +173,10 @@ export class CacheOperator<
      */
     private _getMapBeforeComplete(key: string): { success: Function[]; fail: Function[]; complete: Function[] } {
         // remove the MapList from the `callbackMapList`
-        const list = this.callbackMapList[key];
+        const list = this.callbackListMap[key];
         // tslint:disable-next-line: no-dynamic-delete
-        delete this.callbackMapList[key];
-        this.completeMapList[key] = list.complete;
+        delete this.callbackListMap[key];
+        this.completeMap[key] = list.complete;
         return list;
     }
 }
@@ -204,7 +203,7 @@ export interface Configuration<TRes = BaseSuccessRes, TOptions = WxOptions> {
      * 请求 header 缓存key构建方法,无则忽略header
      * @param header 请求头
      */
-    headerBuilder?(header: any): string;
+    headerBuilder?(header: object): string;
 }
 
 interface WxTask {
@@ -222,11 +221,11 @@ interface WxOptions {
     /**
      * HTTP 请求 Header
      */
-    header: object;
+    header?: object;
     /** 接口调用结束的回调函数（调用成功、失败都会执行） */
-    complete?: Function;
+    complete?(res: { errMsg: string }): void;
     /** 接口调用失败的回调函数 */
-    fail?: Function;
+    fail?(res: { errMsg: string }): void;
     /** 接口调用成功的回调函数 */
     success?(res: any): any;
 }
