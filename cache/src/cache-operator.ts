@@ -15,6 +15,34 @@ function arrayRemove<T>(array: T[], value: T): void {
     }
 }
 
+/**
+ * 缓存的请求字段
+ * https://developers.weixin.qq.com/miniprogram/dev/api/wx.request.html
+ */
+const CACHE_FIELDS = [
+    'url', // all
+    'method', // request
+    'responseType', // request
+    'dataType', // request
+    'filePath', // download
+    'name'// upload
+    // 'header'
+    // 'data'
+];
+
+/**
+ * 生成缓存索引
+ * @param opts 请求参数对象
+ */
+function buildCacheKey<TOptions extends WxOptions = WxOptions>(opts: TOptions): string {
+    const data = (opts as { data?: any }).data || (opts as { formData?: any }).formData;
+    return JSON.stringify(opts, CACHE_FIELDS) + (data ? JSON.stringify(data) : '');
+}
+
+/**
+ * 是否为2xx数据
+ * @param res 完整返回数据
+ */
 export function isOkResult(res: BaseSuccessRes): boolean {
     return res && res.statusCode >= 200 && res.statusCode < 300;
 }
@@ -69,7 +97,7 @@ export class CacheOperator<
             // 不缓存
             return this.op(options);
         }
-        const key = JSON.stringify(options);
+        const key = (this.config.headerBuilder && options.header ? this.config.headerBuilder(options.header) : '') + buildCacheKey(options);
         const result = this.cache.get(key);
         if (result) {
             // 缓存命中
@@ -158,9 +186,25 @@ interface CacheRes {
     cache?: number;
 }
 export interface Configuration<TRes = BaseSuccessRes, TOptions = WxOptions> {
+    /**
+     * 缓存时间
+     */
     expire: number;
+    /**
+     * 结果缓存条件
+     * @param res 结果
+     */
     resultCondition(res: TRes): boolean;
+    /**
+     * 参数缓存条件,无则全部缓存
+     * @param options request/downloadFile参数
+     */
     paramCondition?(options: TOptions): boolean;
+    /**
+     * 请求 header 缓存key构建方法,无则忽略header
+     * @param header 请求头
+     */
+    headerBuilder?(header: any): string;
 }
 
 interface WxTask {
@@ -175,6 +219,10 @@ interface WxTask {
 interface WxOptions {
     /** 开发者服务器接口地址 */
     url: string;
+    /**
+     * HTTP 请求 Header
+     */
+    header: object;
     /** 接口调用结束的回调函数（调用成功、失败都会执行） */
     complete?: Function;
     /** 接口调用失败的回调函数 */
