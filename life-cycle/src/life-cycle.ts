@@ -7,16 +7,16 @@ type GeneralCallbackResult = {
 
 /**
  * 网络请求的完整生命周期
- * @template TWxOptions 微信操作函数参数类型
- * @template TWxTask 微信操作函数返回值类型
- * @template TInitConfig LifeCycle的初始默认配置项(Defaults)类型
+ * @template TWxOptions 微信操作函数参数类型 // 微信操作函数
+ * @template TWxTask 微信操作函数返回值类型 // 微信操作的任务类型
+ * @template TInitConfig LifeCycle的初始默认配置项(Defaults)类型 //初始化配置项
  * @template TFullOptions 一个操作完整配置项(全部可接收参数)类型
  */
 export abstract class LifeCycle<
-    TWxOptions extends WxOptions, // 微信操作函数
-    TWxTask extends WxTask, // 微信操作的任务类型
-    TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>, //初始化配置项
-    TFullOptions extends Partial<TInitConfig> & ExtraConfiguration =  Partial<TInitConfig> & ExtraConfiguration, //完整配置项
+    TWxOptions extends WxOptions,
+    TWxTask extends WxTask,
+    TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>,
+    TFullOptions extends Partial<TInitConfig> & ExtraConfiguration = Partial<TInitConfig> & ExtraConfiguration, //完整配置项
     > {
     /**
      * 默认全局配置
