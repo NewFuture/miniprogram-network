@@ -42,7 +42,7 @@ export function buildParams(
 export function getCommonOptions<T extends { [key: string]: any }>(
     data: T,
     options: { [key: string]: any },
-    keys: string[] = ['jump', 'timestamp', 'timeout', 'onTimeout']
+    keys: string[] = ['jump', 'timestamp', 'timeout']
 ): T {
     keys.forEach((v) => {
         if (options[v] !== undefined) {

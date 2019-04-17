@@ -81,9 +81,10 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * @param options  task param
    */
   private _process(id: number, options: QueueOption<Tparam>): Ttask {
-    let oldComplete = options.complete;
+    const oldComplete = options.complete;
     let timeoutFailHandle: Timeout;
-    options.complete = (res: { time?: TimeRecorder }) => {
+    let taskTimeoutCancelled = false;
+    options.complete = (res: { time?: TimeRecorder; timeout?: boolean }) => {
       if (timeoutFailHandle) {
           clearTimeout(timeoutFailHandle);
       }
@@ -91,23 +92,32 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
         res.time = this.taskMap.get(id)![1] || {};
         res.time.response = Date.now();
       }
+      res.timeout = taskTimeoutCancelled;
+
       this.taskMap.delete(id);
       if (oldComplete) {
         oldComplete.call(options, res);
       }
       this._next();
     };
+
+    const oldFail = options.fail;
+    options.fail = (res: { errMsg: string; timeout?: boolean }) => {
+      if (taskTimeoutCancelled) {
+          res.errMsg = 'request failed: timeout';
+      }
+      res.timeout = taskTimeoutCancelled;
+      if (oldFail) {
+          oldFail.call(options, res);
+      }
+    };
     const task = this.operator(options);
 
     if (options.timeout && options.timeout > 0) {
         timeoutFailHandle = setTimeout(
             () => {
-                options.complete = undefined;
-                oldComplete = undefined;
+                taskTimeoutCancelled = true;
                 task.abort();
-                if (options.onTimeout) {
-                    options.onTimeout({ errMsg: 'request:fail timeout'});
-                }
                 },
             options.timeout);
     }
@@ -205,10 +215,6 @@ interface ExtraOptions {
    */
   timestamp?: boolean | object;
 
-    /**
-     * 自定义超时回调
-     */
-  onTimeout?(reason: {errMsg: string}): void;
   /**
    * 开发者服务器返回的 HTTP Response Header 回调
    */
