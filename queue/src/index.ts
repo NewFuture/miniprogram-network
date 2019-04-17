@@ -105,8 +105,8 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
                 options.complete = undefined;
                 oldComplete = undefined;
                 task.abort();
-                if (options.fail) {
-                    options.fail({ errMsg: 'request:fail timeout', timeout: true, source: WxQueue.name });
+                if (options.onTimeout) {
+                    options.onTimeout({ errMsg: 'request:fail timeout'});
                 }
                 },
             options.timeout);
@@ -204,6 +204,11 @@ interface ExtraOptions {
    * 记录时间戳
    */
   timestamp?: boolean | object;
+
+    /**
+     * 自定义超时回调
+     */
+  onTimeout?(reason: {errMsg: string}): void;
   /**
    * 开发者服务器返回的 HTTP Response Header 回调
    */
