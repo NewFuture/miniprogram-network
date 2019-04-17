@@ -81,45 +81,53 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    */
   private _process(id: number, options: QueueOption<Tparam>): Ttask {
     const oldComplete = options.complete;
-    let timeoutFailHandle: number;
+    let timeoutFailHandle: number | undefined;
     let taskTimeoutCancelled = false;
     let task: Ttask;
 
-    options.complete = (res: { time?: TimeRecorder; timeout?: boolean }) => {
+    options.complete = (res: { errMsg: string; time?: TimeRecorder; timeout?: boolean }) => {
       if (timeoutFailHandle) {
-          clearTimeout(timeoutFailHandle);
+        // 清理计时器
+        clearTimeout(timeoutFailHandle);
       }
       if (options.timestamp && this.taskMap.has(id)) {
         res.time = this.taskMap.get(id)![1] || {};
         res.time.response = Date.now();
       }
-      res.timeout = taskTimeoutCancelled;
-
       this.taskMap.delete(id);
+      // 原始结束回调
       if (oldComplete) {
+        if (taskTimeoutCancelled) {
+          res.errMsg = `${(res.errMsg || '').split(':', 1)[0]}: timeout`;
+          res.timeout = true;
+        }
         oldComplete.call(options, res);
       }
       this._next();
     };
 
     if (options.timeout! > 0) {
-        const oldFail = options.fail;
+      // 自定义timeout 拦截fail 注入timeout
+      const oldFail = options.fail;
+      if (oldFail) {
         options.fail = (res: { errMsg: string; timeout?: boolean }) => {
-            if (taskTimeoutCancelled) {
-                res.errMsg = 'request failed: timeout';
-            }
-            res.timeout = taskTimeoutCancelled;
-            if (oldFail) {
-                oldFail.call(options, res);
-            }
+          if (taskTimeoutCancelled) {
+            res.errMsg = `${(res.errMsg || '').split(':', 1)[0]}: timeout`;
+            res.timeout = true;
+          }
+          if (oldFail) {
+            oldFail.call(options, res);
+          }
         };
-
-        timeoutFailHandle = setTimeout(
-            () => {
-                taskTimeoutCancelled = true;
-                task.abort();
-                },
-            options.timeout!);
+      }
+      // 计时器 自定义超时
+      timeoutFailHandle = setTimeout(
+        () => {
+          timeoutFailHandle = undefined;
+          taskTimeoutCancelled = true;
+          task.abort();
+        },
+        options.timeout!);
     }
     task = this.operator(options);
 
@@ -284,9 +292,9 @@ declare namespace wx {
  * @param rest - param1, param2, ..., paramN 等附加参数，它们会作为参数传递给回调函数。
  */
 declare function setTimeout(
-    callback: Function,
-    delay?: number,
-    rest?: any
+  callback: Function,
+  delay?: number,
+  rest?: any
 ): number;
 
 export interface TimeRecorder {
@@ -299,5 +307,5 @@ export interface TimeRecorder {
  * @param timeoutID - 要取消的定时器的
  */
 declare function clearTimeout(
-    timeoutID: number
+  timeoutID: number
 ): void;
