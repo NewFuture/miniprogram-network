@@ -1,4 +1,5 @@
 /// <reference lib="es6"/>
+
 /**
  * 微信小程序操作队列封装管理
  * @example var rq = new WxQueue(wx.requst);
@@ -80,18 +81,48 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    */
   private _process(id: number, options: QueueOption<Tparam>): Ttask {
     const oldComplete = options.complete;
-    options.complete = (res: { time?: TimeRecorder }) => {
+    let timeoutFailHandle: number;
+    let taskTimeoutCancelled = false;
+    let task: Ttask;
+
+    options.complete = (res: { time?: TimeRecorder; timeout?: boolean }) => {
+      if (timeoutFailHandle) {
+          clearTimeout(timeoutFailHandle);
+      }
       if (options.timestamp && this.taskMap.has(id)) {
         res.time = this.taskMap.get(id)![1] || {};
         res.time.response = Date.now();
       }
+      res.timeout = taskTimeoutCancelled;
+
       this.taskMap.delete(id);
       if (oldComplete) {
         oldComplete.call(options, res);
       }
       this._next();
     };
-    const task = this.operator(options);
+
+    if (options.timeout! > 0) {
+        const oldFail = options.fail;
+        options.fail = (res: { errMsg: string; timeout?: boolean }) => {
+            if (taskTimeoutCancelled) {
+                res.errMsg = 'request failed: timeout';
+            }
+            res.timeout = taskTimeoutCancelled;
+            if (oldFail) {
+                oldFail.call(options, res);
+            }
+        };
+
+        timeoutFailHandle = setTimeout(
+            () => {
+                taskTimeoutCancelled = true;
+                task.abort();
+                },
+            options.timeout!);
+    }
+    task = this.operator(options);
+
     // task progress polyfill
     if (options.onProgressUpdate && task.onProgressUpdate) {
       task.onProgressUpdate(options.onProgressUpdate);
@@ -176,9 +207,15 @@ interface ExtraOptions {
   jump?: boolean;
 
   /**
+   * 自定义超时时间
+   */
+  timeout?: number;
+
+  /**
    * 记录时间戳
    */
   timestamp?: boolean | object;
+
   /**
    * 开发者服务器返回的 HTTP Response Header 回调
    */
@@ -240,7 +277,27 @@ declare namespace wx {
   ) => void;
 }
 
+/**
+ * 设定一个定时器。在定时到期以后执行注册的回调函数
+ * @param callback - 回调操作
+ * @param delay - 延迟的时间，函数的调用会在该延迟之后发生，单位 ms。
+ * @param rest - param1, param2, ..., paramN 等附加参数，它们会作为参数传递给回调函数。
+ */
+declare function setTimeout(
+    callback: Function,
+    delay?: number,
+    rest?: any
+): number;
+
 export interface TimeRecorder {
   send?: number;
   response?: number;
 }
+
+/**
+ * 取消由 setTimeout 设置的定时器。
+ * @param timeoutID - 要取消的定时器的
+ */
+declare function clearTimeout(
+    timeoutID: number
+): void;

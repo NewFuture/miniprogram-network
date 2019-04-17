@@ -22,7 +22,6 @@ export class Listeners<TFullOptions, TResult> {
      * 请求中断事件监听
      */
     public onAbort: OnAbortListener<TFullOptions>[] = [];
-    // onResolved: Function[]
 }
 
 /**

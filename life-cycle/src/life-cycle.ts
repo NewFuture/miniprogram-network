@@ -3,6 +3,7 @@ import { Listeners } from './listeners';
 
 type GeneralCallbackResult = {
     errMsg: string;
+    timeout?: boolean;
 };
 
 /**

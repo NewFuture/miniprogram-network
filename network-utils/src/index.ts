@@ -37,11 +37,12 @@ export function buildParams(
  * 合并公共配置
  * @param data - new configuration
  * @param options - default global configuration
+ * @param keys - default common keys
  */
 export function getCommonOptions<T extends { [key: string]: any }>(
     data: T,
     options: { [key: string]: any },
-    keys: string[] = ['jump', 'timestamp']
+    keys: string[] = ['jump', 'timestamp', 'timeout']
 ): T {
     keys.forEach((v) => {
         if (options[v] !== undefined) {
