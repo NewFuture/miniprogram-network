@@ -48,6 +48,9 @@ export function isOkResult(res: BaseSuccessRes): boolean {
 
 /**
  * 缓存操作
+ * @template TRes 操作结果回调数据类型
+ * @template TOptions 参数数据类型
+ * @template TTask 微信任务类型
  */
 export class CacheOperator<
     TRes extends BaseSuccessRes = BaseSuccessRes,
