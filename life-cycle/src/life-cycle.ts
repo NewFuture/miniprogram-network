@@ -81,7 +81,6 @@ export abstract class LifeCycle<
      * 发送网络请求,并自动重试
      * @param data - 发送微信参数
      * @param options - 全部配置
-     * @param retriedTimes - 重试的次数
      */
     private _send<T>(data: TWxOptions, options: TFullOptions): Promise<T> {
         return new Promise<T>((resolve, reject) => {

@@ -1,5 +1,4 @@
 /// <reference lib="es6"/>
-import Timeout = NodeJS.Timeout;
 
 /**
  * 微信小程序操作队列封装管理
@@ -82,8 +81,10 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    */
   private _process(id: number, options: QueueOption<Tparam>): Ttask {
     const oldComplete = options.complete;
-    let timeoutFailHandle: Timeout;
+    let timeoutFailHandle: number;
     let taskTimeoutCancelled = false;
+    let task: Ttask;
+
     options.complete = (res: { time?: TimeRecorder; timeout?: boolean }) => {
       if (timeoutFailHandle) {
           clearTimeout(timeoutFailHandle);
@@ -101,26 +102,26 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
       this._next();
     };
 
-    const oldFail = options.fail;
-    options.fail = (res: { errMsg: string; timeout?: boolean }) => {
-      if (taskTimeoutCancelled) {
-          res.errMsg = 'request failed: timeout';
-      }
-      res.timeout = taskTimeoutCancelled;
-      if (oldFail) {
-          oldFail.call(options, res);
-      }
-    };
-    const task = this.operator(options);
+    if (options.timeout! > 0) {
+        const oldFail = options.fail;
+        options.fail = (res: { errMsg: string; timeout?: boolean }) => {
+            if (taskTimeoutCancelled) {
+                res.errMsg = 'request failed: timeout';
+            }
+            res.timeout = taskTimeoutCancelled;
+            if (oldFail) {
+                oldFail.call(options, res);
+            }
+        };
 
-    if (options.timeout && options.timeout > 0) {
         timeoutFailHandle = setTimeout(
             () => {
                 taskTimeoutCancelled = true;
                 task.abort();
                 },
-            options.timeout);
+            options.timeout!);
     }
+    task = this.operator(options);
 
     // task progress polyfill
     if (options.onProgressUpdate && task.onProgressUpdate) {
@@ -276,7 +277,27 @@ declare namespace wx {
   ) => void;
 }
 
+/**
+ * 设定一个定时器。在定时到期以后执行注册的回调函数
+ * @param callback - 回调操作
+ * @param delay - 延迟的时间，函数的调用会在该延迟之后发生，单位 ms。
+ * @param rest - param1, param2, ..., paramN 等附加参数，它们会作为参数传递给回调函数。
+ */
+declare function setTimeout(
+    callback: Function,
+    delay?: number,
+    rest?: any
+): number;
+
 export interface TimeRecorder {
   send?: number;
   response?: number;
 }
+
+/**
+ * 取消由 setTimeout 设置的定时器。
+ * @param timeoutID - 要取消的定时器的
+ */
+declare function clearTimeout(
+    timeoutID: number
+): void;
