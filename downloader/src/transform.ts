@@ -17,7 +17,7 @@ export function transfomDownloadSendDefault(data: DownloadOption): DownloadParam
             header: data.headers
         },
         data,
-        ['filePath', 'jump', 'timestamp']
+        ['filePath']
     );
 }
 

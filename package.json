@@ -29,7 +29,7 @@
         "start": "npm run rm:module && lerna bootstrap && lerna run build",
         "prepublishOnly": "npm run clean && npm run build:ts && npm run lint",
         "publish": "lerna publish",
-        "rm:module": "lerna exec -- rm -rf node_modules package-lock.json",
+        "rm:module": "lerna clean --yes",
         "lint": "lerna run lint",
         "lint:fix": "lerna run lint:fix",
         "pretest": "lerna bootstrap --no-ci",

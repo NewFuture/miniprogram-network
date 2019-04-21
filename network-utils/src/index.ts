@@ -35,16 +35,16 @@ export function buildParams(
 
 /**
  * 合并公共配置
- * @param data - new configuration
+ * @param data - new configuration for wechat operation
  * @param options - default global configuration
- * @param keys - default common keys
+ * @param extendKeys - key need copy to data
  */
 export function getCommonOptions<T extends { [key: string]: any }>(
     data: T,
     options: { [key: string]: any },
-    keys: string[] = ['jump', 'timestamp', 'timeout']
+    extendKeys: (keyof T)[]
 ): T {
-    keys.forEach((v) => {
+    (['jump', 'timestamp', 'timeout', 'expire', ...extendKeys] as string[]).forEach((v) => {
         if (options[v] !== undefined) {
             data[v] = options[v];
         }

@@ -19,7 +19,7 @@ export function transformUploadSendDefault(data: UploadOption): UploadParams {
             header: data.headers
         },
         data,
-        ['filePath', 'name', 'jump', 'timestamp']) as UploadParams;
+        ['filePath', 'name']) as UploadParams;
 }
 
 /**
@@ -30,7 +30,7 @@ export function transformUploadSendDefault(data: UploadOption): UploadParams {
  * @param options - 全部配置
  * @returns 反序列化对象
  */
-export function transformUploadResponseOkData<T= any>(res: wx.UploadFileSuccessCallbackResult, options: UploadOption): T {
+export function transformUploadResponseOkData<T = any>(res: wx.UploadFileSuccessCallbackResult, options: UploadOption): T {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }

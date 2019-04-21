@@ -16,13 +16,12 @@ export function transformRequestSendDefault(data: RequestOption): RequestParams 
         url: buildParams(data.url, data.params, data.baseURL),
         header: data.headers
     };
-    getCommonOptions(wxParam, data);
     if (data.responseType === 'arraybuffer') {
         wxParam.responseType = 'arraybuffer';
     } else if (data.responseType === 'json') {
         wxParam.dataType = 'json';
     }
-    return getCommonOptions(wxParam, data, ['data', 'method', 'jump', 'timestamp']);
+    return getCommonOptions(wxParam, data, ['data', 'method']);
 }
 
 /**
@@ -32,7 +31,7 @@ export function transformRequestSendDefault(data: RequestOption): RequestParams 
  * @param res - 返回结果
  * @param config - 完整配置参数
  */
-export function transformRequestResponseOkData<T= any>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
+export function transformRequestResponseOkData<T = any>(res: wx.RequestSuccessCallbackResult, config: RequestOption): T {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }
