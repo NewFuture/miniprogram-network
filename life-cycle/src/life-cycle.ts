@@ -17,7 +17,7 @@ export abstract class LifeCycle<
     TWxOptions extends WxOptions,
     TWxTask extends WxTask,
     TInitConfig extends BaseConfiguration<TFullOptions, TWxOptions>,
-    TFullOptions extends Partial<TInitConfig> & ExtraConfiguration = Partial<TInitConfig> & ExtraConfiguration, //完整配置项
+    TFullOptions extends TInitConfig & ExtraConfiguration = TInitConfig & ExtraConfiguration, //完整配置项
     > {
     /**
      * 默认全局配置

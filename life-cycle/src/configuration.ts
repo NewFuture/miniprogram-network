@@ -32,7 +32,7 @@ export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['succes
  * 所有网络请求的集成类型
  */
 export interface BaseConfiguration<
-    TFullOptions extends Partial<BaseConfiguration<TFullOptions, TWxOptions>>, //完整配置
+    TFullOptions extends BaseConfiguration<TFullOptions, TWxOptions>, //完整配置
     TWxOptions extends WxOptions, // 微信请求参数类型
     > {
     /**

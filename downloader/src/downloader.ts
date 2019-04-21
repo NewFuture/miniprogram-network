@@ -9,11 +9,11 @@ const downloadQueue = /*#__PURE__*/ new WxQueue<wx.DownloadFileOption, wx.Downlo
 /**
  * 默认配置信息
  */
-export type DownloadInit<T extends {} = {}> = BaseConfiguration<T & DownloadOption, Partial<T> & wx.DownloadFileOption>;
+export type DownloadInit<T extends {} = {}> = BaseConfiguration<DownloadOption<T>, T & wx.DownloadFileOption>;
 /**
  * 全部配置信息
  */
-export interface DownloadOption extends Partial<DownloadInit>, ExtraConfiguration {
+export interface DownloadOption<T extends {} = {}> extends DownloadInit<T>, ExtraConfiguration {
     url: NonNullable<string>;
     filePath?: string;
     onProgressUpdate?: wx.DownloadTaskOnProgressUpdateCallback;
@@ -26,17 +26,21 @@ export interface DownloadOption extends Partial<DownloadInit>, ExtraConfiguratio
 export class Downloader
     <T extends {} = {}>
     extends LifeCycle<
-    Partial<T> & wx.DownloadFileOption,
+    T & wx.DownloadFileOption,
     wx.DownloadTask,
     DownloadInit<T>,
-    T & DownloadOption
+    DownloadOption<T>
     > {
     /**
      * 新建 Http实列
      * @param config 全局默认配置
      */
-    public constructor(config?: DownloadInit, downloader?: (o: Partial<T> & wx.DownloadFileOption) => wx.DownloadTask) {
-        super(downloader || downloadQueue.push.bind(downloadQueue), config || { transformSend: transfomDownloadSendDefault });
+    public constructor(config?: DownloadInit<T>, downloader?: (o: T & wx.DownloadFileOption) => wx.DownloadTask) {
+        super(
+            downloader || downloadQueue.push.bind(downloadQueue),
+            // tslint:disable-next-line: no-object-literal-type-assertion
+            config || { transformSend: transfomDownloadSendDefault } as DownloadInit<T>
+        );
     }
 
     /**
@@ -48,7 +52,7 @@ export class Downloader
     public download<
         TReturn = SuccessParam<wx.DownloadFileOption>,
         TParams extends ParamsType = ParamsType, // 参数类型
-        >(options: T & DownloadOption & { params?: TParams }): Promise<TReturn>;
+        >(options: DownloadOption<T> & { params?: TParams }): Promise<TReturn>;
     /**
      * 快速下载
      * @param url 下载地址
@@ -63,12 +67,12 @@ export class Downloader
         >(
             url: string,
             filePath?: string,
-            options?: Partial<T> & Omit<DownloadOption, 'url' | 'filePath'> & { params?: TParams }
+            options?: Omit<DownloadOption<T>, 'url' | 'filePath'> & { params?: TParams }
         ): Promise<TReturn>;
     public download<TReturn>(): Promise<TReturn> {
         const isMultiParam = typeof arguments[0] === 'string';
         // tslint:disable-next-line: no-unsafe-any
-        const options: T & DownloadOption = isMultiParam ? (arguments[2] || {}) : arguments[0] as T & DownloadOption;
+        const options: DownloadOption<T> = isMultiParam ? (arguments[2] || {}) : arguments[0] as DownloadOption<T>;
         if (isMultiParam) {
             options.url = arguments[0] as string;
             options.filePath = arguments[1] as string;

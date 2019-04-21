@@ -10,7 +10,7 @@ export type DownloadParams = Omit<wx.DownloadFileOption, 'success' | 'fail' | 'c
  * 默认下载请求参数构建方法
  * @param data - 完整配置参数
  */
-export function transfomDownloadSendDefault(data: DownloadOption): DownloadParams {
+export function transfomDownloadSendDefault<T extends {} = {}>(data: T & DownloadOption<T>): DownloadParams {
     return getCommonOptions<DownloadParams>(
         {
             url: buildParams(data.url, data.params, data.baseURL),
