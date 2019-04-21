@@ -8,19 +8,33 @@ import { transformRequestSendDefault } from './transform';
 // tslint:disable-next-line: no-use-before-declare
 const requestQueue = /*#__PURE__*/ new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
+// type RequestOption<T>={}
 /**
  * 小程序HTTP 请求生命周期封装
  * @example
  *    `const http = new Http({ baseURL: 'https://api.newfuture.cc/', retry: 3 });`
+ * @template T 扩展参数属性类型
  */
-export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestInit, RequestOption> {
+export class Http<
+    T extends {} = {}
+    >
+    extends LifeCycle<
+    T & wx.RequestOption,
+    wx.RequestTask,
+    RequestInit<T>,
+    RequestOption<T>
+    > {
     /**
      * 新建 Http实列
      * @param config 全局默认配置
      * @param request 请求处理方法，默认使用请求队列处理
      */
-    public constructor(config?: RequestInit, request?: (o: wx.RequestOption) => wx.RequestTask) {
-        super(request || requestQueue.push.bind(requestQueue), config || { transformSend: transformRequestSendDefault });
+    public constructor(config?: RequestInit<T>, request?: (o: T & wx.RequestOption) => wx.RequestTask) {
+        super(
+            request || requestQueue.push.bind(requestQueue),
+            // tslint:disable-next-line: no-object-literal-type-assertion
+            config || { transformSend: transformRequestSendDefault } as RequestInit<T>
+        );
     }
 
     /**
@@ -31,10 +45,10 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public request<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
-        >(options: RequestOption<TData> & { params?: TParams }): Promise<TReturn>;
+        >(options: RequestOption<T, TData> & { params?: TParams }): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -46,19 +60,19 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public request<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
         >(
             method: NonNullable<wx.RequestOption['method']>,
             action: string,
             data?: TData,
-            config?: Partial<RequestConfig>
+            config?: RequestConfig<T>
         ): Promise<TReturn>;
-    public request<TReturn= SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
+    public request<TReturn = SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const argNum = arguments.length;
         // tslint:disable-next-line: no-unsafe-any
-        const options: RequestOption = argNum === 1 ? arguments[0] : (arguments[3] || {});
+        const options: RequestOption<T> = argNum === 1 ? arguments[0] : (arguments[3] || {});
         if (argNum > 1) {
             options.method = arguments[0] as RequestOption['method'];
             options.url = arguments[1] as string;
@@ -81,13 +95,13 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      */
     // tslint:disable-next-line: no-reserved-keywords
     public get<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
         >(
             action: string,
             data?: TData,
-            config?: Partial<RequestConfig> & { params?: TParams }
+            config?: RequestConfig<T> & { params?: TParams }
         ): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
@@ -102,13 +116,13 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public post<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
         >(
             action: string,
             data?: TData,
-            config?: Partial<RequestConfig> & { params?: TParams }
+            config?: RequestConfig<T> & { params?: TParams }
         ): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
@@ -123,13 +137,13 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public put<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
         >(
             action: string,
             data?: TData,
-            config?: Partial<RequestConfig> & { params?: TParams }
+            config?: RequestConfig<T> & { params?: TParams }
         ): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
@@ -145,13 +159,13 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      */
     // tslint:disable-next-line: no-reserved-keywords
     public delete<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
         >(
             action: string,
             data?: TData,
-            config?: Partial<RequestConfig> & { params?: TParams }
+            config?: RequestConfig<T> & { params?: TParams }
         ): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
@@ -166,13 +180,13 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public head<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
         >(
             action: string,
             data?: TData,
-            config?: Partial<RequestConfig> & { params?: TParams }
+            config?: RequestConfig<T> & { params?: TParams }
         ): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
@@ -189,13 +203,13 @@ export class Http extends LifeCycle<wx.RequestOption, wx.RequestTask, RequestIni
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public patch<
-        TReturn= SuccessParam<wx.RequestOption>,
+        TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
         >(
             action: string,
             data?: TData,
-            config?: Partial<RequestConfig> & { params?: TParams }
+            config?: RequestConfig<T> & { params?: TParams }
         ): Promise<TReturn> {
         if (!config) {
             // tslint:disable-next-line: no-parameter-reassignment
@@ -216,7 +230,7 @@ type BaseData = string | object | ArrayBuffer;
  * 构造函数 默认配置信息
  * (创建Request的配置信息)
  */
-export interface RequestInit extends BaseConfiguration<RequestOption, wx.RequestOption> {
+export interface RequestInit<T extends {} = {}> extends BaseConfiguration<RequestOption<T>, T & wx.RequestOption> {
     /**
      * response data type
      */
@@ -226,12 +240,17 @@ export interface RequestInit extends BaseConfiguration<RequestOption, wx.Request
 /**
  * 单个请求的额外配置信息
  */
-export type RequestConfig = RequestInit & ExtraConfiguration;
+export type RequestConfig<T extends {} = {}> = Partial<RequestInit<T> & ExtraConfiguration>;
 
 /**
  * 每个请求的全部配置信息
  */
-export interface RequestOption<T extends BaseData = BaseData> extends Partial<RequestInit>, ExtraConfiguration {
+export interface RequestOption<
+    TExtend extends {} = {},
+    TData extends BaseData = BaseData
+    > extends
+    RequestInit<TExtend>,
+    ExtraConfiguration {
 
     /**
      * 请求的地址
@@ -256,7 +275,7 @@ export interface RequestOption<T extends BaseData = BaseData> extends Partial<Re
      * *   对于 `POST` 方法且 `header['content-type']` 为 `application/x-www-form-urlencoded` 的数据，会将数据转换成 query string
      * （encodeURIComponent(k)=encodeURIComponent(v)&encodeURIComponent(k)=encodeURIComponent(v)...）
      */
-    data?: T;
+    data?: TData;
 
     // onProgress?: wx.DownloadTask['offProgressUpdate']
 }

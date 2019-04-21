@@ -11,7 +11,10 @@ export type RequestParams = Omit<wx.RequestOption, 'success' | 'fail' | 'complet
  * 构建请求参数
  * @param data - 完整配置参数
  */
-export function transformRequestSendDefault(data: RequestOption): RequestParams {
+export function transformRequestSendDefault<
+    T extends {} = {},
+    // TwxParams extends RequestParams = RequestParams
+    >(data: RequestOption<T>): RequestParams {
     const wxParam: RequestParams = {
         url: buildParams(data.url, data.params, data.baseURL),
         header: data.headers

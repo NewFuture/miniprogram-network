@@ -24,7 +24,7 @@ interface CacheOptions {
 /**
  * 网络缓存
  */
-export const cacheHttp = /*#__PURE__*/ new Http(
+export const cacheHttp = /*#__PURE__*/ new Http<CacheOptions>(
     REQUEST.Defaults,
     /*#__PURE__*/
     CacheOperator.createHandler(REQUEST.handle, config)
@@ -41,14 +41,14 @@ export const cacheDownloader = /*#__PURE__*/ new Downloader<CacheOptions>(
 /**
  * request 缓存
  */
-export const request: Http['request'] =
+export const request: typeof cacheHttp['request'] =
     /*#__PURE__*/
     cacheHttp.request.bind(cacheHttp);
 /**
  * GET 缓存
  */
 // tslint:disable-next-line: no-reserved-keywords
-export const get: Http['get'] =
+export const get: typeof cacheHttp['get'] =
     /*#__PURE__*/
     cacheHttp.get.bind(cacheHttp);
 /**

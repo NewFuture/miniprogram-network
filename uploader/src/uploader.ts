@@ -16,7 +16,7 @@ export interface UploadInit extends BaseConfiguration<UploadOption, wx.UploadFil
  * 全部配置信息
  */
 export interface UploadOption<T extends object = NonNullable<wx.UploadFileOption['formData']>>
-    extends Partial<UploadInit>, ExtraConfiguration {
+    extends UploadInit, ExtraConfiguration {
     filePath: NonNullable<string>;
     name: NonNullable<string>;
     data?: T;
@@ -26,7 +26,12 @@ export interface UploadOption<T extends object = NonNullable<wx.UploadFileOption
 /**
  * 上传管理
  */
-export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, UploadInit, UploadOption> {
+export class Uploader extends LifeCycle<
+    wx.UploadFileOption,
+    wx.UploadTask,
+    UploadInit,
+    UploadOption
+    > {
     /**
      * 默认上传请求参数转换函数
      */
@@ -53,8 +58,8 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public upload<
-        TReturn= SuccessParam<wx.UploadFileOption>,
-        TData= object,
+        TReturn = SuccessParam<wx.UploadFileOption>,
+        TData = object,
         TParams extends ParamsType = ParamsType,
         >(
             filePath: string,
@@ -71,7 +76,7 @@ export class Uploader extends LifeCycle<wx.UploadFileOption, wx.UploadTask, Uplo
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
     public upload<
-        TReturn= SuccessParam<wx.UploadFileOption>,
+        TReturn = SuccessParam<wx.UploadFileOption>,
         TData extends object = object,
         TParams extends ParamsType = ParamsType,
         >(options: UploadOption<TData> & { params?: TParams }): Promise<TReturn>;
