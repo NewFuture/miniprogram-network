@@ -9,7 +9,7 @@ const downloadQueue = /*#__PURE__*/ new WxQueue<wx.DownloadFileOption, wx.Downlo
 /**
  * 默认配置信息
  */
-export type DownloadInit = BaseConfiguration<DownloadOption, wx.DownloadFileOption>;
+export type DownloadInit<T extends {} = {}> = BaseConfiguration<T & DownloadOption, Partial<T> & wx.DownloadFileOption>;
 /**
  * 全部配置信息
  */
@@ -21,13 +21,21 @@ export interface DownloadOption extends Partial<DownloadInit>, ExtraConfiguratio
 
 /**
  * 下载封装
+ * @template T 扩展参数类型
  */
-export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask, DownloadInit, DownloadOption> {
+export class Downloader
+    <T extends {} = {}>
+    extends LifeCycle<
+    Partial<T> & wx.DownloadFileOption,
+    wx.DownloadTask,
+    DownloadInit<T>,
+    T & DownloadOption
+    > {
     /**
      * 新建 Http实列
      * @param config 全局默认配置
      */
-    public constructor(config?: DownloadInit, downloader?: (o: wx.DownloadFileOption) => wx.DownloadTask) {
+    public constructor(config?: DownloadInit, downloader?: (o: Partial<T> & wx.DownloadFileOption) => wx.DownloadTask) {
         super(downloader || downloadQueue.push.bind(downloadQueue), config || { transformSend: transfomDownloadSendDefault });
     }
 
@@ -40,7 +48,7 @@ export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask
     public download<
         TReturn = SuccessParam<wx.DownloadFileOption>,
         TParams extends ParamsType = ParamsType, // 参数类型
-        >(options: DownloadOption & { params?: TParams }): Promise<TReturn>;
+        >(options: T & DownloadOption & { params?: TParams }): Promise<TReturn>;
     /**
      * 快速下载
      * @param url 下载地址
@@ -55,11 +63,12 @@ export class Downloader extends LifeCycle<wx.DownloadFileOption, wx.DownloadTask
         >(
             url: string,
             filePath?: string,
-            options?: Omit<DownloadOption, 'url' | 'filePath'> & { params?: TParams }
+            options?: Partial<T> & Omit<DownloadOption, 'url' | 'filePath'> & { params?: TParams }
         ): Promise<TReturn>;
     public download<TReturn>(): Promise<TReturn> {
         const isMultiParam = typeof arguments[0] === 'string';
-        const options: DownloadOption = isMultiParam ? (arguments[2] as DownloadOption || {}) : arguments[0] as DownloadOption;
+        // tslint:disable-next-line: no-unsafe-any
+        const options: T & DownloadOption = isMultiParam ? (arguments[2] || {}) : arguments[0] as T & DownloadOption;
         if (isMultiParam) {
             options.url = arguments[0] as string;
             options.filePath = arguments[1] as string;

@@ -14,6 +14,13 @@ export const config: Configuration & {
     resultCondition: isOkResult
 };
 
+interface CacheOptions {
+    /**
+     * 缓存时间,单位毫秒
+     */
+    expire?: number;
+}
+
 /**
  * 网络缓存
  */
@@ -25,7 +32,7 @@ export const cacheHttp = /*#__PURE__*/ new Http(
 /**
  * 下载缓存
  */
-export const cacheDownloader = /*#__PURE__*/ new Downloader(
+export const cacheDownloader = /*#__PURE__*/ new Downloader<CacheOptions>(
     DOWNLOAD.Defaults,
     /*#__PURE__*/
     CacheOperator.createHandler(DOWNLOAD.handle, config)
@@ -47,7 +54,7 @@ export const get: Http['get'] =
 /**
  * 下载缓存
  */
-export const download: Downloader['download'] =
+export const download: typeof cacheDownloader['download'] =
     /*#__PURE__*/
     cacheDownloader.download.bind(cacheDownloader);
 
