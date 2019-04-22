@@ -13,27 +13,27 @@ const requestQueue = /*#__PURE__*/ new WxQueue<wx.RequestOption, wx.RequestTask>
  * 小程序HTTP 请求生命周期封装
  * @example
  *    `const http = new Http({ baseURL: 'https://api.newfuture.cc/', retry: 3 });`
- * @template T 扩展参数属性类型
+ * @template TExt 扩展参数属性类型
  */
 export class Http<
-    T extends {} = {}
+    TExt extends {} = {}
     >
     extends LifeCycle<
-    T & wx.RequestOption,
+    TExt & wx.RequestOption,
     wx.RequestTask,
-    RequestInit<T>,
-    RequestOption<T>
+    RequestInit<TExt>,
+    FullRequestOption<TExt>
     > {
     /**
      * 新建 Http实列
      * @param config 全局默认配置
      * @param request 请求处理方法，默认使用请求队列处理
      */
-    public constructor(config?: RequestInit<T>, request?: (o: T & wx.RequestOption) => wx.RequestTask) {
+    public constructor(config?: RequestInit<TExt>, request?: (o: TExt & wx.RequestOption) => wx.RequestTask) {
         super(
             request || requestQueue.push.bind(requestQueue),
             // tslint:disable-next-line: no-object-literal-type-assertion
-            config || { transformSend: transformRequestSendDefault } as RequestInit<T>
+            config || { transformSend: transformRequestSendDefault } as RequestInit<TExt>
         );
     }
 
@@ -48,7 +48,7 @@ export class Http<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
-        >(options: RequestOption<T, TData> & { params?: TParams }): Promise<TReturn>;
+        >(options: RequestConfig<TExt, TParams> & UniqueRequestOption<TData>): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -67,14 +67,14 @@ export class Http<
             method: NonNullable<wx.RequestOption['method']>,
             action: string,
             data?: TData,
-            config?: RequestConfig<T>
+            config?: RequestConfig<TExt, TParams>
         ): Promise<TReturn>;
     public request<TReturn = SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const argNum = arguments.length;
         // tslint:disable-next-line: no-unsafe-any
-        const options: RequestOption<T> = argNum === 1 ? arguments[0] : (arguments[3] || {});
+        const options: FullRequestOption<TExt> = argNum === 1 ? arguments[0] : (arguments[3] || {});
         if (argNum > 1) {
-            options.method = arguments[0] as RequestOption['method'];
+            options.method = arguments[0] as FullRequestOption['method'];
             options.url = arguments[1] as string;
             if (argNum > 2) {
                 // tslint:disable-next-line: no-unsafe-any
@@ -101,7 +101,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<T> & { params?: TParams }
+            config?: RequestConfig<TExt, TParams>
         ): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
@@ -122,7 +122,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<T> & { params?: TParams }
+            config?: RequestConfig<TExt, TParams>
         ): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
@@ -143,7 +143,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<T> & { params?: TParams }
+            config?: RequestConfig<TExt, TParams>
         ): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
@@ -165,7 +165,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<T> & { params?: TParams }
+            config?: RequestConfig<TExt, TParams>
         ): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
@@ -186,7 +186,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<T> & { params?: TParams }
+            config?: RequestConfig<TExt, TParams>
         ): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
@@ -209,13 +209,13 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<T> & { params?: TParams }
+            config?: RequestConfig<TExt, TParams>
         ): Promise<TReturn> {
         if (!config) {
             // tslint:disable-next-line: no-parameter-reassignment
             config = {
                 headers: { 'X-HTTP-Method-Override': 'PATCH' }
-            };
+            } as unknown as RequestConfig<TExt, TParams>;
         } else if (!config.headers) {
             config.headers = { 'X-HTTP-Method-Override': 'PATCH' };
         } else {
@@ -230,7 +230,7 @@ type BaseData = string | object | ArrayBuffer;
  * 构造函数 默认配置信息
  * (创建Request的配置信息)
  */
-export interface RequestInit<T extends {} = {}> extends BaseConfiguration<RequestOption<T>, T & wx.RequestOption> {
+export interface RequestInit<T extends {} = {}> extends BaseConfiguration<FullRequestOption<T>, T & wx.RequestOption> {
     /**
      * response data type
      */
@@ -239,18 +239,15 @@ export interface RequestInit<T extends {} = {}> extends BaseConfiguration<Reques
 
 /**
  * 单个请求的额外配置信息
+ * @template TExt 扩展配置
+ * @template TParams 参数类型
  */
-export type RequestConfig<T extends {} = {}> = Partial<RequestInit<T> & ExtraConfiguration>;
+export type RequestConfig<
+    TExt extends {} = {},
+    TParams extends ParamsType = ParamsType
+    > = Partial<TExt> & Partial<RequestInit<TExt> & ExtraConfiguration> & { params?: TParams };
 
-/**
- * 每个请求的全部配置信息
- */
-export interface RequestOption<
-    TExtend extends {} = {},
-    TData extends BaseData = BaseData
-    > extends
-    RequestInit<TExtend>,
-    ExtraConfiguration {
+interface UniqueRequestOption<TData> {
 
     /**
      * 请求的地址
@@ -279,6 +276,19 @@ export interface RequestOption<
 
     // onProgress?: wx.DownloadTask['offProgressUpdate']
 }
+
+/**
+ * 每个请求的全部可配置信息
+ * @template TExtend 扩展信息
+ * @template TData 数据data的类型限制
+ */
+export interface FullRequestOption<
+    TExtend extends {} = {},
+    TData extends BaseData = BaseData
+    > extends
+    RequestInit<TExtend>,
+    ExtraConfiguration,
+    UniqueRequestOption<TData> { }
 
 export declare namespace wx {
     function request(option: RequestOption): RequestTask;
