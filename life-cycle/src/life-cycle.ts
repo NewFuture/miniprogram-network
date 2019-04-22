@@ -69,9 +69,6 @@ export abstract class LifeCycle<
      * @param options - 完整参数
      */
     private _onSend(options: TFullOptions): Promise<Omit<TWxOptions, 'complete' | 'success' | 'fail'>> {
-        // const data: Omit<TWxOptions, 'complete' | 'success' | 'fail'> = options.transformSend ?
-        //     options.transformSend(options as Omit<TFullOptions, 'transformSend' | 'transformResponse'>) :
-        //     options as any;
         this.Listeners.onSend.forEach(f => { f(options); });
         return Promise.resolve(options)
             .then(options.transformSend);

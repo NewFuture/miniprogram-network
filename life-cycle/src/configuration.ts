@@ -29,7 +29,7 @@ export interface WxOptions {
 
 export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['success']>>[0];
 /**
- * 所有网络请求的集成类型
+ * 所有网络请求的集成类型,可全局配置
  */
 export interface BaseConfiguration<
     TFullOptions extends BaseConfiguration<TFullOptions, TWxOptions>, //完整配置
@@ -37,13 +37,14 @@ export interface BaseConfiguration<
     > {
     /**
      * 请求的根目录
-     * Base URL for request
+     * The root URL for request
+     * 如果URL以`http://`或者`https://`开头将被忽略
      */
     baseURL?: string;
 
     /**
-     * 自定义头
-     * user defined headers
+     * 自定义请求头
+     * user defined HTTP headers
      */
     headers?: KeyBasicValuePair;
 
@@ -73,19 +74,23 @@ export interface BaseConfiguration<
      * 请求参数预处理
      * 修改数据或者头;返回 wx.request, wx.downloadFile,wx.uploadFile参数 (不包括回调函数)
      * 支持异步返回promise
-     * You may modify the data or headers object before it is sent.
-     * @param data 不包含转换函数的所有配置内容
+     * You can modify the data or headers object before it is sent.
+     * @param options 不包含转换函数的所有配置内容
+     * @returns the params to call wechat API without callback functions.
      */
-    transformSend(data: Omit<TFullOptions, 'transformSend' | 'transformResponse'>):
+    transformSend(options: TFullOptions):
         PromiseOrValue<Omit<TWxOptions, 'complete' | 'success' | 'fail'>>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
      * 异步返回Promise
      * allows changes to the response data to be made before it is passed to then/catch
-     *  @example `res=>res.data`
+     * @example `res=>res.data`
+     * @param res wechat API result
+     * @param options full options of the API
+     * @return the data to resolve
      */
-    transformResponse?(res: SuccessParam<TWxOptions>, config: TFullOptions): PromiseOrValue<any>;
+    transformResponse?(res: SuccessParam<TWxOptions>, options: TFullOptions): PromiseOrValue<any>;
 }
 
 /**
@@ -94,6 +99,7 @@ export interface BaseConfiguration<
 export interface ExtraConfiguration {
     /**
      * 取消操作的 CancelToken
+     * `CancelToken.source()`可生成tokenSource
      */
     cancelToken?: CancelToken;
 
@@ -103,7 +109,8 @@ export interface ExtraConfiguration {
     jump?: boolean;
 
     /**
-     * 超时时间
+     * 自定义超时时间,单位`ms`
+     * >0 时有有效
      */
     timeout?: number;
 
@@ -127,13 +134,10 @@ export function mergeConfig<T1 extends Partial<T2>, T2 extends { [key: string]: 
     customize: T1,
     defaults: T2
 ): T1 {
-    Object.keys(defaults)
-        .forEach((key) => {
-            if (!customize.hasOwnProperty(key)) {
-                // tslint:disable-next-line: no-unsafe-any
-                customize[key] = defaults[key];
-            }
-        });
-
-    return customize;
+    const config = { ...defaults, ...customize };
+    if (defaults.headers && customize.headers) {
+        // 合并headers
+        config.headers = { ...defaults.headers, ...customize.headers };
+    }
+    return config;
 }
