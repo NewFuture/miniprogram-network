@@ -47,7 +47,7 @@ export class Http<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
-        >(options: RequestOption<TParams, TExt>): Promise<TReturn>;
+        >(options: RequestOption<TData, TParams, TExt>): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
