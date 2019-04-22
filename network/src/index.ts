@@ -1,13 +1,11 @@
 import {
     DOWNLOAD,
-    Downloader,
     DownloadInit as NetworkDownloadInit,
     DownloadOption as NetworkDownloadOption,
     DownloadParams as NetworkDownloadParams
 } from 'miniprogram-downloader';
 
 import {
-    Http,
     REQUEST,
     RequestConfig as NetworkRequestConfig,
     RequestInit as NetworkRequestInit,
@@ -16,7 +14,6 @@ import {
 } from 'miniprogram-request';
 import {
     UPLOAD,
-    Uploader,
     UploadInit as NetworkUploadInit,
     UploadOption as NetworkUploadOption,
     UploadParams as NetworkUploadParams
@@ -52,44 +49,44 @@ export { setConfig } from './set-config';
 /**
  * REQUEST.request
  */
-export const request: Http['request'] =
+export const request: typeof REQUEST['request'] =
     /*#__PURE__*/
     REQUEST.request.bind(REQUEST);
 /**
  * REQUEST.get
  */
 // tslint:disable-next-line: no-reserved-keywords
-export const get: Http['get'] =
+export const get: typeof REQUEST['get'] =
     /*#__PURE__*/
     REQUEST.get.bind(REQUEST);
 /**
  * REQUEST.post
  */
-export const post: Http['post'] =
+export const post: typeof REQUEST['post'] =
     /*#__PURE__*/
     REQUEST.post.bind(REQUEST);
 /**
  * REQUEST.put
  */
-export const put: Http['put'] =
+export const put: typeof REQUEST['put'] =
     /*#__PURE__*/
     REQUEST.put.bind(REQUEST);
 /**
  * REQUEST.delete
  */
-export const del: Http['delete'] =
+export const del: typeof REQUEST['delete'] =
     /*#__PURE__*/
     REQUEST.delete.bind(REQUEST);
 /**
  * REQUEST.patch
  */
-export const patch: Http['patch'] =
+export const patch: typeof REQUEST['patch'] =
     /*#__PURE__*/
     REQUEST.patch.bind(REQUEST);
 /**
  * REQUEST.head
  */
-export const head: Http['head'] =
+export const head: typeof REQUEST['head'] =
     /*#__PURE__*/
     REQUEST.head.bind(REQUEST);
 
@@ -97,7 +94,7 @@ export const head: Http['head'] =
 /**
  * DOWNLOAD.download
  */
-export const download: Downloader['download'] =
+export const download: typeof DOWNLOAD['download'] =
     /*#__PURE__*/
     DOWNLOAD.download.bind(DOWNLOAD);
 
@@ -105,7 +102,7 @@ export const download: Downloader['download'] =
 /**
  * UPLOAD.upload
  */
-export const upload: Uploader['upload'] =
+export const upload: typeof UPLOAD['upload'] =
     /*#__PURE__*/
     UPLOAD.upload.bind(UPLOAD);
 
