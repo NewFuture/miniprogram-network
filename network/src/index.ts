@@ -38,6 +38,7 @@ export {
     transfomDownloadSendDefault
 } from 'miniprogram-downloader';
 export {
+    cacheHttp,
     get as cacheGet,
     request as cacheRequest,
     download as cacheDownload,

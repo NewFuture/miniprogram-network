@@ -27,7 +27,10 @@
 ```
 npm i miniprogram-network
 ```
-
+```ts
+import {post} from 'miniprogram-network';
+post('xxx',data).then(console.log)
+```
 ## 配置 
 
 ### 通用配置
@@ -148,10 +151,10 @@ import {
     cacheRequest, // 与request方法一致,自动使用cache
     } from 'miniprogram-network';
 
-CacheConfig.expire = 30*60*1000;//设置缓存有效时间
+CacheConfig.expire = 10*60*1000;//设置缓存有效时间
 // 设置缓存条件,默认响应状态为2xx缓存数据
 CacheConfig.resultCondition = function(res){
-    return true;
+    return res.statusCOde;
 }
 
 //cacheGet 与 Request共用配置
