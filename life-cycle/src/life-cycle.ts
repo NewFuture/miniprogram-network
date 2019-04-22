@@ -56,7 +56,8 @@ export abstract class LifeCycle<
      * @param options - 请求参数,不包括默认参数
      */
     protected process<T = SuccessParam<TWxOptions>>(options: TFullOptions): Promise<T> {
-        mergeConfig(options, this.Defaults);
+        // tslint:disable-next-line: no-parameter-reassignment
+        options = mergeConfig(options, this.Defaults);
         return this._onSend(options)
             .then((param) => {
                 (param as TWxOptions).complete = (res: GeneralCallbackResult) => { this._onComplete(res as any, options); };
