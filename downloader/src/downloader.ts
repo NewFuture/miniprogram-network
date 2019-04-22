@@ -1,7 +1,5 @@
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, ParamsType, SuccessParam } from 'miniprogram-network-life-cycle';
-import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
-import { type } from 'os';
 import { transfomDownloadSendDefault } from './transform';
 
 // tslint:disable-next-line: no-use-before-declare
