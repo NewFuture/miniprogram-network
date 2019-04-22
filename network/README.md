@@ -42,9 +42,28 @@ npm i miniprogram-network
 
 ### 不同网络请求单独配置项
 
+* [x] `jump` 是否插队
+* [x] `timeout` 请求超时时间
+* [x] `cancelToken` 取消请求的Token
+* [x] `onHeadersReceived` header 接受回调
+* [x] `onProgressUpdate` 进度回调
 * [Request配置项](../request#options)
 * [Download配置项](../downloader#options)
 * [Upload配置项](../uploader#options)
+
+### 缓存配置 
+
+全局缓存策略 cacheConfig
+
+* [x] `cacheConfig.expire` 缓存时间单位`ms` 默认 `10分钟`
+* [x] `cacheConfig.excludeMethod` string[] 不缓存的操作,默认`['POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']`
+* [x] `cacheConfig.paramCondition` 参数缓存规则 默认过滤 `excludeMethod`
+* [x] `resultCondition`结果缓存条件,默认`isOkResult`(2xx)
+
+单个缓存
+
+* [x]`expire` 缓存时间单位`ms` 默认 使用全局配置
+
 
 ### transform 数据转换
 

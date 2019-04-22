@@ -1,8 +1,8 @@
 # miniprogram-network
 
-> 小程序全局网络库,提供完整`代码自动提示`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、全局`拦截`、和多`事件监听`等……
+> 小程序全局网络库,提供完整`代码自动提示`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和多`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`Cache`,`CancelToken`, global `interceptors`, `event listeners` and more.
+> Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`Cache`,`CancelToken`,`timeout`, global `interceptors`, `event listeners` and more.
 > 
 > GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 > for `JavaScript` & `TypeScript`
@@ -94,6 +94,7 @@ download<string>('network/','lcoalpath',{
     * `Request` from [`miniprogram-request` npm](https://npmjs.com/package/miniprogram-request)
     * `Upload` from [`miniprogram-uploader` npm](https://npmjs.com/package/miniprogram-uploader)
     * `Download` from [`miniprogram-downloader` npm](https://npmjs.com/package/miniprogram-downloader)
+    * 网络缓存和请求合并
 * [miniprogram-request](request) 小程序请求库 [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
     * [x] Promise支持+finally+泛型
     * [x] CancelToken 取消支持

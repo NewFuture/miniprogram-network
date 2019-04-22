@@ -12,6 +12,7 @@ Features:
 * [x] [进度/header回调](#progress-进度支持)
 * [x] [插队](#jump-插队)
 * [x] 时间戳
+* [x] timeout 自定义超时时间
 * [ ] 动态收缩扩展
 
 ## Install(安装)
@@ -22,17 +23,7 @@ npm i miniprogram-queue
 
 ## Usage(使用)
 
-### Replace Native API (替换原生接口)
-
-
-```js
-/// app.js (entry of your app), call apply();
-/// 在小程序入口(通常是app.js) 调用 apply() 函数, 实现自动注入
-
-import {apply} from 'miniprogram-queue';
-apply(); 
-// 替换默认API, wx.request, wx.uploadFile,wx.downloadFile
-```
+### ~~Replace Native API (替换原生接口)~~
 
 ### Manual management `WxQueue` (手动管理队列)
 
