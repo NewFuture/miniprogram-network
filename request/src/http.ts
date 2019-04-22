@@ -8,7 +8,6 @@ import { transformRequestSendDefault } from './transform';
 // tslint:disable-next-line: no-use-before-declare
 const requestQueue = /*#__PURE__*/ new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
-// type RequestOption<T>={}
 /**
  * 小程序HTTP 请求生命周期封装
  * @example
@@ -48,7 +47,7 @@ export class Http<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams extends ParamsType = ParamsType,
-        >(options: RequestConfig<TExt, TParams> & UniqueRequestOption<TData>): Promise<TReturn>;
+        >(options: RequestOption<TParams, TExt>): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -67,7 +66,7 @@ export class Http<
             method: NonNullable<wx.RequestOption['method']>,
             action: string,
             data?: TData,
-            config?: RequestConfig<TExt, TParams>
+            config?: RequestConfig<TParams, TExt>
         ): Promise<TReturn>;
     public request<TReturn = SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const argNum = arguments.length;
@@ -101,7 +100,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TExt, TParams>
+            config?: RequestConfig<TParams, TExt>
         ): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
@@ -122,7 +121,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TExt, TParams>
+            config?: RequestConfig<TParams, TExt>
         ): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
@@ -143,7 +142,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TExt, TParams>
+            config?: RequestConfig<TParams, TExt>
         ): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
@@ -165,7 +164,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TExt, TParams>
+            config?: RequestConfig<TParams, TExt>
         ): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
@@ -186,7 +185,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TExt, TParams>
+            config?: RequestConfig<TParams, TExt>
         ): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
@@ -209,13 +208,13 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TExt, TParams>
+            config?: RequestConfig<TParams, TExt>
         ): Promise<TReturn> {
         if (!config) {
             // tslint:disable-next-line: no-parameter-reassignment
             config = {
                 headers: { 'X-HTTP-Method-Override': 'PATCH' }
-            } as unknown as RequestConfig<TExt, TParams>;
+            } as unknown as RequestConfig<TParams, TExt>;
         } else if (!config.headers) {
             config.headers = { 'X-HTTP-Method-Override': 'PATCH' };
         } else {
@@ -225,6 +224,9 @@ export class Http<
     }
 }
 
+/**
+ * Request Data支持的全部数据格式
+ */
 type BaseData = string | object | ArrayBuffer;
 /**
  * 构造函数 默认配置信息
@@ -239,13 +241,25 @@ export interface RequestInit<T extends {} = {}> extends BaseConfiguration<FullRe
 
 /**
  * 单个请求的额外配置信息
- * @template TExt 扩展配置
  * @template TParams 参数类型
+ * @template TExt 扩展配置
  */
 export type RequestConfig<
+    TParams extends ParamsType = ParamsType,
     TExt extends {} = {},
-    TParams extends ParamsType = ParamsType
-    > = Partial<TExt> & Partial<RequestInit<TExt> & ExtraConfiguration> & { params?: TParams };
+    > = Partial<TExt> & Partial<RequestInit<TExt> & ExtraConfiguration> & {
+        /**
+         * 路径参数
+         * URL Path Params
+         * the path parameters to be replace in path
+         * Must be a plain `object` or `array`
+         * @example
+         *  url = "/{ID}/status"
+         *  param = {ID: 12345}
+         *  request url will be /1234/status
+         */
+        params?: TParams;
+    };
 
 interface UniqueRequestOption<TData> {
 
@@ -278,7 +292,19 @@ interface UniqueRequestOption<TData> {
 }
 
 /**
- * 每个请求的全部可配置信息
+ * 每个HTTP Request请求的全部可配置信息
+ * @template TData 数据data的类型限制
+ * @template TParams 参数类型
+ * @template TExt 扩展信息
+ */
+export type RequestOption<
+    TData extends BaseData = BaseData,
+    TParams extends ParamsType = ParamsType,
+    TExt extends {} = {},
+    > = RequestConfig<TParams, TExt> & UniqueRequestOption<TData>;
+
+/**
+ * 发送一个请求的完整可配置信息
  * @template TExtend 扩展信息
  * @template TData 数据data的类型限制
  */

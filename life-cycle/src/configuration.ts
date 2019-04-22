@@ -49,9 +49,10 @@ export interface BaseConfiguration<
     headers?: KeyBasicValuePair;
 
     /**
-     * URL Path
+     * 路径参数
+     * URL Path Params
      * the path parameters to be replace in path
-     * Must be a plain object
+     * Must be a plain `object` or `array`
      * @example
      *  url = "/{ID}/status"
      *  param = {ID: 12345}

@@ -1,6 +1,7 @@
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, ParamsType, SuccessParam } from 'miniprogram-network-life-cycle';
 import { Omit } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
+import { type } from 'os';
 import { transfomDownloadSendDefault } from './transform';
 
 // tslint:disable-next-line: no-use-before-declare
@@ -9,15 +10,64 @@ const downloadQueue = /*#__PURE__*/ new WxQueue<wx.DownloadFileOption, wx.Downlo
 /**
  * 默认配置信息
  */
-export type DownloadInit<T extends {} = {}> = BaseConfiguration<DownloadOption<T>, T & wx.DownloadFileOption>;
+export type DownloadInit<T extends {} = {}> = BaseConfiguration<FullDownloadOption<T>, T & wx.DownloadFileOption>;
+interface BaseDownloadOption {
+    /**
+     * 下载地址
+     * 如果URL以`http://`或者`https://`开头将忽略 baseURL
+     */
+    url: NonNullable<string>;
+    /**
+     * 本地路径可缓存
+     */
+    filePath?: string;
+}
+
 /**
  * 全部配置信息
  */
-export interface DownloadOption<T extends {} = {}> extends DownloadInit<T>, ExtraConfiguration {
-    url: NonNullable<string>;
-    filePath?: string;
+export interface FullDownloadOption<T extends {} = {}> extends DownloadInit<T>, ExtraConfiguration, BaseDownloadOption {
+    /**
+     * 下载进度回调函数
+     */
     onProgressUpdate?: wx.DownloadTaskOnProgressUpdateCallback;
 }
+
+/**
+ * 下载额外配置
+ */
+type DownloadConfig<
+    TParams extends ParamsType = ParamsType,
+    TExt extends {} = {},
+    > = Partial<TExt> & Partial<DownloadInit<TExt> & ExtraConfiguration> & {
+        /**
+         * 路径参数
+         * URL Path Params
+         * the path parameters to be replace in path
+         * Must be a plain `object` or `array`
+         * @example
+         *  url = "/{ID}/status"
+         *  param = {ID: 12345}
+         *  request url will be /1234/status
+         */
+        params?: TParams;
+
+        /**
+         * 下载进度回调函数
+         */
+        onProgressUpdate?: wx.DownloadTaskOnProgressUpdateCallback;
+    };
+
+/**
+ * 下载的全部配置项
+ * @template TData patch data参数格式类型,默认 any
+ * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
+ */
+export type DownloadOption<
+    TParams extends ParamsType = ParamsType,
+    TExt extends {} = {},
+    >
+    = DownloadConfig<TParams, TExt> & BaseDownloadOption;
 
 /**
  * 下载封装
@@ -29,7 +79,7 @@ export class Downloader
     T & wx.DownloadFileOption,
     wx.DownloadTask,
     DownloadInit<T>,
-    DownloadOption<T>
+    FullDownloadOption<T>
     > {
     /**
      * 新建 Http实列
@@ -52,7 +102,7 @@ export class Downloader
     public download<
         TReturn = SuccessParam<wx.DownloadFileOption>,
         TParams extends ParamsType = ParamsType, // 参数类型
-        >(options: DownloadOption<T> & { params?: TParams }): Promise<TReturn>;
+        >(options: DownloadOption<TParams, T>): Promise<TReturn>;
     /**
      * 快速下载
      * @param url 下载地址
@@ -67,12 +117,12 @@ export class Downloader
         >(
             url: string,
             filePath?: string,
-            options?: Omit<DownloadOption<T>, 'url' | 'filePath'> & { params?: TParams }
+            options?: DownloadConfig<TParams, T>
         ): Promise<TReturn>;
     public download<TReturn>(): Promise<TReturn> {
         const isMultiParam = typeof arguments[0] === 'string';
         // tslint:disable-next-line: no-unsafe-any
-        const options: DownloadOption<T> = isMultiParam ? (arguments[2] || {}) : arguments[0] as DownloadOption<T>;
+        const options: FullDownloadOption<T> = isMultiParam ? (arguments[2] || {}) : arguments[0] as FullDownloadOption<T>;
         if (isMultiParam) {
             options.url = arguments[0] as string;
             options.filePath = arguments[1] as string;

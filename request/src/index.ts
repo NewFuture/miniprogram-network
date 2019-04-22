@@ -5,7 +5,7 @@ export {
   Http,
   RequestConfig,
   RequestInit,
-  FullRequestOption as RequestOption
+  RequestOption
 } from './http';
 export {
   RequestParams,
