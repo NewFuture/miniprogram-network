@@ -2,7 +2,13 @@ import { BaseConfiguration, ExtraConfiguration, mergeConfig, Omit, SuccessParam,
 import { Listeners } from './listeners';
 
 type GeneralCallbackResult = {
+    /**
+     * 微信回调消息
+     */
     errMsg: string;
+    /**
+     * 是否自定义超时
+     */
     timeout?: boolean;
 };
 
@@ -33,6 +39,7 @@ export abstract class LifeCycle<
 
     /**
      * 微信操作接口
+     * @param option 参数
      */
     public readonly handle: (option: TWxOptions) => TWxTask;
 
