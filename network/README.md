@@ -16,12 +16,14 @@
 
 * [x] Promise<T>泛型Promise
 * [x] CancelToken 可取消操作
-* [x] Queue 队列支持
+* [x] Queue 队列支持(可插队)
 * [x] Retry 网络错误自动重试
-* [x] Cache 底层缓存支持
+* [x] Cache 底层缓存支持(包括并发请求合并)
+* [x] Timeout 自定义超时时间
 * [x] 每个请求的原生回调接口支持(`onHeadersReceived`事件)和(`onProgressUpdate`事件)
 * [x] Interceptors 拦截器 transform send data / transform response data
 * [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
+* [x] 支持全局配置和每个请求单独配置
 
 ## 安装
 ```
@@ -63,9 +65,9 @@ post('xxx',data).then(console.log)
 * [x] `cacheConfig.paramCondition` 参数缓存规则 默认过滤 `excludeMethod`
 * [x] `resultCondition`结果缓存条件,默认`isOkResult`(2xx)
 
-单个缓存
+单个请求设置缓存
 
-* [x]`expire` 缓存时间单位`ms` 默认 使用全局配置
+* [x] `expire` 缓存时间单位`ms` 默认 使用全局配置
 
 
 ### transform 数据转换

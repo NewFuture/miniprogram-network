@@ -1,11 +1,22 @@
-# miniprogram-network
+# [miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 
-> 小程序全局网络库,提供完整`代码自动提示`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和多`事件监听`等……
+> 小程序网络库,提供完整`代码自动提示`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和`事件监听`等……
 >
 > Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`Cache`,`CancelToken`,`timeout`, global `interceptors`, `event listeners` and more.
-> 
-> GitHub: [NewFuture/miniprogram-network](https://github.com/NewFuture/miniprogram-network)
-> for `JavaScript` & `TypeScript`
+
+## Features 主要功能
+
+* [x] Promise<T>泛型Promise支持
+* [x] Queue 队列支持(可插队)
+* [x] Retry 网络错误自动重试
+* [x] Cache 底层缓存支持(包括并发请求合并)
+* [x] CancelToken 可取消操作
+* [x] Timeout 自定义超时时间
+* [x] 每个请求的原生回调接口支持(`onHeadersReceived`事件)和(`onProgressUpdate`事件)
+* [x] Interceptors 拦截器 `transformSend`/ `transformRresponse`自定义数据拦截
+* [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
+* [x] 支持全局默认配置和每个请求单独配置
+* [x] 类型推断和代码自动提示(TypeScript)
 
 ## Examples 示例
 
