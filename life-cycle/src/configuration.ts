@@ -6,6 +6,25 @@ type PromiseOrValue<T> = T | PromiseLike<T>;
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 
+export interface GeneralCallbackResult {
+    /**
+     * 微信回调消息
+     */
+    errMsg: string;
+    /**
+     * 是否触发了自定义超时
+     */
+    timeout?: boolean;
+    /**
+     * 是否是主动取消
+     */
+    cancel?: boolean;
+    /**
+     * 触发来源
+     */
+    source?: string;
+}
+
 export interface WxTask {
     abort(): void;
     /** HTTP Response Header 事件的回调函数 */
@@ -61,10 +80,21 @@ export interface BaseConfiguration<
     params?: ParamsType;
 
     /**
-     * 重试次数
-     * retry times when fail
+     * 重试次数或重试回调函数
+     * 支持异步操作(返回Promise)
+     * retry times or retry callback when fail
+     * sync or asynchronous
      */
-    retry?: number;
+    retry?: number | (
+        /**
+         * 自定义重试函数
+         * @this TFullOptions 可访问整个Options对象
+         * @param data request/downloadFile等完整参数
+         * @param reason 本次请求发送失败的原因
+         * @returns 返回新的request/downloadFile数据
+         */
+        (this: TFullOptions, data: TWxOptions, reason?: GeneralCallbackResult) => PromiseOrValue<TWxOptions>
+    );
 
     /**
      * 是否记录时间戳

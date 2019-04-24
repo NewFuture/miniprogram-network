@@ -6,7 +6,7 @@ import { UPLOAD, UploadInit } from 'miniprogram-uploader';
 /**
  * 公共配置
  */
-type CommonConfig = Partial<Omit<(RequestInit | DownloadInit | UploadInit), 'transformSend' | 'transformResponse'>>;
+type CommonConfig = Partial<Omit<(RequestInit | DownloadInit | UploadInit), 'transformSend' | 'transformResponse' | 'retry'>>;
 
 /**
  * 设置所有网络请求基本配置
@@ -19,7 +19,7 @@ function setConfig(config: CommonConfig): void;
  * @param key - 配置字段
  * @param value - 配置值
  */
-function setConfig<T extends keyof CommonConfig>(key: T, value: CommonConfig[T]): void;
+function setConfig<T extends keyof CommonConfig>(key: T | 'retry', value: CommonConfig[T] & { 'retry'?: number }): void;
 function setConfig(): void {
     if (arguments.length === 2) {
         const key: keyof CommonConfig = arguments[0] as keyof CommonConfig;

@@ -1,3 +1,5 @@
+import { GeneralCallbackResult } from './configuration';
+
 /**
  * 监听事件列表
  */
@@ -27,36 +29,39 @@ export class Listeners<TFullOptions, TResult> {
 /**
  * 发送前监听
  */
-type OnSendListener<TFullOptions> = (options: TFullOptions) => any;
+type OnSendListener<TFullOptions> = (options: Readonly<TFullOptions>) => any;
 /**
  * 发送时监听
  */
-type OnResponseListener<TResult, TFullOptions> = (res: TResult, options: TFullOptions) => any;
+type OnResponseListener<TResult, TFullOptions> = (res: Readonly<TResult>, options: Readonly<TFullOptions>) => any;
 /**
  * 操作完成时
  */
-type OnCompleteListener<TResult, TFullOptions> = (res: Partial<TResult> & CommonCompleteResult, options: TFullOptions) => any;
+type OnCompleteListener<TResult, TFullOptions> = (
+    res: Readonly<Partial<TResult> & CommonCompleteResult>,
+    options: Readonly<TFullOptions>
+) => any;
 /**
  * 失败
  */
-type OnRejectListener<TFullOptions> = (res: { errMsg: string } | any, options: TFullOptions) => any;
+type OnRejectListener<TFullOptions> = (res: Readonly<{ errMsg: string } | any>, options: Readonly<TFullOptions>) => any;
 /**
  * 操作取消时
  */
-type OnAbortListener<TFullOptions> = (reason: any, options: TFullOptions) => any;
+type OnAbortListener<TFullOptions> = (reason: Readonly<any>, options: Readonly<TFullOptions>) => any;
 
-// type OnResolvedListener = ()=>any;
-
-interface CommonCompleteResult {
-    /** 错误消息 */
-    errMsg: string;
-    /** 时间戳记录, 通过miniprogram-queue发送并且timestamp设置为true */
+interface CommonCompleteResult extends GeneralCallbackResult {
+    /**
+     * 时间戳记录, 通过miniprogram-queue发送并且timestamp设置为true
+     */
     time?: {
-        /** 发送时间戳 */
-        send?: number;
-        /** 结束时间戳 */
-        response?: number;
+        /**
+         *  发送时间戳
+         */
+        send: number;
+        /**
+         * 结束时间戳
+         */
+        response: number;
     };
-    /** 缓存命中次数,仅对使用缓存有效 */
-    cache?: number;
 }

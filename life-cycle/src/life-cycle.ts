@@ -1,16 +1,14 @@
-import { BaseConfiguration, ExtraConfiguration, mergeConfig, Omit, SuccessParam, WxOptions, WxTask } from './configuration';
+import {
+    BaseConfiguration,
+    ExtraConfiguration,
+    GeneralCallbackResult,
+    mergeConfig,
+    Omit,
+    SuccessParam,
+    WxOptions,
+    WxTask
+} from './configuration';
 import { Listeners } from './listeners';
-
-type GeneralCallbackResult = {
-    /**
-     * 微信回调消息
-     */
-    errMsg: string;
-    /**
-     * 是否自定义超时
-     */
-    timeout?: boolean;
-};
 
 /**
  * 网络请求的完整生命周期
@@ -99,10 +97,17 @@ export abstract class LifeCycle<
             };
             // retry
             data.fail = (res: GeneralCallbackResult) => {
-                if (options.retry!-- > 0) {
+                if (typeof options.retry === 'function') {
+                    // 自定义retry 函数
+                    Promise.resolve(options.retry(data, res))
+                        .then(retryData => this._send<T>(retryData, options))
+                        .then(resolve, reject);
+                } else if (options.retry!-- > 0) {
+                    // 还有重试次数
                     this._send<T>(data, options)
                         .then(resolve, reject);
                 } else {
+                    // 重试结束
                     this._onFail(res, options)
                         .then(reject, reject);
                 }
@@ -177,8 +182,11 @@ export abstract class LifeCycle<
     private _onAbort(reason: any, options: TFullOptions): void {
         if (typeof reason === 'string') {
             // tslint:disable-next-line: no-parameter-reassignment
-            reason = { errMsg: reason };
+            reason = {
+                errMsg: reason
+            };
         }
+        // tslint:disable-next-line: no-unsafe-any
         this.Listeners.onAbort.forEach(f => { f(reason, options); });
     }
 }
