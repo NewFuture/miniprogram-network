@@ -145,6 +145,10 @@ setConfig({
 
 ## Cache 缓存
 
+* `cacheRequest`,`cacheGet`与`REQUEST`公用默认配置
+* `cacheDownload`与`DOWNLOAD`公用默认配置
+
+
 ```js
 import {
     cacheConfig, // 缓存配置
@@ -153,10 +157,10 @@ import {
     cacheRequest, // 与request方法一致,自动使用cache
     } from 'miniprogram-network';
 
-CacheConfig.expire = 10*60*1000;//设置缓存有效时间
+cacheConfig.expire = 10*60*1000;//设置缓存有效时间
 // 设置缓存条件,默认响应状态为2xx缓存数据
-CacheConfig.resultCondition = function(res){
-    return res.statusCOde;
+cacheConfig.resultCondition = function(res){
+    return res.statusCode === 200;
 }
 
 //cacheGet 与 Request共用配置
