@@ -16,10 +16,14 @@ function arrayRemove<T>(array: T[], value: T): void {
 }
 
 /**
- * 生成缓存索引
+ * 默认缓存索引生成函数,
+ * 使用 `url`,`method`,`responseType`,`dataType`,`filePath`,`name`参数 + `data`或`formData`构建缓存Key
+ * 请求的`header` 默认会被忽略
  * @param opts 请求参数对象
+ * @template TOptions 完整请求参数
+ * @returns string
  */
-function buildCacheKey<TOptions extends WxOptions = WxOptions>(opts: TOptions): string {
+export function defaultKeyBuilder<TOptions extends WxOptions = WxOptions>(opts: TOptions): string {
     /**
      * 缓存的请求字段
      * https://developers.weixin.qq.com/miniprogram/dev/api/wx.request.html
@@ -47,7 +51,8 @@ export function isOkResult(res: BaseSuccessRes): boolean {
 }
 
 /**
- * 缓存操作
+ * 缓存操作,
+ * 维护缓存结果,自动合并同样请求的并发操作
  * @template TRes 操作结果回调数据类型
  * @template TOptions 参数数据类型
  * @template TTask 微信任务类型
@@ -73,6 +78,10 @@ export class CacheOperator<
      */
     private readonly completeMap: { [key: string]: Function[] } = {};
 
+    /**
+     * @param operator 底层操作
+     * @param config 默认配置
+     */
     constructor(operator: (option: TOptions) => TTask, config?: Configuration<TRes, TOptions>) {
         this.op = operator;
         this.config = config || {
@@ -81,6 +90,9 @@ export class CacheOperator<
         };
     }
 
+    /**
+     * 快速创建一个
+     */
     public static createHandler<
         TRes extends BaseSuccessRes = BaseSuccessRes,
         TOptions extends WxOptions = WxOptions, // 微信操作函数
@@ -95,13 +107,12 @@ export class CacheOperator<
      * @param options - 参数
      */
     public handle(options: TOptions & Partial<Configuration<TRes, TOptions>>): TTask {
-        const paramCondition = options.paramCondition || this.config.paramCondition;
-        if (paramCondition && !paramCondition(options)) {
+        const keyBuilder = options.keyBuilder || this.config.keyBuilder || defaultKeyBuilder;
+        const key = keyBuilder(options);
+        if (!key) {
             // 不缓存
             return this.op(options);
         }
-        const headerBuilder = options.headerBuilder || this.config.headerBuilder;
-        const key = (headerBuilder && options.header ? headerBuilder(options.header) : '') + buildCacheKey(options);
         const result = this.cache.get(key);
         if (result) {
             // 缓存命中
@@ -128,8 +139,11 @@ export class CacheOperator<
             const data = {
                 ...options,
                 success: (res: TRes) => {
-                    if ((options.resultCondition || this.config.resultCondition)(res)) {
-                        this.cache.set(key, res, options.expire || this.config.expire);
+                    const expire = options.expire || this.config.expire;
+                    // 过期时间为0不缓存,但是会合并请求
+                    if (expire > 0 && (options.resultCondition || this.config.resultCondition)(res)) {
+                        // 缓存请求结果
+                        this.cache.set(key, res, expire);
                     }
                     this._getMapBeforeComplete(key).success
                         .forEach((v) => { v(res); });
@@ -187,6 +201,9 @@ export class CacheOperator<
 }
 
 interface CacheRes {
+    /**
+     * 缓存命中次数
+     */
     cache?: number;
 }
 export interface Configuration<TRes = BaseSuccessRes, TOptions = WxOptions> {
@@ -202,13 +219,9 @@ export interface Configuration<TRes = BaseSuccessRes, TOptions = WxOptions> {
     /**
      * 参数缓存条件,无则全部缓存
      * @param options request/downloadFile参数
+     * @returns 返回string键值,无返回值时不进行缓存和请求合并
      */
-    paramCondition?(options: TOptions): boolean;
-    /**
-     * 请求 header 缓存key构建方法,无则忽略header
-     * @param header 请求头
-     */
-    headerBuilder?(header: object): string;
+    keyBuilder?(options: TOptions): string | void | null;
 }
 
 interface WxTask {

@@ -1,1 +1,1 @@
-export { CacheOperator, Configuration, isOkResult } from './cache-operator';
+export { CacheOperator, Configuration, defaultKeyBuilder, isOkResult } from './cache-operator';
