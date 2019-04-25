@@ -25,12 +25,18 @@ export abstract class LifeCycle<
     > {
     /**
      * 默认全局配置
+     * 对此实例的每个请求生效,优先级低于每个请求的自定义配置
+     * 除`header`属性会将请求自定义配置和默认配置进行合并
+     * 其余设置会直接覆盖
      */
     // tslint:disable-next-line:variable-name
     public readonly Defaults: TInitConfig;
 
     /**
-     * 全局 Listeners
+     * 全局事件监听列表 Listeners
+     * 每次触发特定类型事件会通知对应的全部listeners
+     * 包括 `onResponse`,`onResponse`,`onComplete`,`onRejected`,`onAbort`
+     * 原则上不应该在事件回调中修改数据
      */
     // tslint:disable-next-line:variable-name
     public readonly Listeners: Readonly<Listeners<TFullOptions, SuccessParam<TWxOptions>>> = new Listeners();

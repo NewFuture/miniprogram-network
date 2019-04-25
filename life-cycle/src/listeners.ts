@@ -5,23 +5,28 @@ import { GeneralCallbackResult } from './configuration';
  */
 export class Listeners<TFullOptions, TResult> {
     /**
-     * 发送之前事件监听
+     * 发送之前事件监听列表
+     * 回调函数参数为`完整配置`(只读,不应修改)
      */
     public onSend: OnSendListener<TFullOptions>[] = [];
     /**
-     * 收到数据事件监听
+     * 收到数据响应后事件监听列表
+     * 回调函数参数为`返回结果`和`完整配置`(只读,不应修改)
      */
     public onResponse: OnResponseListener<TResult, TFullOptions>[] = [];
     /**
-     * 请求完成事件监听
+     * 请求完成时事件监听列表
+     * 回调函数参数为`操作结果`和`完整配置`(只读,不应修改)
      */
     public onComplete: OnCompleteListener<TResult, TFullOptions>[] = [];
     /**
-     * 处理失败事件监听
+     * 处理失败事件监听列表
+     * 回调函数参数为`失败原因`和`完整配置`(只读,不应修改)
      */
     public onRejected: OnRejectListener<TFullOptions>[] = [];
     /**
-     * 请求中断事件监听
+     * 请求取消事件监听列表
+     * 回调函数参数为`取消原因`和`完整配置`(只读,不应修改)
      */
     public onAbort: OnAbortListener<TFullOptions>[] = [];
 }

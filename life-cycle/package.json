@@ -1,11 +1,12 @@
 {
     "name": "miniprogram-network-life-cycle",
     "version": "4.4.6-alpha.0",
-    "description": "miniprogram-network",
+    "description": "miniprogram-network lifecycle",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/NewFuture/miniprogram-network.git"
     },
+    "homepage": "https://miniprogram-network.newfuture.cc/life-cycle/",
     "license": "Apache-2.0",
     "author": "New Future",
     "files": [

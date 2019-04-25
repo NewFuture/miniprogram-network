@@ -2,7 +2,7 @@
 
 ## 网络请求生命周期
 
-[miniprogram-network](https://miniprogram-network.newfuture.cc) 底层数据流程
+[miniprogram-network](https://miniprogram-network.newfuture.cc) 底层数据处理流程
 
 * [x] Promise
 * [x] Cancelable
@@ -15,7 +15,7 @@
     * [x] On rejected (when `catch` of Promise)
     * [x] On abort
     * [x] On complete
-    * [ ] ~~ On resolved? (before `then` of Promise) ~~
+    * [ ] ~~On resolved? (before `then` of Promise)~~
 
 ## API Properties
 

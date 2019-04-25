@@ -80,8 +80,8 @@ export interface BaseConfiguration<
     params?: ParamsType;
 
     /**
-     * 重试次数或重试回调函数
-     * 支持异步操作(返回Promise)
+     * 重试`次数`或重试`回调函数`
+     * 处理函数(`this`指向整个参数)，参数为`发送完整数据`,`失败原因`,返回`重试数据`支持异步操作(返回Promise)
      * retry times or retry callback when fail
      * sync or asynchronous
      */
@@ -141,7 +141,7 @@ export interface ExtraConfiguration {
 
     /**
      * 自定义超时时间,单位`ms`
-     * >0 时有有效
+     * 取值`>0` 时有有效
      */
     timeout?: number;
 
