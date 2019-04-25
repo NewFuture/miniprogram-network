@@ -1,5 +1,5 @@
 import { DOWNLOAD, Downloader } from 'miniprogram-downloader';
-import { CacheOperator, Configuration, isOkResult } from 'miniprogram-network-cache';
+import { CacheOperator, Configuration, defaultKeyBuilder, isOkResult } from 'miniprogram-network-cache';
 import { Http, REQUEST } from 'miniprogram-request';
 
 /** 缓存配置 */
@@ -10,7 +10,7 @@ export const config: Configuration & {
     expire: 10 * 60 * 1000,
     /** GET,HEAD,OPTIONS默认缓存 */
     excludeMethod: ['POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT'],
-    paramCondition: (param) => (config.excludeMethod.indexOf((param as MethodParam).method) < 0),
+    keyBuilder: (param) => ((config.excludeMethod.indexOf((param as MethodParam).method) > 0) && defaultKeyBuilder(param)),
     resultCondition: isOkResult
 };
 

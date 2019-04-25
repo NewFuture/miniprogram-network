@@ -35,7 +35,7 @@ const cacheRequest = new CacheOperator(wx.request,{
 
 * `expire` 缓存过期时间单位ms,为0时不缓存只合并请求
 * `resultCondition` 结果缓存条件, 默认条件 `isOkResult`
-* `keyBuilder` 自定义缓存键, 无返回值则不缓存, 默认`defaultKeyBuilder`
+* `keyBuilder` 自定义缓存键, 返回`非真值`则不缓存, 默认使用`defaultKeyBuilder`
 
 ## export
 

@@ -221,7 +221,7 @@ export interface Configuration<TRes = BaseSuccessRes, TOptions = WxOptions> {
      * @param options request/downloadFile参数
      * @returns 返回string键值,无返回值时不进行缓存和请求合并
      */
-    keyBuilder?(options: TOptions): string | void | null;
+    keyBuilder?(options: TOptions): string | void | null | false;
 }
 
 interface WxTask {
@@ -230,7 +230,6 @@ interface WxTask {
     onHeadersReceived(callback: (result: any) => void): void;
     /** 下载进度变化事件的回调函数 */
     onProgressUpdate?(callback: (res: any) => any): void;
-
 }
 
 interface WxOptions {
