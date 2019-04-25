@@ -139,6 +139,7 @@ download<string>('network/','lcoalpath',{
     * [x] OnProgressUpdate 进度回调
     * [x] OnHeadersReceived 响应头回调
     * [x] 支持插队
+    * [x] 支持自定义超时
 * [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
 ![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
 * [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch)
@@ -146,10 +147,3 @@ download<string>('network/','lcoalpath',{
 * ~~[miniprogram-promise](promise) 小程序异步API转Promise~~
     * [x] Finally Promise (支持finally)
     * [x] cancelable/abort (可取消的Promise)
-
-
-## Todo
-* [x] Cache (Network)
-* [x] data 泛型支持
-* [x] timestamp (queue)
-* [ ] resize queue
