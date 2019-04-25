@@ -2,7 +2,7 @@
 
 > Queue Package for MiniProgram API
 >
-> 小程序操作队列化(`wx.request`, `wx.downloadFile`,`wx.uploadFile`)
+> 小程序底层操作队列化(`wx.request`, `wx.downloadFile`,`wx.uploadFile`)
 
 
 Features:
@@ -23,10 +23,6 @@ npm i miniprogram-queue
 
 ## Usage(使用)
 
-### ~~Replace Native API (替换原生接口)~~
-
-### Manual management `WxQueue` (手动管理队列)
-
 ```js
 import {WxQueue} from 'miniprogram-queue';
 //创建请求队列
@@ -35,7 +31,7 @@ const requestQueue = new WxQueue(wx.request,10);
 // const downloadQueue = new WxQueue(wx.downloadFile,10);
 
 // 发送请求
-let task = requestQueue.push({
+const task = requestQueue.push({
     url:'https://github.com/NewFuture/miniprogram-network/'
 });
 
@@ -69,7 +65,10 @@ let task = requestQueue.push({
 
 ```js
 //第二个参数为true时优先级最高
-requestQueue.push(param,true);
+requestQueue.push({
+    url:'https://github.com/',
+    jump:true,//插队
+});
 ```
 
 ## Abort (取消操作)

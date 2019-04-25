@@ -3,8 +3,10 @@
 /**
  * 微信小程序操作队列封装管理
  * @example var rq = new WxQueue(wx.requst);
+ * @template TParam 微信操作参数类型
+ * @template TTask 微信操返回task类型
  */
-export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
+export class WxQueue<TParam extends BaseOption, TTask extends BaseTask> {
   /**
    *  队列最大长度
    */
@@ -18,25 +20,24 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
   /**
    * 待完成队列
    */
-  private readonly todo: [number, Tparam & ExtraOptions][] = [];
+  private readonly todo: [number, TParam & ExtraOptions][] = [];
 
   /**
-   * 正在运行的任务
+   * 保持正在运行的任务
    */
-  private readonly taskMap = new Map<number, [Ttask, TimeRecorder?]>();
-  // { [key: number]: Ttask } = {};
+  private readonly taskMap = new Map<number, [TTask, TimeRecorder?]>();
 
   /**
-   * 小程序的原始操作
+   * 小程序的原始操作API
    */
-  private readonly operator: (params: Tparam) => Ttask;
+  private readonly operator: (params: TParam) => TTask;
 
   /**
    * 创建Wx操作队列
    * @param wxFunc Wx操作函数
    * @param maxLength 最大队列长度，默认10
    */
-  constructor(wxFunc: (params: Tparam) => Ttask, maxLength: number = 10) {
+  constructor(wxFunc: (params: TParam) => TTask, maxLength: number = 10) {
     this.operator = wxFunc;
     this.MAX = maxLength || 10;
   }
@@ -45,7 +46,7 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * 向队列中添加操作
    * @param param 微信操作
    */
-  public push(param: QueueOption<Tparam>): Ttask {
+  public push(param: QueueOption<TParam>): TTask {
     const id = ++this.taskid;
     if (this.taskMap.size < this.MAX) {
       // task队列未满
@@ -79,11 +80,11 @@ export class WxQueue<Tparam extends BaseOption, Ttask extends BaseTask> {
    * @param id task ID
    * @param options  task param
    */
-  private _process(id: number, options: QueueOption<Tparam>): Ttask {
+  private _process(id: number, options: QueueOption<TParam>): TTask {
     const oldComplete = options.complete;
     let timeoutFailHandle: number | undefined;
     let taskTimeoutCancelled = false;
-    let task: Ttask;
+    let task: TTask;
 
     options.complete = (res: { errMsg: string; time?: TimeRecorder; timeout?: boolean }) => {
       if (timeoutFailHandle) {
