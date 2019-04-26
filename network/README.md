@@ -58,12 +58,12 @@ post('xxx',data).then(console.log)
 
 ### 缓存配置 
 
-全局缓存策略 cacheConfig
+全局缓存策略 `cacheConfig`
 
 * [x] `cacheConfig.expire` 缓存时间单位`ms` 默认 `10分钟`
 * [x] `cacheConfig.excludeMethod` string[] 不缓存的操作,默认`['POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT']`
-* [x] `cacheConfig.paramCondition` 参数缓存规则 默认过滤 `excludeMethod`
-* [x] `resultCondition`结果缓存条件,默认`isOkResult`(2xx)
+* [x] `cacheConfig.resultCondition`结果缓存条件,默认`isOkResult`(2xx)
+* [x] `cacheConfig.keyBuilder` 缓存key生成规则,修改后`excludeMethod`将失效
 
 单个请求设置缓存
 

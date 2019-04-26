@@ -139,7 +139,7 @@ export class CacheOperator<
             const data = {
                 ...options,
                 success: (res: TRes) => {
-                    const expire = options.expire || this.config.expire;
+                    const expire = options.expire === undefined ? this.config.expire : options.expire;
                     // 过期时间为0不缓存,但是会合并请求
                     if (expire > 0 && (options.resultCondition || this.config.resultCondition)(res)) {
                         // 缓存请求结果

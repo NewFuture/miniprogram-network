@@ -7,11 +7,24 @@ export const config: Configuration & {
     /** 不缓存方法 */
     excludeMethod: MethodParam['method'][];
 } = /*#__PURE__*/ {
+    /**
+     * 默认缓存时间
+     */
     expire: 10 * 60 * 1000,
-    /** GET,HEAD,OPTIONS默认缓存 */
+    /**
+     * GET,HEAD,OPTIONS默认缓存
+     */
     excludeMethod: ['POST', 'PUT', 'DELETE', 'TRACE', 'CONNECT'],
-    keyBuilder: (param) => ((config.excludeMethod.indexOf((param as MethodParam).method) > 0) && defaultKeyBuilder(param)),
-    resultCondition: isOkResult
+    /**
+     * 结果判断条件
+     */
+    resultCondition: isOkResult,
+    /**
+     * 缓存的键构建方式,
+     * 默认将不存在于`excludeMethod`采用`defaultKeyBuilder`进行构建(请求header不影响缓存)
+     * 修改后`excludeMethod`将失效
+     */
+    keyBuilder: (param) => ((config.excludeMethod.indexOf((param as MethodParam).method) === -1) && defaultKeyBuilder(param))
 };
 
 interface CacheOptions {
