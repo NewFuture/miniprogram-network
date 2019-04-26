@@ -38,6 +38,9 @@ export {
     transfomDownloadSendDefault
 } from 'miniprogram-downloader';
 export {
+    defaultKeyBuilder
+} from 'miniprogram-network-cache';
+export {
     cacheHttp,
     get as cacheGet,
     request as cacheRequest,
