@@ -1,8 +1,8 @@
 # [miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 
-> 小程序网络库,提供完整`代码自动提示`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和`事件监听`等……
+> 小程序网络库,提供完整`代码自动完成` 和 `类型检查`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram, including full `Intelligent Code Completion`, with `Promise`,`Queue`,`retry`,`Cache`,`CancelToken`,`timeout`, global `interceptors`, `event listeners` and more.
+> Redefine the network API of Wechat MiniProgram, including full `IntelliSense` and `Type Checking`, with `Promise`,`Queue`,`retry`,`Cache`,`CancelToken`,`timeout`, global `interceptors`, `event listeners` and more.
 
 ## Features 主要功能
 
@@ -87,7 +87,7 @@ download<string>('network/','lcoalpath',{
 * 如果只需要微信uploadFile的相关上传API可只使用[miniprogram-uploader(文档🔗)](uploader)
 
 
-### Intelligent code completion 代码提示
+### IntelliSense & Types 代码提示和类型检查
 
 包含完整的类型定义,结合编辑器(VScode)等,能提供完整的代码提示和自动完成功能。
 

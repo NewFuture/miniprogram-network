@@ -9,6 +9,7 @@
 * [x] [request](https://www.npmjs.com/package/miniprogram-request)
 * [x] [upload](https://www.npmjs.com/package/miniprogram-uploader)
 * [x] [download](https://www.npmjs.com/package/miniprogram-downloader)
+* [x] cache
 * [ ] websocket
 
 
