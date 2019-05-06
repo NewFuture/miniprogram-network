@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-network",
-    "version": "4.4.7",
+    "version": "4.5.0",
     "description": "Redefine the network API of Wechat MiniProgram",
     "keywords": [
         "miniprogram",
@@ -41,10 +41,10 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "miniprogram-downloader": "^4.4.6",
-        "miniprogram-network-cache": "^4.4.7",
+        "miniprogram-downloader": "^4.5.0",
+        "miniprogram-network-cache": "^4.5.0",
         "miniprogram-network-utils": "^4.4.0-alpha.0",
-        "miniprogram-request": "^4.4.6",
-        "miniprogram-uploader": "^4.4.6"
+        "miniprogram-request": "^4.5.0",
+        "miniprogram-uploader": "^4.5.0"
     }
 }
