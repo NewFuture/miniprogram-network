@@ -82,12 +82,19 @@ export class Downloader
     /**
      * 新建 Http实列
      * @param config 全局默认配置
+     * @param downloader 下载处理方法，默认使用下载队列处理
+     * @param listeners 下载事件监听回调
      */
-    public constructor(config?: DownloadInit<T>, downloader?: (o: T & wx.DownloadFileOption) => wx.DownloadTask) {
+    public constructor(
+        config?: DownloadInit<T>,
+        downloader?: (o: T & wx.DownloadFileOption) => wx.DownloadTask,
+        listeners?: Downloader<T>['Listeners']
+    ) {
         super(
             downloader || downloadQueue.push.bind(downloadQueue),
             // tslint:disable-next-line: no-object-literal-type-assertion
-            config || { transformSend: transfomDownloadSendDefault } as DownloadInit<T>
+            config || { transformSend: transfomDownloadSendDefault } as DownloadInit<T>,
+            listeners
         );
     }
 

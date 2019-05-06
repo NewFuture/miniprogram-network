@@ -40,7 +40,9 @@ interface CacheOptions {
 export const cacheHttp = /*#__PURE__*/ new Http<CacheOptions>(
     REQUEST.Defaults,
     /*#__PURE__*/
-    CacheOperator.createHandler(REQUEST.handle, config)
+    CacheOperator.createHandler(REQUEST.handle, config),
+    /*#__PURE__*/
+    REQUEST.Listeners
 );
 /**
  * 下载缓存
@@ -48,7 +50,9 @@ export const cacheHttp = /*#__PURE__*/ new Http<CacheOptions>(
 export const cacheDownloader = /*#__PURE__*/ new Downloader<CacheOptions>(
     DOWNLOAD.Defaults,
     /*#__PURE__*/
-    CacheOperator.createHandler(DOWNLOAD.handle, config)
+    CacheOperator.createHandler(DOWNLOAD.handle, config),
+    /*#__PURE__*/
+    DOWNLOAD.Listeners
 );
 
 /**

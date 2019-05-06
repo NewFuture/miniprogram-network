@@ -27,12 +27,18 @@ export class Http<
      * 新建 Http实列
      * @param config 全局默认配置
      * @param request 请求处理方法，默认使用请求队列处理
+     * @param listeners 请求事件监听
      */
-    public constructor(config?: RequestInit<TExt>, request?: (o: TExt & wx.RequestOption) => wx.RequestTask) {
+    public constructor(
+        config?: RequestInit<TExt>,
+        request?: (o: TExt & wx.RequestOption) => wx.RequestTask,
+        listeners?: Http<TExt>['Listeners']
+    ) {
         super(
             request || requestQueue.push.bind(requestQueue),
             // tslint:disable-next-line: no-object-literal-type-assertion
-            config || { transformSend: transformRequestSendDefault } as RequestInit<TExt>
+            config || { transformSend: transformRequestSendDefault } as RequestInit<TExt>,
+            listeners
         );
     }
 

@@ -41,9 +41,18 @@ export class Uploader extends LifeCycle<
      * 创建Upload管理
      * @param config 全局配置
      * @param uploader 操作函数,默认使用上传队列
+     * @param listeners 上传事件监听通知
      */
-    constructor(config?: UploadInit, uploader?: (op: wx.UploadFileOption) => wx.UploadTask) {
-        super(uploader || uploadQueue.push.bind(uploadQueue), config || { transformSend: transformUploadSendDefault });
+    constructor(
+        config?: UploadInit,
+        uploader?: (op: wx.UploadFileOption) => wx.UploadTask,
+        listeners?: Uploader['Listeners']
+    ) {
+        super(
+            uploader || uploadQueue.push.bind(uploadQueue),
+            config || { transformSend: transformUploadSendDefault },
+            listeners
+        );
     }
 
     /**

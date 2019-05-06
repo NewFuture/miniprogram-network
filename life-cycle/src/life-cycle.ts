@@ -39,7 +39,7 @@ export abstract class LifeCycle<
      * 原则上不应该在事件回调中修改数据
      */
     // tslint:disable-next-line:variable-name
-    public readonly Listeners: Readonly<Listeners<TFullOptions, SuccessParam<TWxOptions>>> = new Listeners();
+    public readonly Listeners: Readonly<Listeners<TFullOptions, SuccessParam<TWxOptions>>>;
 
     /**
      * 微信操作接口
@@ -49,11 +49,18 @@ export abstract class LifeCycle<
 
     /**
      * 新建实列
+     * @param operator 操作
      * @param config 全局默认配置
+     * @param listeners 事件监听
      */
-    protected constructor(operator: (option: TWxOptions) => TWxTask, config: TInitConfig) {
+    protected constructor(
+        operator: (option: TWxOptions) => TWxTask,
+        config: TInitConfig,
+        listeners: Readonly<Listeners<TFullOptions, SuccessParam<TWxOptions>>> = new Listeners()
+    ) {
         this.handle = operator;
         this.Defaults = config;
+        this.Listeners = listeners;
         if (config.retry === undefined) {
             this.Defaults.retry = 1;
         }
