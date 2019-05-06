@@ -4,7 +4,9 @@
     "description": "miniprogram upload package",
     "keywords": [
         "miniprogram",
-        "wx.uploadFile"
+        "wx.uploadFile",
+        "小程序",
+        "上传"
     ],
     "homepage": "https://miniprogram-network.newfuture.cc/uploader/",
     "bugs": {

@@ -4,7 +4,9 @@
     "description": "minprogram network cache ",
     "keywords": [
         "netork-cache",
-        "miniprogram"
+        "miniprogram",
+        "小程序",
+        "缓存"
     ],
     "homepage": "https://miniprogram-network.newfuture.cc/cache/",
     "bugs": {

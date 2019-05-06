@@ -4,7 +4,9 @@
     "description": "A better Request package for MiniProgram API",
     "keywords": [
         "miniprogram",
-        "wx.request"
+        "wx.request",
+        "小程序",
+        "请求"
     ],
     "homepage": "https://miniprogram-network.newfuture.cc/request/",
     "bugs": {

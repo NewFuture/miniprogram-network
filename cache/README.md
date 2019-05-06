@@ -1,6 +1,8 @@
 # miniprogram-network-cache [![npm version](https://badge.fury.io/js/miniprogram-network-cache.svg)](https://npmjs.com/package/miniprogram-network-cache)
 
 
+> The cache lib of [miniprogram-network](https://npmjs.com/package/miniprogram-network)
+
 ## 请求缓存
 ```js
 import {CacheOperator} from 'miniprogram-network-cache';

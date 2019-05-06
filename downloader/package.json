@@ -4,7 +4,9 @@
     "description": "minprogram download package ",
     "keywords": [
         "miniprogram",
-        "wx.downloadFile"
+        "wx.downloadFile",
+        "小程序",
+        "下载"
     ],
     "homepage": "https://miniprogram-network.newfuture.cc/downloader/",
     "bugs": {

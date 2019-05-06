@@ -9,7 +9,9 @@
         "wx.request",
         "wx.uploadFile",
         "axios",
-        "request"
+        "request",
+        "小程序",
+        "网络"
     ],
     "homepage": "https://miniprogram-network.newfuture.cc/",
     "bugs": {

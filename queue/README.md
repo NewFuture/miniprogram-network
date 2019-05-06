@@ -3,7 +3,8 @@
 > Queue Package for MiniProgram API
 >
 > 小程序底层操作队列化(`wx.request`, `wx.downloadFile`,`wx.uploadFile`)
-
+> 
+> [miniprogram-network](https://npmjs.com/package/miniprogram-network)默认队列实现 
 
 Features:
 
