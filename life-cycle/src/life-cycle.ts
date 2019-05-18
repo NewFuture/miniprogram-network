@@ -78,7 +78,15 @@ export abstract class LifeCycle<
         options = mergeConfig(options, this.Defaults);
         return this._onSend(options)
             .then((param) => {
-                (param as TWxOptions).complete = (res: GeneralCallbackResult) => { this._onComplete(res as any, options); };
+                // 记录发送时间戳
+                if (options.timestamp) {
+                    if (typeof options.timestamp === 'object') {
+                        // 记录于传入的参数中
+                        options.timestamp.send = Date.now();
+                    } else {
+                        (options as any).__sendTime = Date.now();
+                    }
+                }
                 return this._send<T>(param as TWxOptions, options);
             });
     }
@@ -100,11 +108,16 @@ export abstract class LifeCycle<
      */
     private _send<T>(data: TWxOptions, options: TFullOptions): Promise<T> {
         return new Promise<T>((resolve, reject) => {
+            /**
+             * 是否结束
+             */
+            let completed = false;
             const cancelToken = options.cancelToken;
             if (cancelToken) {
                 cancelToken.throwIfRequested();
             }
             data.success = (res: SuccessParam<TWxOptions>) => {
+                completed = true;
                 this._response<T>(res, options)
                     .then(resolve, reject);
             };
@@ -121,8 +134,26 @@ export abstract class LifeCycle<
                         .then(resolve, reject);
                 } else {
                     // 重试结束
+                    completed = true;
                     this._onFail(res, options)
                         .then(reject, reject);
+                }
+            };
+            data.complete = (res: GeneralCallbackResult & ExtraCompleteRes) => {
+                if (completed) {
+                    if (options.timestamp) {
+                        //记录时间戳
+                        if (typeof options.timestamp === 'object') {
+                            options.timestamp.response = Date.now();
+                            res.time = options.timestamp;
+                        } else {
+                            res.time = {
+                                send: (options as any).__sendTime as number,
+                                response: Date.now()
+                            };
+                        }
+                    }
+                    this._onComplete(res as any, options);
                 }
             };
 
@@ -179,7 +210,7 @@ export abstract class LifeCycle<
      * @param res - 返回参数
      * @param options - 全部配置
      */
-    private _onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult, options: TFullOptions) {
+    private _onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult & ExtraCompleteRes, options: TFullOptions) {
         if (typeof res === 'string') {
             // tslint:disable-next-line: no-parameter-reassignment
             res = { errMsg: res as string } as any;
@@ -202,4 +233,20 @@ export abstract class LifeCycle<
         // tslint:disable-next-line: no-unsafe-any
         this.Listeners.onAbort.forEach(f => { f(reason, options); });
     }
+}
+
+interface TimeRecorder {
+    send?: number;
+    response?: number;
+}
+
+interface ExtraCompleteRes {
+    /**
+     * 请求时间戳
+     */
+    time?: TimeRecorder;
+    /**
+     * 是否超时
+     */
+    timeout?: boolean;
 }

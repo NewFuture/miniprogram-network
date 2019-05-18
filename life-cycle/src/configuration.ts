@@ -98,8 +98,9 @@ export interface BaseConfiguration<
 
     /**
      * 是否记录时间戳
+     * 如果传入为object 则记录时间戳于此object中
      */
-    timestamp?: boolean;
+    timestamp?: boolean | { send?: number; response?: number };
 
     /**
      * 请求参数预处理
