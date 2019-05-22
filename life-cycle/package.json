@@ -22,12 +22,13 @@
         "build": "npm run build:es5 && npm run build:es6",
         "build:es5": "tsc --declarationDir types",
         "build:es6": "tsc -m es6 --target es6 --outDir es",
-        "clean": "rm -rf es dist types ",
+        "clean": "rimraf -rf es dist types ",
         "lint": "tslint -p . -c ../tslint.json",
         "lint:fix": "tslint --fix -p . -c ../tslint.json",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "miniprogram-cancel-token": "^4.2.3"
+        "miniprogram-cancel-token": "^4.2.3",
+        "miniprogram-network-utils": "^4.4.0-alpha.0"
     }
 }
