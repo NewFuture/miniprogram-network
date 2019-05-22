@@ -3,7 +3,20 @@
 // tslint:disable-next-line:no-import-side-effect
 import './promise.finally';
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
-type ParamsType = Record<string, string | number | boolean | null> | (string | number | boolean | null)[];
+interface ObjectLike {
+    [key: string]: string | number | boolean | null | undefined;
+}
+interface ArrayLike {
+    [key: number]: string | number | boolean | null | undefined;
+}
+/**
+ * 参数类型
+ */
+export type ParamsType =
+    | ObjectLike
+    | ArrayLike
+    | Record<string | number, string | number | boolean | null | undefined>
+    | ((string | number | boolean)[]);
 
 /**
  * 构建url参数
@@ -22,7 +35,7 @@ export function buildParams(
         Object.keys(params)
             .forEach((key) => {
                 // tslint:disable-next-line:no-parameter-reassignment prefer-type-cast
-                url = url.replace(new RegExp(`{${key}}`, 'g'), params[key as keyof ParamsType] as string);
+                url = url.replace(new RegExp(`{${key}}`, 'g'), (params as ObjectLike)[key] as string);
             });
     }
     // tslint:disable-next-line:no-http-string

@@ -1,4 +1,5 @@
-import { BaseConfiguration, ExtraConfiguration, LifeCycle, ParamsType, SuccessParam } from 'miniprogram-network-life-cycle';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
+import { ParamsType } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transfomDownloadSendDefault } from './transform';
 
