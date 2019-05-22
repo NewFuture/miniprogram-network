@@ -1,6 +1,6 @@
 
-import { BaseConfiguration, ExtraConfiguration, LifeCycle, ParamsType, SuccessParam } from 'miniprogram-network-life-cycle';
-import { Omit } from 'miniprogram-network-utils';
+import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
+import { ParamsType } from 'miniprogram-network-utils';
 import { WxQueue } from 'miniprogram-queue';
 import { transformUploadSendDefault } from './transform';
 
@@ -9,19 +9,90 @@ const uploadQueue = /*#__PURE__*/ new WxQueue<wx.UploadFileOption, wx.UploadTask
 /**
  * 默认配置信息
  */
-export interface UploadInit extends BaseConfiguration<UploadOption, wx.UploadFileOption> {
+export interface UploadInit extends BaseConfiguration<FullUploadOption, wx.UploadFileOption> {
+    /**
+     * 上传API
+     */
     url?: string;
+    /**
+     * 上传文件名字段
+     */
+    name?: string;
 }
 /**
- * 全部配置信息
+ * 下载的全部配置项
+ * @template TData patch data参数格式类型,默认 any
  */
-export interface UploadOption<T extends object = NonNullable<wx.UploadFileOption['formData']>>
-    extends UploadInit, ExtraConfiguration {
-    filePath: NonNullable<string>;
-    name: NonNullable<string>;
-    data?: T;
+interface BaseUploadOption<
+    TData extends object = NonNullable<wx.UploadFileOption['formData']>
+    > {
+
+    /**
+     * 本地文件路径
+     */
+    filePath: string;
+
+    /**
+     * 上传服务器API地址
+     * 如果URL以`http://`或者`https://`开头将忽略 baseURL
+     */
+    url?: NonNullable<string>;
+
+    /**
+     * 上传文件名字段
+     */
+    name?: string;
+
+    /**
+     * 请求附加的 form Data
+     */
+    data?: TData;
+}
+
+/**
+ * 上传的全部配置信息
+ */
+export interface FullUploadOption extends UploadInit, ExtraConfiguration, BaseUploadOption {
+    /**
+     * 下载进度回调函数
+     */
     onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback;
 }
+
+/**
+ * 每个传的额外配置
+ * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
+ */
+type UploadConfig<
+    TParams extends ParamsType = ParamsType,
+    > = Partial<UploadInit & ExtraConfiguration> & {
+        /**
+         * 路径参数
+         * URL Path Params
+         * the path parameters to be replace in path
+         * Must be a plain `object` or `array`
+         * @example
+         *  url = "/{ID}/status"
+         *  param = {ID: 12345}
+         *  request url will be /1234/status
+         */
+        params?: TParams;
+
+        /**
+         * 下载进度回调函数
+         */
+        onProgressUpdate?: wx.UploadTaskOnProgressUpdateCallback;
+    };
+
+/**
+ * 单个上传的全部参数
+ * @template TData patch data参数格式类型,默认 any
+ * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
+ */
+export type UploadOption<
+    TData extends object = object,
+    TParams extends ParamsType = ParamsType,
+    > = UploadConfig<TParams> & BaseUploadOption<TData>;
 
 /**
  * 上传管理
@@ -30,7 +101,7 @@ export class Uploader extends LifeCycle<
     wx.UploadFileOption,
     wx.UploadTask,
     UploadInit,
-    UploadOption
+    FullUploadOption
     > {
     /**
      * 默认上传请求参数转换函数
@@ -56,6 +127,18 @@ export class Uploader extends LifeCycle<
     }
 
     /**
+     * 自定义上传
+     * @param options 全部配置信息:filePath,name,为必填字段
+     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
+     * @template TData 上传 query data参数格式类型,默认 any
+     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
+     */
+    public upload<
+        TReturn = SuccessParam<wx.UploadFileOption>,
+        TData extends object = object,
+        TParams extends ParamsType = ParamsType,
+        >(options: UploadOption<TData, TParams>): Promise<TReturn>;
+    /**
      * 快速上传文件
      * @param filePath 本地文件路径
      * @param name 文件名
@@ -75,23 +158,12 @@ export class Uploader extends LifeCycle<
             name: string,
             url?: string,
             data?: TData,
-            config?: Omit<UploadOption, 'filePath' | 'name' | 'url' | 'data'> & { params?: TParams }
+            config?: UploadConfig<TParams>
         ): Promise<TReturn>;
-    /**
-     * 自定义上传
-     * @param options 全部配置信息:filePath,name,为必填字段
-     * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
-     * @template TData 上传 query data参数格式类型,默认 any
-     * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
-     */
-    public upload<
-        TReturn = SuccessParam<wx.UploadFileOption>,
-        TData extends object = object,
-        TParams extends ParamsType = ParamsType,
-        >(options: UploadOption<TData> & { params?: TParams }): Promise<TReturn>;
+
     public upload<T>(): Promise<T> {
         const argNum: number = arguments.length;
-        const options: UploadOption = argNum === 1 ? arguments[0] as UploadOption : (arguments[4] as UploadOption || {});
+        const options: FullUploadOption = argNum === 1 ? arguments[0] as FullUploadOption : (arguments[4] as FullUploadOption || {});
         if (argNum > 1) {
             options.filePath = arguments[0] as string;
             options.name = arguments[1] as string;

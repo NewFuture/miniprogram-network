@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-fetch",
-    "version": "4.5.0",
+    "version": "4.5.1",
     "description": "Fetch API polyfill for Wechat MiniProgram",
     "keywords": [
         "fetch",
@@ -19,6 +19,6 @@
         "build:es6": "tsc fetch.ts fetch.ts --moduleResolution node -m es6 --target es6 --outDir es"
     },
     "dependencies": {
-        "miniprogram-queue": "^4.5.0"
+        "miniprogram-queue": "^4.5.1"
     }
 }

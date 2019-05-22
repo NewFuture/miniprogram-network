@@ -37,6 +37,7 @@
     },
     "devDependencies": {
         "lerna": "^3.14.1",
+        "rimraf": "^2.6.3",
         "tslint": "^5.16.0",
         "tslint-microsoft-contrib": "^6.1.1",
         "typescript": "^3.4.5"

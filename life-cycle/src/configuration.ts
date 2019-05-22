@@ -1,7 +1,7 @@
 import { CancelToken } from 'miniprogram-cancel-token';
+import { ParamsType } from 'miniprogram-network-utils';
 
 type KeyBasicValuePair = Record<string, string | number | boolean | null | undefined>;
-export type ParamsType = Record<string, string | number | boolean> | (string | number | boolean)[];
 type PromiseOrValue<T> = T | PromiseLike<T>;
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;

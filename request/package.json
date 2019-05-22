@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-request",
-    "version": "4.5.0",
+    "version": "4.5.1",
     "description": "A better Request package for MiniProgram API",
     "keywords": [
         "miniprogram",
@@ -31,14 +31,14 @@
         "build": "npm run build:es5 && npm run build:es6",
         "build:es5": "tsc --declarationDir types",
         "build:es6": "tsc -m es6 --target es6 --outDir es",
-        "clean": "rm -rf es dist types ",
+        "clean": "rimraf -rf es dist types ",
         "lint": "tslint -p . -c ../tslint.json",
         "lint:fix": "tslint --fix -p . -c ../tslint.json",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "miniprogram-network-life-cycle": "^4.5.0",
-        "miniprogram-network-utils": "^4.4.0-alpha.0",
-        "miniprogram-queue": "^4.5.0"
+        "miniprogram-network-life-cycle": "^4.5.1",
+        "miniprogram-network-utils": "^4.5.1",
+        "miniprogram-queue": "^4.5.1"
     }
 }
