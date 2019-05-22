@@ -32,7 +32,9 @@ export interface FullDownloadOption<T extends {} = {}> extends DownloadInit<T>, 
 }
 
 /**
- * 下载额外配置
+ * 下载的额外配置
+ * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
+ * @template TExt 额外的扩展属性
  */
 type DownloadConfig<
     TParams extends ParamsType = ParamsType,
@@ -112,7 +114,7 @@ export class Downloader
      * 快速下载
      * @param url 下载地址
      * @param filePath 本地文件路径
-     * @param options 其他参数
+     * @param config 其他参数
      * @template TReturn Promise 返回的格式类型,默认返回微信原始返回数据格式
      * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
      */
@@ -122,7 +124,7 @@ export class Downloader
         >(
             url: string,
             filePath?: string,
-            options?: DownloadConfig<TParams, T>
+            config?: DownloadConfig<TParams, T>
         ): Promise<TReturn>;
     public download<TReturn>(): Promise<TReturn> {
         const isMultiParam = typeof arguments[0] === 'string';

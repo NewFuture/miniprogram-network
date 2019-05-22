@@ -1,8 +1,12 @@
 import { CancelToken } from 'miniprogram-cancel-token';
 
 type KeyBasicValuePair = Record<string, string | number | boolean | null | undefined>;
-export type ParamsType = Record<string, string | number | boolean> | (string | number | boolean)[];
+export type ParamsType = ParamsObject | ((string | number | boolean)[]);
 type PromiseOrValue<T> = T | PromiseLike<T>;
+
+interface ParamsObject {
+    [key: string]: string | number | boolean | null | undefined;
+}
 
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 
