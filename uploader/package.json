@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-uploader",
-    "version": "4.5.1",
+    "version": "4.5.2",
     "description": "miniprogram upload package",
     "keywords": [
         "miniprogram",
@@ -37,8 +37,8 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "miniprogram-network-life-cycle": "^4.5.1",
-        "miniprogram-network-utils": "^4.5.1",
+        "miniprogram-network-life-cycle": "^4.5.2",
+        "miniprogram-network-utils": "^4.5.2",
         "miniprogram-queue": "^4.5.1"
     }
 }
