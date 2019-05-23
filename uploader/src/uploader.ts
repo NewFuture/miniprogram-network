@@ -64,7 +64,7 @@ export interface FullUploadOption extends UploadInit, ExtraConfiguration, BaseUp
  * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
  */
 type UploadConfig<
-    TParams extends ParamsType = ParamsType,
+    TParams = ParamsType,
     > = Partial<UploadInit & ExtraConfiguration> & {
         /**
          * 路径参数
@@ -91,7 +91,7 @@ type UploadConfig<
  */
 export type UploadOption<
     TData extends object = object,
-    TParams extends ParamsType = ParamsType,
+    TParams = ParamsType,
     > = UploadConfig<TParams> & BaseUploadOption<TData>;
 
 /**
@@ -136,7 +136,7 @@ export class Uploader extends LifeCycle<
     public upload<
         TReturn = SuccessParam<wx.UploadFileOption>,
         TData extends object = object,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(options: UploadOption<TData, TParams>): Promise<TReturn>;
     /**
      * 快速上传文件
@@ -152,7 +152,7 @@ export class Uploader extends LifeCycle<
     public upload<
         TReturn = SuccessParam<wx.UploadFileOption>,
         TData = object,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             filePath: string,
             name: string,

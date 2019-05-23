@@ -53,7 +53,7 @@ export class Http<
     public request<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(options: RequestOption<TData, TParams, TExt>): Promise<TReturn>;
     /**
      * 发送一个 request请求
@@ -68,7 +68,7 @@ export class Http<
     public request<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             method: NonNullable<wx.RequestOption['method']>,
             action: string,
@@ -103,7 +103,7 @@ export class Http<
     public get<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             action: string,
             data?: TData,
@@ -124,7 +124,7 @@ export class Http<
     public post<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             action: string,
             data?: TData,
@@ -145,7 +145,7 @@ export class Http<
     public put<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             action: string,
             data?: TData,
@@ -167,7 +167,7 @@ export class Http<
     public delete<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             action: string,
             data?: TData,
@@ -188,7 +188,7 @@ export class Http<
     public head<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             action: string,
             data?: TData,
@@ -211,7 +211,7 @@ export class Http<
     public patch<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
-        TParams extends ParamsType = ParamsType,
+        TParams = ParamsType,
         >(
             action: string,
             data?: TData,
@@ -252,7 +252,7 @@ export interface RequestInit<T extends {} = {}> extends BaseConfiguration<FullRe
  * @template TExt 扩展配置
  */
 export type RequestConfig<
-    TParams extends ParamsType = ParamsType,
+    TParams = ParamsType,
     TExt extends {} = {},
     > = Partial<TExt> & Partial<RequestInit<TExt> & ExtraConfiguration> & {
         /**
@@ -306,7 +306,7 @@ interface UniqueRequestOption<TData> {
  */
 export type RequestOption<
     TData extends BaseData = BaseData,
-    TParams extends ParamsType = ParamsType,
+    TParams = ParamsType,
     TExt extends {} = {},
     > = RequestConfig<TParams, TExt> & UniqueRequestOption<TData>;
 
