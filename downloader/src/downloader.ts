@@ -38,7 +38,7 @@ export interface FullDownloadOption<T extends {} = {}> extends DownloadInit<T>, 
  * @template TExt 额外的扩展属性
  */
 type DownloadConfig<
-    TParams extends ParamsType = ParamsType,
+    TParams = ParamsType,
     TExt extends {} = {},
     > = Partial<TExt> & Partial<DownloadInit<TExt> & ExtraConfiguration> & {
         /**
@@ -65,7 +65,7 @@ type DownloadConfig<
  * @template TParams 路径参数(如`/items/{id}`或者`/{0}/{1}`)的格式类型,默认 任意object或数组
  */
 export type DownloadOption<
-    TParams extends ParamsType = ParamsType,
+    TParams = ParamsType,
     TExt extends {} = {},
     >
     = DownloadConfig<TParams, TExt> & BaseDownloadOption;
@@ -109,7 +109,7 @@ export class Downloader
      */
     public download<
         TReturn = SuccessParam<wx.DownloadFileOption>,
-        TParams extends ParamsType = ParamsType, // 参数类型
+        TParams = ParamsType, // 参数类型
         >(options: DownloadOption<TParams, T>): Promise<TReturn>;
     /**
      * 快速下载
@@ -121,7 +121,7 @@ export class Downloader
      */
     public download<
         TReturn = SuccessParam<wx.DownloadFileOption>,
-        TParams extends ParamsType = ParamsType, // 参数类型
+        TParams = ParamsType, // 参数类型
         >(
             url: string,
             filePath?: string,
