@@ -1,11 +1,15 @@
 import { Uploader } from './uploader';
-export { CancelToken } from 'miniprogram-network-life-cycle';
-export { Uploader, UploadOption, UploadInit } from './uploader';
+
 export {
-  transformUploadSendDefault,
+  CancelToken,
+  ICancelTokenSource
+} from 'miniprogram-network-life-cycle';
+export {
   transformUploadResponseOkData,
+  transformUploadSendDefault,
   UploadParams
 } from './transform';
+export { Uploader, UploadInit, UploadOption } from './uploader';
 /**
  * 预定义全局 Upload 对象
  */

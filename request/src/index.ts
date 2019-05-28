@@ -1,6 +1,6 @@
 import { Http } from './http';
 
-export { CancelToken } from 'miniprogram-network-life-cycle';
+export { CancelToken, ICancelTokenSource } from 'miniprogram-network-life-cycle';
 export {
   Http,
   RequestConfig,
