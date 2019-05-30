@@ -96,8 +96,11 @@ REQUEST.patch('/items/{id}',{name:'new'},{params:{id:12345}})
 ###  TypeScript
 泛型支持
 ```js
-//TS 类型推断
-import { REQUEST } from 'miniprogram-request';
+// TS 类型推断
+import { REQUEST, transformRequestResponseOkData } from 'miniprogram-request';
+
+// 自动提取返回值为 2xx 时的 `response.data`
+REQUEST.Defaults.transformResponse = transformRequestResponseOkData
 
 interface Item {
     id: number,
