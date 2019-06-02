@@ -147,14 +147,14 @@ export interface ExtraConfiguration {
     timeout?: number;
 
     /**
+     * 进度回调
+     */
+    onProgressUpdate?: Function;
+
+    /**
      * 接收到响应头回调
      */
     onHeadersReceived?(result: { header: object }): void;
-
-    /**
-     * 进度回调
-     */
-    onProgressUpdate?(res: any): any;
 }
 
 /**

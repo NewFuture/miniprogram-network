@@ -23,7 +23,8 @@ export {
     REQUEST,
     transformRequestResponseOkData,
     transformRequestSendDefault,
-    CancelToken
+    CancelToken,
+    ICancelTokenSource
 } from 'miniprogram-request';
 export {
     Uploader,

@@ -28,8 +28,11 @@ npm i miniprogram-network
 
 ### JavaScript
 
+> es5 兼容
+
 ```js
 const Network = require('miniprogram-network');
+// 也可使用 es6 import 写法
 
 // setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
 Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
@@ -98,13 +101,15 @@ download<string>('network/','lcoalpath',{
 
 ## Main Packages 所有包 [![Build Status](https://travis-ci.com/NewFuture/miniprogram-network.svg?branch=master)](https://travis-ci.com/NewFuture/miniprogram-network)
 
+> 如果担心包依赖多,可使用[miniprogram-build](https://github.com/NewFuture/miniprogram-build) 打包小程序rollup 精简为单文件。
+
 
 ![network-dependencies-graph](https://user-images.githubusercontent.com/6290356/53808057-35143980-3f8c-11e9-8618-4d6e7c5eaa1e.png)
 
 * [miniprogram-network](network) All in one 小程序网络库库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
-    * `Request` from [`miniprogram-request` npm](https://npmjs.com/package/miniprogram-request)
-    * `Upload` from [`miniprogram-uploader` npm](https://npmjs.com/package/miniprogram-uploader)
-    * `Download` from [`miniprogram-downloader` npm](https://npmjs.com/package/miniprogram-downloader)
+    * `Request` from `miniprogram-request`
+    * `Upload` from `miniprogram-uploader`
+    * `Download` from `miniprogram-downloader`
     * 网络缓存和请求合并
 * [miniprogram-request](request) 小程序请求库 [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
     * [x] Promise支持+finally+泛型
@@ -144,6 +149,3 @@ download<string>('network/','lcoalpath',{
 ![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
 * [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch)
     * [x] 自动队列支持
-* ~~[miniprogram-promise](promise) 小程序异步API转Promise~~
-    * [x] Finally Promise (支持finally)
-    * [x] cancelable/abort (可取消的Promise)

@@ -1,9 +1,9 @@
-export { CancelToken } from 'miniprogram-network-life-cycle';
-export { Downloader, DownloadOption, DownloadInit } from './downloader';
+export { CancelToken, ICancelTokenSource } from 'miniprogram-network-life-cycle';
+export { Downloader, DownloadInit, DownloadOption } from './downloader';
 export {
-  transfomDownloadSendDefault,
-  transformDownloadResponseOkData,
-  DownloadParams
+    DownloadParams,
+    transfomDownloadSendDefault,
+    transformDownloadResponseOkData 
 } from './transform';
 
 import { Downloader } from './downloader';

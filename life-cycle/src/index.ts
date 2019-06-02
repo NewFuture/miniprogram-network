@@ -5,4 +5,4 @@ export {
 } from './configuration';
 export { Listeners } from './listeners';
 export { LifeCycle } from './life-cycle';
-export { CancelToken } from 'miniprogram-cancel-token';
+export { CancelToken, ICancelTokenSource } from 'miniprogram-cancel-token';
