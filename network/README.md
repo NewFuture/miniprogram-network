@@ -48,7 +48,6 @@ post('xxx',data).then(console.log)
 
 ### 不同网络请求单独配置项
 
-* [x] `jump` 是否插队
 * [x] `timeout` 请求超时时间
 * [x] `cancelToken` 取消请求的Token
 * [x] `onHeadersReceived` header 接受回调

@@ -136,11 +136,6 @@ export interface ExtraConfiguration {
     cancelToken?: CancelToken;
 
     /**
-     * 是否插队
-     */
-    jump?: boolean;
-
-    /**
      * 自定义超时时间,单位`ms`
      * 取值`>0` 时有有效
      */
