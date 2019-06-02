@@ -38,7 +38,6 @@
     },
     "dependencies": {
         "miniprogram-network-life-cycle": "^4.5.3",
-        "miniprogram-network-utils": "^4.5.2",
-        "miniprogram-queue": "^4.5.1"
+        "miniprogram-network-utils": "^4.5.2"
     }
 }

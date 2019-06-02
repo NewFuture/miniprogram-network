@@ -57,7 +57,7 @@ type OnAbortListener<TFullOptions> = (reason: Readonly<any>, options: Readonly<T
 
 interface CommonCompleteResult extends GeneralCallbackResult {
     /**
-     * 时间戳记录, 通过miniprogram-queue发送并且timestamp设置为true
+     * 时间戳记录, 通过发送并且timestamp设置为true
      */
     time?: {
         /**

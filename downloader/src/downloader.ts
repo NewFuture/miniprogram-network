@@ -1,10 +1,6 @@
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
 import { ParamsType } from 'miniprogram-network-utils';
-import { WxQueue } from 'miniprogram-queue';
 import { transfomDownloadSendDefault } from './transform';
-
-// tslint:disable-next-line: no-use-before-declare
-const downloadQueue = /*#__PURE__*/ new WxQueue<wx.DownloadFileOption, wx.DownloadTask>(wx.downloadFile);
 
 /**
  * 默认配置信息
@@ -94,7 +90,8 @@ export class Downloader
         listeners?: Downloader<T>['Listeners']
     ) {
         super(
-            downloader || downloadQueue.push.bind(downloadQueue),
+            // tslint:disable-next-line: no-use-before-declare
+            downloader || wx.downloadFile,
             // tslint:disable-next-line: no-object-literal-type-assertion
             config || { transformSend: transfomDownloadSendDefault } as DownloadInit<T>,
             listeners
@@ -183,12 +180,7 @@ export declare namespace wx {
          * 最低基础库： `1.4.0`
          */
         abort(): void;
-        // offHeadersReceived(
-        //   callback: DownloadTaskOffHeadersReceivedCallback,
-        // ): void;
-        // offProgressUpdate(
-        //   callback: DownloadTaskOffProgressUpdateCallback,
-        // ): void;
+
         onHeadersReceived(
             /** HTTP Response Header 事件的回调函数 */
             callback: DownloadTaskOnHeadersReceivedCallback
