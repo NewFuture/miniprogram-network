@@ -11,6 +11,16 @@ import {
 import { Listeners } from './listeners';
 
 /**
+ * 在结果中主人timeout 标记
+ * @param res 原始结果
+ */
+function timeoutMsg(res: GeneralCallbackResult) {
+    res.errMsg = res.errMsg ? res.errMsg.replace(':fail abort', ':fail timeout') : 'network:fail timeout';
+    res.timeout = true;
+    return res;
+}
+
+/**
  * 网络请求的完整生命周期
  * @template TWxOptions 微信操作函数参数类型 // 微信操作函数
  * @template TWxTask 微信操作函数返回值类型 // 微信操作的任务类型
@@ -112,6 +122,13 @@ export abstract class LifeCycle<
              * 是否结束
              */
             let completed = false;
+            /**
+             * 超时定时器
+             * * undefined 表示未启用
+             * * 0 表示已经触发超时
+             * * 正数 表示真在计时中(未超时)
+             */
+            let timeoutHandle: number | undefined;
             const cancelToken = options.cancelToken;
             if (cancelToken) {
                 cancelToken.throwIfRequested();
@@ -121,8 +138,12 @@ export abstract class LifeCycle<
                 this._response<T>(res, options)
                     .then(resolve, reject);
             };
-            // retry
+            // retry on fail
             data.fail = (res: GeneralCallbackResult) => {
+                if (timeoutHandle === 0) {
+                    timeoutMsg(res); // 触发自定义超时,注入timeout
+                }
+
                 if (typeof options.retry === 'function') {
                     // 自定义retry 函数
                     Promise.resolve(options.retry(data, res))
@@ -140,7 +161,16 @@ export abstract class LifeCycle<
                 }
             };
             data.complete = (res: GeneralCallbackResult & ExtraCompleteRes) => {
+                if (timeoutHandle) {
+                    // 清理计时器
+                    clearTimeout(timeoutHandle);
+                    timeoutHandle = undefined; // 置空
+                }
                 if (completed) {
+                    if (!res.timeout && timeoutHandle === 0) {
+                        // 触发过自定义超时,并且尚未注入timeout
+                        timeoutMsg(res);
+                    }
                     if (options.timestamp) {
                         //记录时间戳
                         if (typeof options.timestamp === 'object') {
@@ -158,11 +188,16 @@ export abstract class LifeCycle<
             };
 
             const task = this.handle(data);
+            if (options.timeout! > 0) {
+                // 计时器 自定义超时
+                // 超时触发 计时器标志置0, 终止操作
+                timeoutHandle = setTimeout(() => { timeoutHandle = 0; task.abort(); }, options.timeout!);
+            }
             if (options.onHeadersReceived) {
-                task.onHeadersReceived(options.onHeadersReceived);
+                task.onHeadersReceived(options.onHeadersReceived); // 响应头回调
             }
             if (options.onProgressUpdate && task.onProgressUpdate) {
-                task.onProgressUpdate(options.onProgressUpdate);
+                task.onProgressUpdate(options.onProgressUpdate); // 进度回调
             }
             if (cancelToken) {
                 cancelToken.promise
@@ -250,3 +285,23 @@ interface ExtraCompleteRes {
      */
     timeout?: boolean;
 }
+
+/**
+ * 取消由 setTimeout 设置的定时器。
+ * @param timeoutID - 要取消的定时器的
+ */
+declare function clearTimeout(
+    timeoutID: number
+): void;
+
+/**
+ * 设定一个定时器。在定时到期以后执行注册的回调函数
+ * @param callback - 回调操作
+ * @param delay - 延迟的时间，函数的调用会在该延迟之后发生，单位 ms。
+ * @param rest - param1, param2, ..., paramN 等附加参数，它们会作为参数传递给回调函数。
+ */
+declare function setTimeout(
+    callback: Function,
+    delay?: number,
+    rest?: any
+): number;
