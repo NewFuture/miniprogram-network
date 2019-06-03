@@ -17,10 +17,10 @@
 
 * [x] Promise<T>泛型Promise
 * [x] CancelToken 可取消操作
-* [x] Queue 队列支持(可插队)
 * [x] Retry 网络错误自动重试
 * [x] Cache 底层缓存支持(包括并发请求合并)
 * [x] Timeout 自定义超时时间
+* [x] timestamp 记录请求时间戳
 * [x] 每个请求的原生回调接口支持(`onHeadersReceived`事件)和(`onProgressUpdate`事件)
 * [x] Interceptors 拦截器 transform send data / transform response data
 * [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
@@ -48,7 +48,6 @@ post('xxx',data).then(console.log)
 
 ### 不同网络请求单独配置项
 
-* [x] `jump` 是否插队
 * [x] `timeout` 请求超时时间
 * [x] `cancelToken` 取消请求的Token
 * [x] `onHeadersReceived` header 接受回调

@@ -1,13 +1,6 @@
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
 import { ParamsType } from 'miniprogram-network-utils';
-import { WxQueue } from 'miniprogram-queue';
 import { transformRequestSendDefault } from './transform';
-
-/**
- * 请求队列
- */
-// tslint:disable-next-line: no-use-before-declare
-const requestQueue = /*#__PURE__*/ new WxQueue<wx.RequestOption, wx.RequestTask>(wx.request);
 
 /**
  * 小程序HTTP 请求生命周期封装
@@ -36,7 +29,8 @@ export class Http<
         listeners?: Http<TExt>['Listeners']
     ) {
         super(
-            request || requestQueue.push.bind(requestQueue),
+            // tslint:disable-next-line: no-use-before-declare
+            request || wx.request,
             // tslint:disable-next-line: no-object-literal-type-assertion
             config || { transformSend: transformRequestSendDefault } as RequestInit<TExt>,
             listeners
@@ -387,16 +381,7 @@ export declare namespace wx {
          * 最低基础库： `1.4.0`
          */
         abort(): void;
-        /** [RequestTask.offHeadersReceived(function callback)](RequestTask.offHeadersReceived.md)
-         *
-         * 取消监听HTTP Response Header 事件，会比请求完成事件更早
-         *
-         * 最低基础库： `2.1.0`
-         */
-        // offHeadersReceived(
-        //   /** HTTP Response Header 事件的回调函数 */
-        //   callback: RequestTaskOffHeadersReceivedCallback,
-        // ): void;
+
         /** [RequestTask.onHeadersReceived(function callback)](RequestTask.onHeadersReceived.md)
          *
          * 监听HTTP Response Header 事件，会比请求完成事件更早

@@ -3,7 +3,7 @@ export { Downloader, DownloadInit, DownloadOption } from './downloader';
 export {
     DownloadParams,
     transfomDownloadSendDefault,
-    transformDownloadResponseOkData 
+    transformDownloadResponseOkData
 } from './transform';
 
 import { Downloader } from './downloader';
