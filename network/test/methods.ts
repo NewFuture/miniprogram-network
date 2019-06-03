@@ -11,8 +11,7 @@ upload('ss', 'testname');
 download('ss');
 download({
     url: 'sss',
-    jump: true,
     onHeadersReceived: function (res) {
         console.log(res.header)
     }
-} as Network.DownloadOption).then(res=>res.statusCode);
+} as Network.DownloadOption).then(res => res.statusCode);

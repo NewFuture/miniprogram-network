@@ -1,17 +1,17 @@
 # [miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 
-> 小程序网络库,提供完整`代码自动完成` 和 `类型检查`,支持`Promise`、`队列`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和`事件监听`等……
+> 小程序网络库,提供完整`代码自动完成` 和 `类型检查`,支持`Promise`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram, including full `IntelliSense` and `Type Checking`, with `Promise`,`Queue`,`retry`,`Cache`,`CancelToken`,`timeout`, global `interceptors`, `event listeners` and more.
+> Redefine the network API of Wechat MiniProgram, including full `IntelliSense` and `Type Checking`, with `Promise`,`retry`,`Cache`,`CancelToken`,`timeout`, global `interceptors`, `event listeners` and more.
 
 ## Features 主要功能
 
 * [x] Promise<T>泛型Promise支持
-* [x] Queue 队列支持(可插队)
 * [x] Retry 网络错误自动重试
 * [x] Cache 底层缓存支持(包括并发请求合并)
 * [x] CancelToken 可取消操作
 * [x] Timeout 自定义超时时间
+* [x] timestamp 记录耗时统计(需开启配置)
 * [x] 每个请求的原生回调接口支持(`onHeadersReceived`事件)和(`onProgressUpdate`事件)
 * [x] Interceptors 拦截器 `transformSend`/ `transformRresponse`自定义数据拦截
 * [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
@@ -28,8 +28,11 @@ npm i miniprogram-network
 
 ### JavaScript
 
+> es5 兼容
+
 ```js
 const Network = require('miniprogram-network');
+// 也可使用 es6 import 写法
 
 // setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
 Network.setConfig('baseURL','https://miniprogram-network.newfuture.cc/')
@@ -98,18 +101,19 @@ download<string>('network/','lcoalpath',{
 
 ## Main Packages 所有包 [![Build Status](https://travis-ci.com/NewFuture/miniprogram-network.svg?branch=master)](https://travis-ci.com/NewFuture/miniprogram-network)
 
+> 如果担心包依赖多,可使用[miniprogram-build](https://github.com/NewFuture/miniprogram-build) 打包小程序rollup 精简为单文件。
 
-![network-dependencies-graph](https://user-images.githubusercontent.com/6290356/53808057-35143980-3f8c-11e9-8618-4d6e7c5eaa1e.png)
+
+![network-dependencies-graph](https://user-images.githubusercontent.com/6290356/58758745-6f24b580-8552-11e9-890d-02c4559eb400.png)
 
 * [miniprogram-network](network) All in one 小程序网络库库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
-    * `Request` from [`miniprogram-request` npm](https://npmjs.com/package/miniprogram-request)
-    * `Upload` from [`miniprogram-uploader` npm](https://npmjs.com/package/miniprogram-uploader)
-    * `Download` from [`miniprogram-downloader` npm](https://npmjs.com/package/miniprogram-downloader)
+    * `Request` from `miniprogram-request`
+    * `Upload` from `miniprogram-uploader`
+    * `Download` from `miniprogram-downloader`
     * 网络缓存和请求合并
 * [miniprogram-request](request) 小程序请求库 [![npm version](https://badge.fury.io/js/miniprogram-request.svg)](https://npmjs.com/package/miniprogram-request)
     * [x] Promise支持+finally+泛型
     * [x] CancelToken 取消支持
-    * [x] Queue 底层队列维护，支持插队
     * [x] retry 网络错误重试
     * [x] Interceptors 自定义请求/响应拦截
     * [x] Listeners 事件监听
@@ -120,30 +124,29 @@ download<string>('network/','lcoalpath',{
     * [x] Cancelable 可取消
     * [x] OnProgressUpdate 进度回调
     * [x] OnHeadersReceived 响应头回调
-    * [x] Queue 底层队列维护，支持插队
     * [x] retry 网络错误重试
     * [x] Interceptors 自定义请求/响应拦截
     * [x] Listeners 事件监听
 * [miniprogram-downloader](downloader) 小程序下载库 [![npm version](https://badge.fury.io/js/miniprogram-downloader.svg)](https://npmjs.com/package/miniprogram-downloader)
     * [x] Promise支持+finally+泛型
     * [x] Cancelable 可取消
-    * [x] Queue 底层队列维护，支持插队
     * [x] retry 网络错误重试
     * [x] OnProgressUpdate 进度回调
     * [x] OnHeadersReceived 响应头回调
     * [x] Interceptors 自定义请求/响应拦截
     * [x] Listeners 事件监听
-* [miniprogram-queue](queue) 小程序API队列封装 [![npm version](https://badge.fury.io/js/miniprogram-queue.svg)](https://npmjs.com/package/miniprogram-queue)
+* [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
+    * [x] 事件周期监听器
+    * [x] 事件周期拦截器
+    * [x] 自定义超时
+    * [x] 时间戳打点
+![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
+* [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch)
+    * [x] 自动队列支持
+* [miniprogram-queue](queue) 自定义队列封装 [![npm version](https://badge.fury.io/js/miniprogram-queue.svg)](https://npmjs.com/package/miniprogram-queue)
     * [x] 可自动注入/手动管理
     * [x] 支持取消操作(`abort`)
     * [x] OnProgressUpdate 进度回调
     * [x] OnHeadersReceived 响应头回调
     * [x] 支持插队
     * [x] 支持自定义超时
-* [miniprogram-network-life-cycle](life-cycle) 网络操作流程和事件
-![life-cycle](https://user-images.githubusercontent.com/6290356/49631309-6bddc080-fa2c-11e8-9a41-88fb50b2a1b7.png)
-* [miniprogram-fetch](fetch) 小程序中使用[Fetch API](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch) [![npm version](https://badge.fury.io/js/miniprogram-fetch.svg)](https://npmjs.com/package/miniprogram-fetch)
-    * [x] 自动队列支持
-* ~~[miniprogram-promise](promise) 小程序异步API转Promise~~
-    * [x] Finally Promise (支持finally)
-    * [x] cancelable/abort (可取消的Promise)

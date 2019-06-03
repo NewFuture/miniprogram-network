@@ -25,7 +25,6 @@
 * [x] `data` 数据 (_只能请求时设置for single request_) 
 * [x] `cancelToken` 取消 (_只能请求时设置for single request_) 
 * [x] `onHeadersReceived` 接收头响应 (_只能请求时设置for single request_) 
-* [x] `jump` 是否插队 (_只能请求时设置for single request_)
 * [x] `timeout` 自定义超时时间ms (_只能请求时设置for single request_)
 * [x] `responseType` 返回数据类型
 * [x] `headers` 请求头
@@ -102,8 +101,11 @@ REQUEST.patch('/items/{id}',{name:'new'},{params:{id:12345}})
 ###  TypeScript
 泛型支持
 ```js
-//TS 类型推断
-import { REQUEST } from 'miniprogram-request';
+// TS 类型推断
+import { REQUEST, transformRequestResponseOkData } from 'miniprogram-request';
+
+// 自动提取返回值为 2xx 时的 `response.data`
+REQUEST.Defaults.transformResponse = transformRequestResponseOkData
 
 interface Item {
     id: number,
@@ -176,11 +178,6 @@ REQUEST.Defaults.retry = 2;//设置网络错误时重试次数
      * 接收到响应头回调
      */
     onHeadersReceived?: TwxTask['onHeadersReceived'];
-
-    /**
-     * 是否插队
-     */
-    jump?: boolean;
 
     /**
     * 请求的根目录

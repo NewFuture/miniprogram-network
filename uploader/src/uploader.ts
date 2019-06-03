@@ -1,11 +1,8 @@
 
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
 import { ParamsType } from 'miniprogram-network-utils';
-import { WxQueue } from 'miniprogram-queue';
 import { transformUploadSendDefault } from './transform';
 
-// tslint:disable-next-line: no-use-before-declare
-const uploadQueue = /*#__PURE__*/ new WxQueue<wx.UploadFileOption, wx.UploadTask>(wx.uploadFile);
 /**
  * 默认配置信息
  */
@@ -120,7 +117,8 @@ export class Uploader extends LifeCycle<
         listeners?: Uploader['Listeners']
     ) {
         super(
-            uploader || uploadQueue.push.bind(uploadQueue),
+            // tslint:disable-next-line: no-use-before-declare
+            uploader || wx.uploadFile,
             config || { transformSend: transformUploadSendDefault },
             listeners
         );

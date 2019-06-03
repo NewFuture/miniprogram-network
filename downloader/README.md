@@ -20,7 +20,6 @@
 * [x] `cancelToken` 取消 (_只能请求时设置for single request_) 
 * [x] `onProgressUpdate` 下载进度响应 (_只能请求时设置for single request_) 
 * [x] `onHeadersReceived` 接收头响应 (_只能请求时设置for single request_) 
-* [x] `jump` 是否插队 (_只能请求时设置for single request_)
 * [x] `timeout` 自定义超时时间ms (_只能请求时设置for single request_)
 * [x] `headers` 请求头
 * [x] `params` URL参数

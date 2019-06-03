@@ -54,7 +54,7 @@ export function getCommonOptions<T extends { [key: string]: any }>(
     options: { [key: string]: any },
     extendKeys: (keyof T)[]
 ): T {
-    (['jump', 'timestamp', 'timeout', 'expire', ...extendKeys] as string[]).forEach((v) => {
+    (['expire', ...extendKeys] as string[]).forEach((v) => {
         if (options[v] !== undefined) {
             data[v] = options[v];
         }
