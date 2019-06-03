@@ -104,6 +104,13 @@ download<string>('network/','lcoalpath',{
 > 如果担心包依赖多,可使用[miniprogram-build](https://github.com/NewFuture/miniprogram-build) 打包小程序rollup 精简为单文件。
 
 
+
+tips: 自`miniprogram-network` >= 5.0.0  底层默认不在直接使用`miniprogram-queue`进行队列封装, 如果有需要可自行引用, 或直接使用 v4.x
+
+> * wx.request 自基础库 1.4.0 (2017.07) 小程序开始支持队列
+> * wx.downloadFile 自基础库 1.4.0 (2017.07) 小程序开始支持队列
+> * wx.uploadFile 自基础库 2.4.1 (2018.11) 小程序开始支持队列
+
 ![network-dependencies-graph](https://user-images.githubusercontent.com/6290356/58758745-6f24b580-8552-11e9-890d-02c4559eb400.png)
 
 * [miniprogram-network](network) All in one 小程序网络库库合集[![npm version](https://badge.fury.io/js/miniprogram-network.svg)](https://npmjs.com/package/miniprogram-network)
