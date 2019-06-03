@@ -26,6 +26,12 @@
 * [x] Listeners 全局事件监听`onSend`,`onResponse`,`onRejected`,`onAbort`,`onComplete`
 * [x] 支持全局配置和每个请求单独配置
 
+tips: `miniprogram-network` >= 4.0.0  底层默认不在直接使用`miniprogram-queue`进行队列封装, 如果有需要可自行引用, 或直接使用 v4.x
+
+> * wx.request 自基础库 1.4.0 (2017.07) 开始支持队列
+> * wx.downloadFile 自基础库 1.4.4 (2017.07) 开始支持队列
+> * wx.uploadFile 自基础库 2.4.1 (2018.11) 开始支持队列
+
 ## 安装
 ```
 npm i miniprogram-network

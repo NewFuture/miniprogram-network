@@ -44,6 +44,12 @@
 * [x] `onAbort`
 * [x] `onComplete`
 
+tips: `miniprogram-network` >= 4.0.0  底层默认不在直接使用`miniprogram-queue`进行队列封装, 如果有需要可自行引用, 或直接使用 v4.x
+
+> * wx.request 自基础库 1.4.0 (2017.07) 小程序开始支持队列
+> * wx.downloadFile 自基础库 1.4.0 (2017.07) 小程序开始支持队列
+> * wx.uploadFile 自基础库 2.4.1 (2018.11) 小程序开始支持队列
+
 ## Usage
 
 ## install
