@@ -139,26 +139,29 @@ export abstract class LifeCycle<
                     .then(resolve, reject);
             };
             // retry on fail
-            data.fail = (res: GeneralCallbackResult) => {
+            data.fail = (res: GeneralCallbackResult): any => {
                 if (timeoutHandle === 0) {
                     timeoutMsg(res); // 触发自定义超时,注入timeout
                 }
 
-                if (typeof options.retry === 'function') {
+                if (cancelToken && cancelToken.isCancelled) {
+                    // 用户主动取消,直接结束不再重试
+                    res.cancel = true;
+                } else if (typeof options.retry === 'function') {
                     // 自定义retry 函数
-                    Promise.resolve(options.retry(data, res))
+                    return Promise.resolve(options.retry(data, res))
                         .then(retryData => this._send<T>(retryData, options))
                         .then(resolve, reject);
                 } else if (options.retry!-- > 0) {
                     // 还有重试次数
-                    this._send<T>(data, options)
+                    return this._send<T>(data, options)
                         .then(resolve, reject);
-                } else {
-                    // 重试结束
-                    completed = true;
-                    this._onFail(res, options)
-                        .then(reject, reject);
                 }
+                // 结束请求
+                completed = true;
+                this._onFail(res, options)
+                    .then(reject, reject);
+
             };
             data.complete = (res: GeneralCallbackResult & ExtraCompleteRes) => {
                 if (timeoutHandle) {
