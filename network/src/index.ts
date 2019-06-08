@@ -4,7 +4,7 @@ import {
     DownloadOption as NetworkDownloadOption,
     DownloadParams as NetworkDownloadParams
 } from 'miniprogram-downloader';
-
+import { GeneralCallbackResult  } from 'miniprogram-network-utils';
 import {
     REQUEST,
     RequestConfig as NetworkRequestConfig,
@@ -18,6 +18,7 @@ import {
     UploadOption as NetworkUploadOption,
     UploadParams as NetworkUploadParams
 } from 'miniprogram-uploader';
+
 export {
     Http,
     REQUEST,
@@ -48,7 +49,7 @@ export {
     download as cacheDownload,
     config as cacheConfig
 } from './cache';
-export { setConfig } from './set-config';
+export { setConfig, delayRetry } from './set-config';
 
 // ShortLink for Request
 /**
@@ -152,4 +153,9 @@ export declare namespace Network {
      * return type for Upload TransformSend
      */
     type UploadParams = NetworkUploadParams;
+
+    /**
+     * general result for fail/complete
+     */
+    type GeneralResult = GeneralCallbackResult;
 }

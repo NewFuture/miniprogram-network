@@ -1,5 +1,5 @@
 import { DOWNLOAD, DownloadInit } from 'miniprogram-downloader';
-import { Omit } from 'miniprogram-network-utils';
+import { GeneralCallbackResult, Omit } from 'miniprogram-network-utils';
 import { REQUEST, RequestInit } from 'miniprogram-request';
 import { UPLOAD, UploadInit } from 'miniprogram-uploader';
 
@@ -38,6 +38,39 @@ function setConfig(): void {
     }
 }
 
+/**
+ * 延迟重试
+ * 会在 options.__failure 记录失败的次数
+ * @param delay 延时时间
+ * @param retryTimes 重试次数
+ */
+function delayRetry<TWxOptions>(delay: number, retryTimes: number = 1):
+    (data: TWxOptions, reason?: GeneralCallbackResult) => Promise<TWxOptions> {
+    return function (this: { __failure: number }, data, reason) {
+        this.__failure = (this.__failure || 0) + 1;
+        return new Promise<TWxOptions>((resolve, reject) => {
+            if (this.__failure > retryTimes) {
+                reject(reason);
+            } else {
+                setTimeout(resolve, delay, data); // tslint:disable-line: no-string-based-set-timeout
+            }
+        });
+    };
+}
+
 export {
-    setConfig
+    setConfig,
+    delayRetry
 };
+
+/**
+ * 设定一个定时器。在定时到期以后执行注册的回调函数
+ * @param callback - 回调操作
+ * @param delay - 延迟的时间，函数的调用会在该延迟之后发生，单位 ms。
+ * @param rest - param1, param2, ..., paramN 等附加参数，它们会作为参数传递给回调函数。
+ */
+declare function setTimeout(
+    callback: Function,
+    delay?: number,
+    rest?: any
+): number;
