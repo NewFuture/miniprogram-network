@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-network-life-cycle",
-    "version": "5.0.0-alpha.0",
+    "version": "5.0.1-beta.1",
     "description": "miniprogram-network lifecycle",
     "repository": {
         "type": "git",
