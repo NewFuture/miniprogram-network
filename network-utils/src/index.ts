@@ -62,3 +62,22 @@ export function getCommonOptions<T extends { [key: string]: any }>(
 
     return data;
 }
+
+export interface GeneralCallbackResult {
+    /**
+     * 微信回调消息
+     */
+    errMsg: string;
+    /**
+     * 是否触发了自定义超时
+     */
+    timeout?: boolean;
+    /**
+     * 是否是主动取消
+     */
+    cancel?: boolean;
+    /**
+     * 触发来源
+     */
+    source?: string;
+}

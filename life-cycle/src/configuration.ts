@@ -1,29 +1,8 @@
 import { CancelToken } from 'miniprogram-cancel-token';
-import { ParamsType } from 'miniprogram-network-utils';
+import { GeneralCallbackResult , Omit, ParamsType} from 'miniprogram-network-utils';
 
 type KeyBasicValuePair = Record<string, string | number | boolean | null | undefined>;
 type PromiseOrValue<T> = T | PromiseLike<T>;
-
-export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
-
-export interface GeneralCallbackResult {
-    /**
-     * 微信回调消息
-     */
-    errMsg: string;
-    /**
-     * 是否触发了自定义超时
-     */
-    timeout?: boolean;
-    /**
-     * 是否是主动取消
-     */
-    cancel?: boolean;
-    /**
-     * 触发来源
-     */
-    source?: string;
-}
 
 export interface WxTask {
     abort(): void;

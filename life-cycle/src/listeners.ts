@@ -1,5 +1,4 @@
-import { GeneralCallbackResult } from './configuration';
-
+import { GeneralCallbackResult } from 'miniprogram-network-utils';
 /**
  * 监听事件列表
  */

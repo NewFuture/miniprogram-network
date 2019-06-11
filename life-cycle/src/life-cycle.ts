@@ -1,9 +1,8 @@
+import {  GeneralCallbackResult, Omit} from 'miniprogram-network-utils';
 import {
     BaseConfiguration,
     ExtraConfiguration,
-    GeneralCallbackResult,
     mergeConfig,
-    Omit,
     SuccessParam,
     WxOptions,
     WxTask
