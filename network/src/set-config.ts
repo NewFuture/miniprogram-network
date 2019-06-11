@@ -19,11 +19,14 @@ function setConfig(config: CommonConfig): void;
  * @param key - 配置字段
  * @param value - 配置值
  */
-function setConfig<T extends keyof CommonConfig>(key: T | 'retry', value: CommonConfig[T] & { 'retry'?: number }): void;
+function setConfig<T extends (keyof CommonConfig) | 'retry'>(
+    key: T,
+    value: (CommonConfig & { 'retry'?: number | ((data: object, reason?: GeneralCallbackResult) => Promise<object>) })[T]
+): void;
 function setConfig(): void {
     if (arguments.length === 2) {
         const key: keyof CommonConfig = arguments[0] as keyof CommonConfig;
-        const value = arguments[1] as CommonConfig[keyof CommonConfig];
+        const value = arguments[1];
         REQUEST.Defaults[key] = value;
         DOWNLOAD.Defaults[key] = value;
         UPLOAD.Defaults[key] = value;
@@ -31,9 +34,9 @@ function setConfig(): void {
         const config: CommonConfig = arguments[0] as CommonConfig;
         Object.keys(config)
             .forEach((key) => {
-                REQUEST.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-                DOWNLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
-                UPLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig];
+                REQUEST.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig] as any;
+                DOWNLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig] as any;
+                UPLOAD.Defaults[key as keyof CommonConfig] = config[key as keyof CommonConfig] as any;
             });
     }
 }
@@ -41,7 +44,7 @@ function setConfig(): void {
 /**
  * 延迟重试
  * 会在 options.__failure 记录失败的次数
- * @param delay 延时时间
+ * @param delay 延时时间 单位ms
  * @param retryTimes 重试次数
  */
 function delayRetry<TWxOptions>(delay: number, retryTimes: number = 1):

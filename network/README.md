@@ -47,7 +47,7 @@ post('xxx',data).then(console.log)
 * [x] `headers` 请求头
 * [x] `params` URL替换参数
 * [x] `baseURL` 根URL
-* [x] `retry` 重试次数
+* [x] `retry` 重试次数/自定义重试机制
 * [x] `timestamp` 是否记录发送和响应时间戳
 * [x] `transformSend` 输入转换函数(Request,Download,Upload需分别设置)
 * [x] `transformResponse` 输出转换函数 (Request,Download,Upload需分别设置)
@@ -146,6 +146,16 @@ setConfig('baseURL', 'https://api.newfuture.cc');
 setConfig({
     baseURL:'https://api.newfuture.cc'
 })
+
+```
+
+### 延时重试 delayRetry
+
+```ts
+import { delayRetry,REQUEST } from 'miniprogram-network';
+
+// 间隔1s再次重试，最多重试2次
+REQUEST.Defaults.retry = delayRetry(1000,2);
 
 ```
 

@@ -60,12 +60,14 @@ Network.dowanload('network/','lcoalpath',{
 > 装完即用，无需额外配置和类型声明
 
 ```ts
-import {setConfig,REQUEST,download,transformRequestResponseOkData,transformDownloadResponseOkData} from 'miniprogram-network';
+import {setConfig,REQUEST,download,transformRequestResponseOkData,transformDownloadResponseOkData, delayRetry} from 'miniprogram-network';
 
 // setConfig设置所有网络请求的全局默认配置,一次定义，所有文件中使用均生效
 setConfig('baseURL', 'https://miniprogram-network.newfuture.cc/');
 // 也可通过 REQUEST.Defaults,DOWNLOAD.Defaults,UPLOAD.Defaults 分别设置不同默认配置
 REQUEST.Defaults.transformResponse = transformRequestResponseOkData;
+// 请求发送失败时, 间隔1s再次重试，最多重试2次
+REQUEST.Defaults.retry = delayRetry(1000,2);
 
 REQUEST.get('index.html')
     .then(res=>console.log(res))

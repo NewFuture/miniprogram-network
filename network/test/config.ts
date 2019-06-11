@@ -1,17 +1,17 @@
 import {
-    Request, transformRequestResponseOkData,
-    Download, transformDownloadResponseOkData,
-    Upload, transformUploadResponseOkData, setConfig,
-} from '../index'
+    REQUEST, transformRequestResponseOkData,
+    DOWNLOAD, transformDownloadResponseOkData,
+    UPLOAD, transformUploadResponseOkData, setConfig, delayRetry,
+} from '../src/index'
 
 // Request的默认响应拦设为成transformRequestResponseOkData,正常返回data部分
-Request.Defaults.transformResponse = transformRequestResponseOkData;
+REQUEST.Defaults.transformResponse = transformRequestResponseOkData;
 // Download的默认响应拦设为transformDownloadResponseOkData，正常返回string
-Download.Defaults.transformResponse = transformDownloadResponseOkData;
+DOWNLOAD.Defaults.transformResponse = transformDownloadResponseOkData;
 // Upload默认响应拦截transformUploadResponseOkData设置正常返回data
-Upload.Defaults.transformResponse = transformUploadResponseOkData;
+UPLOAD.Defaults.transformResponse = transformUploadResponseOkData;
 
-Download.download('url')
+DOWNLOAD.download('url')
     .then(path=>{
         console.log(path);//string
     }).catch(res=>{
@@ -22,3 +22,7 @@ setConfig({
     baseURL:'',
 });
 setConfig('baseURL','https://api.xyz');
+const retry = delayRetry<object>(100,10);
+setConfig('retry', retry )
+
+REQUEST.Defaults.retry=delayRetry(1000,2);

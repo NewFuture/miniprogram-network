@@ -1,5 +1,5 @@
 import { CancelToken } from 'miniprogram-cancel-token';
-import { GeneralCallbackResult , Omit, ParamsType} from 'miniprogram-network-utils';
+import { GeneralCallbackResult, Omit, ParamsType } from 'miniprogram-network-utils';
 
 type KeyBasicValuePair = Record<string, string | number | boolean | null | undefined>;
 type PromiseOrValue<T> = T | PromiseLike<T>;
