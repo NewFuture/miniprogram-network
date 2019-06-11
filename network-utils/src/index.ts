@@ -54,9 +54,10 @@ export function getCommonOptions<T extends { [key: string]: any }>(
     options: { [key: string]: any },
     extendKeys: (keyof T)[]
 ): T {
-    (['expire', ...extendKeys] as string[]).forEach((v) => {
+    (['expire', ...extendKeys] as (keyof typeof options)[]).forEach((v) => {
         if (options[v] !== undefined) {
-            data[v] = options[v];
+            // tslint:disable-next-line: no-unsafe-any
+            data[v as keyof T] = options[v];
         }
     });
 

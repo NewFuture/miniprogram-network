@@ -143,7 +143,7 @@ export function mergeConfig<T1 extends Partial<T2>, T2 extends { [key: string]: 
     const config = { ...defaults, ...customize };
     if (defaults.headers && customize.headers) {
         // 合并headers
-        config.headers = { ...defaults.headers, ...customize.headers };
+        (config as any as { headers: object }).headers = { ...defaults.headers, ...customize.headers };
     }
     return config;
 }
