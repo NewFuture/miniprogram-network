@@ -1,4 +1,4 @@
-import {  GeneralCallbackResult, Omit} from 'miniprogram-network-utils';
+import { GeneralCallbackResult, Omit } from 'miniprogram-network-utils';
 import {
     BaseConfiguration,
     ExtraConfiguration,

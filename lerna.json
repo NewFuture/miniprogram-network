@@ -3,11 +3,9 @@
         "cache",
         "cancel-token",
         "downloader",
-        "fetch",
         "life-cycle",
         "network",
         "network-utils",
-        "queue",
         "request",
         "uploader"
     ],
