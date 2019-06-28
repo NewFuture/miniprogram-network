@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-network-life-cycle",
-    "version": "5.0.2",
+    "version": "5.0.3",
     "description": "miniprogram-network lifecycle",
     "repository": {
         "type": "git",
@@ -27,6 +27,6 @@
     },
     "dependencies": {
         "miniprogram-cancel-token": "^5.0.2-beta",
-        "miniprogram-network-utils": "^5.0.2"
+        "miniprogram-network-utils": "^5.0.3"
     }
 }
