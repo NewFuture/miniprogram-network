@@ -16,6 +16,7 @@ import { Listeners } from './listeners';
 function timeoutMsg(res: GeneralCallbackResult) {
     res.errMsg = res.errMsg ? res.errMsg.replace(':fail abort', ':fail timeout') : 'network:fail timeout';
     res.timeout = true;
+    res.cancel = false;
     return res;
 }
 
