@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-request",
-    "version": "5.0.3",
+    "version": "5.0.4",
     "description": "A better Request package for MiniProgram API",
     "keywords": [
         "miniprogram",
@@ -35,7 +35,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "miniprogram-network-life-cycle": "^5.0.3",
+        "miniprogram-network-life-cycle": "^5.0.4",
         "miniprogram-network-utils": "^5.0.3"
     }
 }
