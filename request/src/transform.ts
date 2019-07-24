@@ -1,6 +1,6 @@
 // import { RequestData, RequestOptions } from './configuration';
 import { buildParams, getCommonOptions, Omit } from 'miniprogram-network-utils';
-import { FullRequestOption, wx } from './http';
+import { FullRequestOption, HttpResponse, wx } from './http';
 
 /**
  * 微信请求参数 (不包含回调函数)
@@ -34,7 +34,7 @@ export function transformRequestSendDefault<
  * @param res - 返回结果
  * @param config - 完整配置参数
  */
-export function transformRequestResponseOkData<T = any>(res: wx.RequestSuccessCallbackResult, config: FullRequestOption): T {
+export function transformRequestResponseOkData<T = any>(res: HttpResponse, config: FullRequestOption): T {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }

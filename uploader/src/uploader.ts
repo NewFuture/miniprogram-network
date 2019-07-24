@@ -1,6 +1,6 @@
 
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
-import { ParamsType } from 'miniprogram-network-utils';
+import { GeneralCallbackResult, ParamsType } from 'miniprogram-network-utils';
 import { transformUploadSendDefault } from './transform';
 
 /**
@@ -193,7 +193,7 @@ export declare namespace wx {
         /** 接口调用失败的回调函数 */
         fail?(res: GeneralCallbackResult): void;
         /** 接口调用成功的回调函数 */
-        success?(result: UploadFileSuccessCallbackResult): void;
+        success?(result: UploaderResponse): void;
     }
     interface UploadTask {
         /** [UploadTask.abort()](UploadTask.abort.md)
@@ -249,12 +249,6 @@ export declare namespace wx {
         onProgressUpdate(
             callback: UploadTaskOnProgressUpdateCallback): void;
     }
-    interface UploadFileSuccessCallbackResult {
-        /** 开发者服务器返回的 HTTP 状态码 */
-        statusCode: number;
-        /** 开发者服务器返回的数据 */
-        data: string;
-    }
 
     /** 上传进度变化事件的回调函数 */
     type UploadTaskOnProgressUpdateCallback = (
@@ -266,4 +260,10 @@ export declare namespace wx {
             /** 已经上传的数据长度，单位 Bytes */
             totalBytesSent: number;
         }) => void;
+}
+export interface UploaderResponse extends GeneralCallbackResult {
+    /** 开发者服务器返回的 HTTP 状态码 */
+    statusCode: number;
+    /** 开发者服务器返回的数据 */
+    data: string;
 }

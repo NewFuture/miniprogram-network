@@ -1,5 +1,5 @@
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
-import { ParamsType } from 'miniprogram-network-utils';
+import { GeneralCallbackResult, ParamsType } from 'miniprogram-network-utils';
 import { transformRequestSendDefault } from './transform';
 
 /**
@@ -371,7 +371,7 @@ export declare namespace wx {
         /** 接口调用失败的回调函数 */
         fail?(res: { errMsg: string }): void;
         /** 接口调用成功的回调函数 */
-        success?(result: RequestSuccessCallbackResult): void;
+        success?(result: HttpResponse): void;
     }
     interface RequestTask {
         /** [RequestTask.abort()](RequestTask.abort.md)
@@ -393,23 +393,27 @@ export declare namespace wx {
             callback: (result?: { header: object }) => void
         ): void;
     }
-    interface RequestSuccessCallbackResult {
-        /** 开发者服务器返回的 HTTP Response Header
-         *
-         * 最低基础库： `1.2.0`
-         */
-        header: object;
-        /** 开发者服务器返回的 HTTP 状态码 */
-        statusCode: number;
-        /** 开发者服务器返回的数据 */
-        data: string | object | ArrayBuffer;
-        /** cookie信息2.4.2以上版本有 */
-        cookies?: {
-            domain: string;
-            httpOnly: boolean;
-            name: string;
-            path: string;
-            value: string;
-        }[];
-    }
+}
+
+export interface HttpResponse extends GeneralCallbackResult {
+    /** 开发者服务器返回的 HTTP Response Header
+     *
+     * 最低基础库： `1.2.0`
+     */
+    header: object;
+    /** 开发者服务器返回的 HTTP 状态码 */
+    statusCode: number;
+    /** 开发者服务器返回的数据 */
+    data: string | object | ArrayBuffer;
+    /**
+     * cookie信息2.4.2以上版本有
+     * 非正式支持
+     */
+    cookies?: ({
+        domain: string;
+        httpOnly: boolean;
+        name: string;
+        path: string;
+        value: string;
+    } | string)[];
 }

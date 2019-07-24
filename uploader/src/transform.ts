@@ -1,5 +1,5 @@
 import { buildParams, getCommonOptions, Omit } from 'miniprogram-network-utils';
-import { UploadOption, wx } from './uploader';
+import { UploaderResponse, UploadOption, wx } from './uploader';
 
 /**
  * 微信请求参数 (不包含回调函数)
@@ -30,7 +30,7 @@ export function transformUploadSendDefault(data: UploadOption): UploadParams {
  * @param options - 全部配置
  * @returns 反序列化对象
  */
-export function transformUploadResponseOkData<T = any>(res: wx.UploadFileSuccessCallbackResult, options: UploadOption): T {
+export function transformUploadResponseOkData<T = any>(res: UploaderResponse, options: UploadOption): T {
     if (res.statusCode < 200 || res.statusCode >= 300) {
         throw res;
     }

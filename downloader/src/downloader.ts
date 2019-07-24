@@ -165,12 +165,7 @@ export declare namespace wx {
         /** 接口调用失败的回调函数 */
         fail?(res: { errMsg: string }): void;
         /** 接口调用成功的回调函数 */
-        success?(result: {
-            /** 开发者服务器返回的 HTTP 状态码 */
-            statusCode: number;
-            /** 临时文件路径。如果没传入 filePath 指定文件存储路径，则下载后的文件会存储到一个临时文件 */
-            tempFilePath: string;
-        }): void;
+        success?(result: DownloaderReponse): void;
     }
     interface DownloadTask {
         /**
@@ -196,4 +191,11 @@ export declare namespace wx {
             callback: DownloadTaskOnProgressUpdateCallback
         ): void;
     }
+}
+
+export interface DownloaderReponse {
+    /** 开发者服务器返回的 HTTP 状态码 */
+    statusCode: number;
+    /** 临时文件路径。如果没传入 filePath 指定文件存储路径，则下载后的文件会存储到一个临时文件 */
+    tempFilePath: string;
 }

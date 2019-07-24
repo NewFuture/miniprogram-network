@@ -9,7 +9,7 @@ export {
   transformUploadSendDefault,
   UploadParams
 } from './transform';
-export { Uploader, UploadInit, UploadOption } from './uploader';
+export { Uploader, UploadInit, UploadOption, UploaderResponse } from './uploader';
 /**
  * 预定义全局 Upload 对象
  */

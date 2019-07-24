@@ -283,10 +283,6 @@ interface ExtraCompleteRes {
      * 请求时间戳
      */
     time?: TimeRecorder;
-    /**
-     * 是否超时
-     */
-    timeout?: boolean;
 }
 
 /**
