@@ -1,11 +1,11 @@
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
-import { ParamsType } from 'miniprogram-network-utils';
+import { ParamsType, GeneralCallbackResult } from 'miniprogram-network-utils';
 import { transfomDownloadSendDefault } from './transform';
 
 /**
  * 默认配置信息
  */
-export type DownloadInit<T extends {} = {}> = BaseConfiguration<FullDownloadOption<T>, T & wx.DownloadFileOption>;
+export type DownloadInit<T extends {} = {}, TReturn = any> = BaseConfiguration<FullDownloadOption<T, TReturn>, T & wx.DownloadFileOption, TReturn>;
 interface BaseDownloadOption {
     /**
      * 下载地址
@@ -21,7 +21,8 @@ interface BaseDownloadOption {
 /**
  * 全部配置信息
  */
-export interface FullDownloadOption<T extends {} = {}> extends DownloadInit<T>, ExtraConfiguration, BaseDownloadOption {
+export interface FullDownloadOption<T extends {} = {}, TReturn = any>
+    extends DownloadInit<T, TReturn>, ExtraConfiguration, BaseDownloadOption {
     /**
      * 下载进度回调函数
      */
@@ -36,7 +37,8 @@ export interface FullDownloadOption<T extends {} = {}> extends DownloadInit<T>, 
 type DownloadConfig<
     TParams = ParamsType,
     TExt extends {} = {},
-    > = Partial<TExt> & Partial<DownloadInit<TExt> & ExtraConfiguration> & {
+    TReturn = any,
+    > = Partial<TExt> & Partial<DownloadInit<TExt, TReturn> & ExtraConfiguration> & {
         /**
          * 路径参数
          * URL Path Params
@@ -63,8 +65,9 @@ type DownloadConfig<
 export type DownloadOption<
     TParams = ParamsType,
     TExt extends {} = {},
+    TReturn = any,
     >
-    = DownloadConfig<TParams, TExt> & BaseDownloadOption;
+    = DownloadConfig<TParams, TExt, TReturn> & BaseDownloadOption;
 
 /**
  * 下载封装
@@ -107,7 +110,7 @@ export class Downloader
     public download<
         TReturn = SuccessParam<wx.DownloadFileOption>,
         TParams = ParamsType, // 参数类型
-        >(options: DownloadOption<TParams, T>): Promise<TReturn>;
+        >(options: DownloadOption<TParams, T, TReturn>): Promise<TReturn>;
     /**
      * 快速下载
      * @param url 下载地址
@@ -122,7 +125,7 @@ export class Downloader
         >(
             url: string,
             filePath?: string,
-            config?: DownloadConfig<TParams, T>
+            config?: DownloadConfig<TParams, T, TReturn>
         ): Promise<TReturn>;
     public download<TReturn>(): Promise<TReturn> {
         const isMultiParam = typeof arguments[0] === 'string';
@@ -193,7 +196,7 @@ export declare namespace wx {
     }
 }
 
-export interface DownloaderReponse {
+export interface DownloaderReponse extends GeneralCallbackResult {
     /** 开发者服务器返回的 HTTP 状态码 */
     statusCode: number;
     /** 临时文件路径。如果没传入 filePath 指定文件存储路径，则下载后的文件会存储到一个临时文件 */
