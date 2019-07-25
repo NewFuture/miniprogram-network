@@ -6,7 +6,7 @@ import { transformUploadSendDefault } from './transform';
 /**
  * 默认配置信息
  */
-export interface UploadInit<TReturn> extends BaseConfiguration<FullUploadOption, wx.UploadFileOption, TReturn> {
+export interface UploadInit<TReturn= any> extends BaseConfiguration<FullUploadOption, wx.UploadFileOption, TReturn> {
     /**
      * 上传API
      */
@@ -99,7 +99,7 @@ export type UploadOption<
 export class Uploader extends LifeCycle<
     wx.UploadFileOption,
     wx.UploadTask,
-    UploadInit<any>,
+    UploadInit,
     FullUploadOption
     > {
     /**
@@ -114,7 +114,7 @@ export class Uploader extends LifeCycle<
      * @param listeners 上传事件监听通知
      */
     constructor(
-        config?: UploadInit<any>,
+        config?: UploadInit,
         uploader?: (op: wx.UploadFileOption) => wx.UploadTask,
         listeners?: Uploader['Listeners']
     ) {

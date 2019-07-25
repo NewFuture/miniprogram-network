@@ -6,7 +6,7 @@ import { UPLOAD, UploadInit } from 'miniprogram-uploader';
 /**
  * 公共配置
  */
-type CommonConfig = Partial<Omit<(RequestInit | DownloadInit | UploadInit), 'transformSend' | 'transformResponse' | 'retry'>>;
+type CommonConfig = Partial<Omit<(RequestInit | DownloadInit | UploadInit<any>), 'transformSend' | 'transformResponse' | 'retry'>>;
 
 /**
  * 设置所有网络请求基本配置

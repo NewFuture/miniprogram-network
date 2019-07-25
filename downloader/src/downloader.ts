@@ -1,5 +1,5 @@
 import { BaseConfiguration, ExtraConfiguration, LifeCycle, SuccessParam } from 'miniprogram-network-life-cycle';
-import { ParamsType, GeneralCallbackResult } from 'miniprogram-network-utils';
+import { GeneralCallbackResult, ParamsType } from 'miniprogram-network-utils';
 import { transfomDownloadSendDefault } from './transform';
 
 /**
