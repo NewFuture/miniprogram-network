@@ -13,10 +13,9 @@ import { Listeners } from './listeners';
  * 在结果中主人timeout 标记
  * @param res 原始结果
  */
-function timeoutMsg(res: GeneralCallbackResult) {
-    res.errMsg = res.errMsg ? res.errMsg.replace(':fail abort', ':fail timeout') : 'network:fail timeout';
+function timeoutMsg(res: GeneralCallbackResult, time?: number) {
+    res.errMsg = res.errMsg ? res.errMsg.replace(':fail abort', `:fail timeout ${time}`) : `network::fail timeout ${time}`;
     res.timeout = true;
-    res.cancel = false;
     return res;
 }
 
@@ -141,10 +140,10 @@ export abstract class LifeCycle<
             // retry on fail
             data.fail = (res: GeneralCallbackResult): any => {
                 if (timeoutHandle === 0) {
-                    timeoutMsg(res); // 触发自定义超时,注入timeout
+                    timeoutMsg(res, options.timeout); // 触发自定义超时,注入timeout
                 }
 
-                if (cancelToken && cancelToken.isCancelled) {
+                if (cancelToken && cancelToken.isCancelled()) {
                     // 用户主动取消,直接结束不再重试
                     res.cancel = true;
                 } else if (typeof options.retry === 'function') {
@@ -172,7 +171,7 @@ export abstract class LifeCycle<
                 if (completed) {
                     if (!res.timeout && timeoutHandle === 0) {
                         // 触发过自定义超时,并且尚未注入timeout
-                        timeoutMsg(res);
+                        timeoutMsg(res, options.timeout);
                     }
                     if (options.timestamp) {
                         //记录时间戳
