@@ -6,7 +6,7 @@ import { transformUploadSendDefault } from './transform';
 /**
  * 默认配置信息
  */
-export interface UploadInit extends BaseConfiguration<FullUploadOption, wx.UploadFileOption> {
+export interface UploadInit<TReturn= any> extends BaseConfiguration<FullUploadOption, wx.UploadFileOption, TReturn> {
     /**
      * 上传API
      */
@@ -21,7 +21,7 @@ export interface UploadInit extends BaseConfiguration<FullUploadOption, wx.Uploa
  * @template TData patch data参数格式类型,默认 any
  */
 interface BaseUploadOption<
-    TData extends object = NonNullable<wx.UploadFileOption['formData']>
+    TData extends object = NonNullable<wx.UploadFileOption['formData']>,
     > {
 
     /**
@@ -49,7 +49,7 @@ interface BaseUploadOption<
 /**
  * 上传的全部配置信息
  */
-export interface FullUploadOption extends UploadInit, ExtraConfiguration, BaseUploadOption {
+export interface FullUploadOption<TReturn = any> extends UploadInit<TReturn>, ExtraConfiguration, BaseUploadOption {
     /**
      * 下载进度回调函数
      */
@@ -62,7 +62,8 @@ export interface FullUploadOption extends UploadInit, ExtraConfiguration, BaseUp
  */
 type UploadConfig<
     TParams = ParamsType,
-    > = Partial<UploadInit & ExtraConfiguration> & {
+    TReturn = any,
+    > = Partial<UploadInit<TReturn> & ExtraConfiguration> & {
         /**
          * 路径参数
          * URL Path Params
@@ -89,7 +90,8 @@ type UploadConfig<
 export type UploadOption<
     TData extends object = object,
     TParams = ParamsType,
-    > = UploadConfig<TParams> & BaseUploadOption<TData>;
+    TReturn = any,
+    > = UploadConfig<TParams, TReturn> & BaseUploadOption<TData>;
 
 /**
  * 上传管理
@@ -135,7 +137,7 @@ export class Uploader extends LifeCycle<
         TReturn = SuccessParam<wx.UploadFileOption>,
         TData extends object = object,
         TParams = ParamsType,
-        >(options: UploadOption<TData, TParams>): Promise<TReturn>;
+        >(options: UploadOption<TData, TParams, TReturn>): Promise<TReturn>;
     /**
      * 快速上传文件
      * @param filePath 本地文件路径
@@ -156,7 +158,7 @@ export class Uploader extends LifeCycle<
             name: string,
             url?: string,
             data?: TData,
-            config?: UploadConfig<TParams>
+            config?: UploadConfig<TParams, TReturn>
         ): Promise<TReturn>;
 
     public upload<T>(): Promise<T> {

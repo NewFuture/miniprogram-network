@@ -48,7 +48,7 @@ export class Http<
         TReturn = SuccessParam<wx.RequestOption>,
         TData extends BaseData = BaseData,
         TParams = ParamsType,
-        >(options: RequestOption<TData, TParams, TExt>): Promise<TReturn>;
+        >(options: RequestOption<TData, TParams, TExt, TReturn>): Promise<TReturn>;
     /**
      * 发送一个 request请求
      * @param method 操作方法，和小程序一致
@@ -67,7 +67,7 @@ export class Http<
             method: NonNullable<wx.RequestOption['method']>,
             action: string,
             data?: TData,
-            config?: RequestConfig<TParams, TExt>
+            config?: RequestConfig<TParams, TExt, TReturn>
         ): Promise<TReturn>;
     public request<TReturn = SuccessParam<wx.RequestOption>>(): Promise<TReturn> {
         const argNum = arguments.length;
@@ -101,7 +101,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TParams, TExt>
+            config?: RequestConfig<TParams, TExt, TReturn>
         ): Promise<TReturn> {
         return this.request<TReturn>('GET', action, data, config);
     }
@@ -122,7 +122,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TParams, TExt>
+            config?: RequestConfig<TParams, TExt, TReturn>
         ): Promise<TReturn> {
         return this.request<TReturn>('POST', action, data, config);
     }
@@ -143,7 +143,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TParams, TExt>
+            config?: RequestConfig<TParams, TExt, TReturn>
         ): Promise<TReturn> {
         return this.request<TReturn>('PUT', action, data, config);
     }
@@ -165,7 +165,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TParams, TExt>
+            config?: RequestConfig<TParams, TExt, TReturn>
         ): Promise<TReturn> {
         return this.request<TReturn>('DELETE', action, data, config);
     }
@@ -186,7 +186,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TParams, TExt>
+            config?: RequestConfig<TParams, TExt, TReturn>
         ): Promise<TReturn> {
         return this.request<TReturn>('HEAD', action, data, config);
     }
@@ -209,7 +209,7 @@ export class Http<
         >(
             action: string,
             data?: TData,
-            config?: RequestConfig<TParams, TExt>
+            config?: RequestConfig<TParams, TExt, TReturn>
         ): Promise<TReturn> {
         if (!config) {
             // tslint:disable-next-line: no-parameter-reassignment
@@ -233,7 +233,11 @@ type BaseData = string | object | ArrayBuffer;
  * 构造函数 默认配置信息
  * (创建Request的配置信息)
  */
-export interface RequestInit<T extends {} = {}> extends BaseConfiguration<FullRequestOption<T>, T & wx.RequestOption> {
+export interface RequestInit<T extends {} = {}, TReturn = any>
+    extends BaseConfiguration<
+    FullRequestOption<T>,
+    T & wx.RequestOption,
+    TReturn> {
     /**
      * response data type
      */
@@ -248,7 +252,8 @@ export interface RequestInit<T extends {} = {}> extends BaseConfiguration<FullRe
 export type RequestConfig<
     TParams = ParamsType,
     TExt extends {} = {},
-    > = Partial<TExt> & Partial<RequestInit<TExt> & ExtraConfiguration> & {
+    TReturn = HttpResponse,
+    > = Partial<TExt> & Partial<RequestInit<TExt, TReturn> & ExtraConfiguration> & {
         /**
          * 路径参数
          * URL Path Params
@@ -302,8 +307,8 @@ export type RequestOption<
     TData extends BaseData = BaseData,
     TParams = ParamsType,
     TExt extends {} = {},
-    > = RequestConfig<TParams, TExt> & UniqueRequestOption<TData>;
-
+    TReturn = HttpResponse
+    > = RequestConfig<TParams, TExt, TReturn> & UniqueRequestOption<TData>;
 /**
  * 发送一个请求的完整可配置信息
  * @template TExtend 扩展信息
@@ -311,9 +316,10 @@ export type RequestOption<
  */
 export interface FullRequestOption<
     TExtend extends {} = {},
-    TData extends BaseData = BaseData
+    TData extends BaseData = BaseData,
+    TReturn extends any = any,
     > extends
-    RequestInit<TExtend>,
+    RequestInit<TExtend, TReturn>,
     ExtraConfiguration,
     UniqueRequestOption<TData> { }
 

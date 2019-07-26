@@ -32,6 +32,7 @@ export type SuccessParam<T extends WxOptions> = Parameters<NonNullable<T['succes
 export interface BaseConfiguration<
     TFullOptions extends BaseConfiguration<TFullOptions, TWxOptions>, //完整配置
     TWxOptions extends WxOptions, // 微信请求参数类型
+    TRetrun = any,
     > {
     /**
      * 请求的根目录
@@ -101,7 +102,7 @@ export interface BaseConfiguration<
      * @param options full options of the API
      * @return the data to resolve
      */
-    transformResponse?(res: SuccessParam<TWxOptions>, options: TFullOptions): PromiseOrValue<any>;
+    transformResponse?(res: SuccessParam<TWxOptions>, options: TFullOptions): PromiseOrValue<TRetrun>;
 }
 
 /**
