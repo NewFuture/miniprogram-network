@@ -60,7 +60,7 @@ export class CancelToken {
      * 是否已取消
      */
     public isCancelled(): boolean {
-        return this.reason === undefined;
+        return this.reason !== undefined;
     }
 
     /**
