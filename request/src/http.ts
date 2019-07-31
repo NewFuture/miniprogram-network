@@ -228,7 +228,7 @@ export class Http<
 /**
  * Request Data支持的全部数据格式
  */
-type BaseData = string | object | ArrayBuffer;
+type BaseData = string | object | ArrayBuffer | undefined;
 /**
  * 构造函数 默认配置信息
  * (创建Request的配置信息)
