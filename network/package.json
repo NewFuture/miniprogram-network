@@ -1,6 +1,6 @@
 {
     "name": "miniprogram-network",
-    "version": "5.1.2",
+    "version": "5.1.3",
     "description": "Redefine the network API of Wechat MiniProgram",
     "keywords": [
         "miniprogram",
@@ -42,7 +42,7 @@
         "miniprogram-downloader": "^5.1.2",
         "miniprogram-network-cache": "^5.0.2-beta",
         "miniprogram-network-utils": "^5.0.3",
-        "miniprogram-request": "^5.1.2",
+        "miniprogram-request": "^5.1.3",
         "miniprogram-uploader": "^5.1.2"
     }
 }
