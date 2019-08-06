@@ -1,8 +1,5 @@
 import { Cache } from './cache';
 
-// tslint:disable-next-line: no-empty
-function doNothing(): void { }
-
 /**
  * 删除数组中的元素
  * @param array 数组
@@ -15,6 +12,14 @@ function arrayRemove<T>(array: T[], value: T): void {
     }
 }
 
+/**
+ * 是否为数组中的唯一元素
+ * @param array
+ * @param value
+ */
+function isEmptyOrOnly<T>(array: T[], value: T): boolean {
+    return array.length === 0 || (array.length === 1 && array[0] === value);
+}
 /**
  * 默认缓存索引生成函数,
  * 使用 `url`,`method`,`responseType`,`dataType`,`filePath`,`name`参数 + `data`或`formData`构建缓存Key
@@ -72,7 +77,7 @@ export class CacheOperator<
     /**
      * 正在处理的回调
      */
-    private readonly callbackListMap: { [key: string]: { success: Function[]; fail: Function[]; complete: Function[] } } = {};
+    private readonly callbackListMap: { [key: string]: { success: Function[]; fail: Function[]; complete: Function[]; task: WxTask } } = {};
     /**
      * 处理完的回调,待删除
      */
@@ -131,11 +136,7 @@ export class CacheOperator<
             if (options.complete) { callback.complete.push(options.complete); }
         } else {
             // 请求未发送过
-            this.callbackListMap[key] = {
-                success: options.success ? [options.success] : [],
-                fail: options.fail ? [options.fail] : [],
-                complete: options.complete ? [options.complete] : []
-            };
+
             const data = {
                 ...options,
                 success: (res: TRes) => {
@@ -158,30 +159,61 @@ export class CacheOperator<
                     delete this.completeMap[key];
                 }
             };
-            return this.op(data);
+            const task = this.op(data);
+            this.callbackListMap[key] = {
+                success: options.success ? [options.success] : [],
+                fail: options.fail ? [options.fail] : [],
+                complete: options.complete ? [options.complete] : [],
+                task
+            };
+            return task;
         }
         // tslint:disable-next-line: no-object-literal-type-assertion
         return {
             abort: () => {
-                if (this.callbackListMap[key]) {
-                    if (options.success) {
-                        arrayRemove(this.callbackListMap[key].success, options.success);
+                const cbMap = this.callbackListMap[key];
+                if (cbMap) {
+                    if (
+                        isEmptyOrOnly(cbMap.success, options.success)
+                        && isEmptyOrOnly(cbMap.fail, options.fail)
+                        && isEmptyOrOnly(cbMap.complete, options.complete)
+                    ) {
+                        cbMap.task.abort();
+                    } else {
+                        if (options.success) {
+                            arrayRemove(cbMap.success, options.success);
+                            const callbackList = [];
+                            if (options.fail) {
+                                arrayRemove(cbMap.fail, options.fail);
+                                callbackList.push(options.fail);
+                            }
+                            if (options.complete) {
+                                arrayRemove(cbMap.complete, options.complete);
+                                callbackList.push(options.complete);
+                            }
+                            const res = { errMsg: 'request:fail abort', source: CacheOperator.name };
+                            callbackList.forEach(f => { f(res); });
+                        }
                     }
-                    const callbackList = [];
-                    if (options.fail) {
-                        arrayRemove(this.callbackListMap[key].fail, options.fail);
-                        callbackList.push(options.fail);
-                    }
-                    if (options.complete) {
-                        arrayRemove(this.callbackListMap[key].complete, options.complete);
-                        callbackList.push(options.complete);
-                    }
-                    const res = { errMsg: 'request:fail abort', cancel: true, source: CacheOperator.name };
-                    callbackList.forEach(f => { f(res); });
                 }
             },
-            onHeadersReceived: doNothing as TTask['onHeadersReceived'],
-            onProgressUpdate: doNothing as TTask['onProgressUpdate']
+            onHeadersReceived: (f) => {
+                if (this.callbackListMap[key]) {
+                    this.callbackListMap[key].task.onHeadersReceived(f);
+                } else {
+                    f(this.cache.get(key) || {});
+                }
+            },
+            onProgressUpdate: (f) => {
+                if (this.callbackListMap[key]) {
+                    const task = this.callbackListMap[key].task;
+                    if (task.onProgressUpdate) {
+                        task.onProgressUpdate(f);
+                    }
+                } else {
+                    f({ progress: 100 });
+                }
+            }
         } as TTask;
     }
 
