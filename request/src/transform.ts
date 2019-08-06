@@ -35,8 +35,8 @@ export function transformRequestSendDefault<
  * @param config - 完整配置参数
  */
 export function transformRequestResponseOkData<T = any>(res: HttpResponse, config: FullRequestOption): T {
-    if (res.statusCode < 200 || res.statusCode >= 300) {
-        throw res;
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+        return res.data as any as T;
     }
-    return res.data as any as T;
+    throw res;
 }

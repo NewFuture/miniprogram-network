@@ -31,15 +31,16 @@ export function transformUploadSendDefault(data: UploadOption): UploadParams {
  * @returns 反序列化对象
  */
 export function transformUploadResponseOkData<T = any>(res: UploaderResponse, options: UploadOption): T {
-    if (res.statusCode < 200 || res.statusCode >= 300) {
-        throw res;
-    }
-    if (typeof res.data === 'string') {
-        try {
-            return JSON.parse(res.data) as T;
-        } catch {
-            // empty
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+        if (typeof res.data === 'string') {
+            try {
+                return JSON.parse(res.data) as T;
+            } catch {
+                // empty
+            }
         }
+        return res.data as any as T;
     }
-    return res.data as any as T;
+
+    throw res;
 }

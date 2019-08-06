@@ -31,8 +31,8 @@ export function transformDownloadResponseOkData(
     options: FullDownloadOption
 )
     : string {
-    if (res.statusCode < 200 || res.statusCode >= 300) {
-        throw res;
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+        return res.tempFilePath;
     }
-    return res.tempFilePath;
+    throw res;
 }
