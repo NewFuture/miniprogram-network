@@ -22,7 +22,7 @@
             "message": "chore(release): publish %v"
         }
     },
-    "version": "5.1.5",
+    "version": "5.1.6",
     "changelog": {
         "cacheDir": ".changelog"
     }
