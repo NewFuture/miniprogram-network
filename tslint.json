@@ -33,6 +33,7 @@
                 ]
             }
         ],
+        "max-func-body-length":[ true,{ "func-body-length": 50 }],
         "no-any": false,
         "interface-name": false,
         "typedef": false,

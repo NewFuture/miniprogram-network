@@ -150,8 +150,10 @@ export class CacheOperator<
                         .forEach((v) => { v(res); });
                 },
                 fail: (res: { errMsg: string }) => {
-                    this._getMapBeforeComplete(key).fail
-                        .forEach((v) => { v(res); });
+                    // fail 回调异步化 (微信实现可能是同步调用)
+                    // tslint:disable-next-line: no-floating-promises
+                    Promise.resolve(this._getMapBeforeComplete(key).fail)
+                        .then(f => { f.forEach((v) => { v(res); }); });
                 },
                 complete: (res: TRes) => {
                     this.completeMap[key].forEach((v) => { v(res); });
@@ -159,14 +161,16 @@ export class CacheOperator<
                     delete this.completeMap[key];
                 }
             };
-            const task = this.op(data);
             this.callbackListMap[key] = {
                 success: options.success ? [options.success] : [],
                 fail: options.fail ? [options.fail] : [],
                 complete: options.complete ? [options.complete] : [],
-                task
+                task: {} as WxTask,
             };
-            return task;
+            // 微信task同步创建异步调用
+            // 防止同步执行fail时 this.callbackListMap[key] 还未赋值
+            // 先赋值 this.callbackListMap[key] 再 执行  this.op(data))
+            return (this.callbackListMap[key].task = this.op(data));
         }
         // tslint:disable-next-line: no-object-literal-type-assertion
         return {
