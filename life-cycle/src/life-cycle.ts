@@ -19,10 +19,6 @@ function timeoutMsg(res: GeneralCallbackResult, time?: number) {
     return res;
 }
 
-function isPromise<T>(p: T | PromiseLike<T>): p is Promise<T> {
-    return typeof (p as PromiseLike<T>).then === 'function';
-}
-
 /**
  * 网络请求的完整生命周期
  * @template TWxOptions 微信操作函数参数类型 // 微信操作函数
@@ -132,10 +128,7 @@ export abstract class LifeCycle<
              * * 正数 表示真在计时中(未超时)
              */
             let timeoutHandle: number | undefined;
-            /**
-             * 重试Promise
-             */
-            let retryP: Promise<TWxOptions>;
+
             const cancelToken = options.cancelToken;
             if (cancelToken) {
                 cancelToken.throwIfRequested();
@@ -146,7 +139,7 @@ export abstract class LifeCycle<
                     .then(resolve, reject);
             };
             // retry on fail
-            data.fail = (res: GeneralCallbackResult): any => {
+            data.fail = (res: GeneralCallbackResult): void => {
                 if (timeoutHandle === 0) {
                     timeoutMsg(res, options.timeout); // 触发自定义超时,注入timeout
                 }
@@ -156,25 +149,27 @@ export abstract class LifeCycle<
                     res.cancel = true;
                 } else if (typeof options.retry === 'function') {
                     // 自定义retry 函数
-                    const retryData = options.retry(data, res);
-                    if (retryData)
-
-                        retryP = Promise.resolve();
-                    if ()
-                        retryP.catch(() => this._onFail(res, options));
-                    return retryP
-                        .then(retryData => this._send<T>(retryData, options))
-                        .then(resolve, reject);
-                } else if (options.retry!-- > 0) {
+                    Promise.resolve()
+                        .then(() => (options.retry! as Function)(data, res))
+                        .then((retryData: TWxOptions) => this._send<T>(retryData, options))
+                        .then(resolve, (reason: GeneralCallbackResult) => {
+                            // 结束
+                            this._onFail(reason, options)
+                                .then(reject, reject);
+                            // 异步调用完成
+                            this._complete(reason, options);
+                        });
+                    return;
+                } else if ((options.retry as number)-- > 0) {
                     // 还有重试次数
-                    return this._send<T>(data, options)
+                    this._send<T>(data, options)
                         .then(resolve, reject);
+                    return;
                 }
                 // 结束请求
                 completed = true;
                 this._onFail(res, options)
                     .then(reject, reject);
-
             };
             data.complete = (res: GeneralCallbackResult & ExtraCompleteRes) => {
                 if (timeoutHandle) {
@@ -186,9 +181,8 @@ export abstract class LifeCycle<
                     timeoutMsg(res, options.timeout);
                 }
                 if (completed) {
+                    // 结束
                     this._complete(res, options);
-                } else if (retryP) {
-                    retryP.catch(() => { this._complete(res, options); });
                 }
             };
 
