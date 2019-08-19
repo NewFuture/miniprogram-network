@@ -151,14 +151,19 @@ export abstract class LifeCycle<
                     // 自定义retry 函数
                     Promise.resolve()
                         .then(() => (options.retry! as Function)(data, res))
-                        .then((retryData: TWxOptions) => this._send<T>(retryData, options))
-                        .then(resolve, (reason: GeneralCallbackResult) => {
-                            // 结束
-                            this._onFail(reason, options)
-                                .then(reject, reject);
-                            // 异步调用完成
-                            this._complete(reason, options);
-                        });
+                        .then(
+                            // 继续重试
+                            (retryData: TWxOptions) => {
+                                this._send<T>(retryData, options)
+                                    .then(resolve, reject);
+                            },
+                            // 放弃重试
+                            (reason: GeneralCallbackResult) => {
+                                this._onFail(reason, options)
+                                    .then(reject, reject);
+                                this._complete(reason, options);
+                            }
+                        );
                     return;
                 } else if ((options.retry as number)-- > 0) {
                     // 还有重试次数
