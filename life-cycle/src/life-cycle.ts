@@ -128,6 +128,7 @@ export abstract class LifeCycle<
              * * 正数 表示真在计时中(未超时)
              */
             let timeoutHandle: number | undefined;
+
             const cancelToken = options.cancelToken;
             if (cancelToken) {
                 cancelToken.throwIfRequested();
@@ -138,7 +139,7 @@ export abstract class LifeCycle<
                     .then(resolve, reject);
             };
             // retry on fail
-            data.fail = (res: GeneralCallbackResult): any => {
+            data.fail = (res: GeneralCallbackResult): void => {
                 if (timeoutHandle === 0) {
                     timeoutMsg(res, options.timeout); // 触发自定义超时,注入timeout
                 }
@@ -148,44 +149,45 @@ export abstract class LifeCycle<
                     res.cancel = true;
                 } else if (typeof options.retry === 'function') {
                     // 自定义retry 函数
-                    return Promise.resolve(options.retry(data, res))
-                        .then(retryData => this._send<T>(retryData, options))
-                        .then(resolve, reject);
-                } else if (options.retry!-- > 0) {
+                    Promise.resolve()
+                        .then(() => (options.retry! as Function)(data, res))
+                        .then(
+                            // 继续重试
+                            (retryData: TWxOptions) => {
+                                this._send<T>(retryData, options)
+                                    .then(resolve, reject);
+                            },
+                            // 放弃重试
+                            (reason: GeneralCallbackResult) => {
+                                this._onFail(reason, options)
+                                    .then(reject, reject);
+                                this._complete(reason, options);
+                            }
+                        );
+                    return;
+                } else if ((options.retry as number)-- > 0) {
                     // 还有重试次数
-                    return this._send<T>(data, options)
+                    this._send<T>(data, options)
                         .then(resolve, reject);
+                    return;
                 }
                 // 结束请求
                 completed = true;
                 this._onFail(res, options)
                     .then(reject, reject);
-
             };
             data.complete = (res: GeneralCallbackResult & ExtraCompleteRes) => {
                 if (timeoutHandle) {
                     // 清理计时器
                     clearTimeout(timeoutHandle);
                     timeoutHandle = undefined; // 置空
+                } else if (timeoutHandle === 0 && !res.timeout) {
+                    // 触发过自定义超时,并且尚未注入timeout
+                    timeoutMsg(res, options.timeout);
                 }
                 if (completed) {
-                    if (!res.timeout && timeoutHandle === 0) {
-                        // 触发过自定义超时,并且尚未注入timeout
-                        timeoutMsg(res, options.timeout);
-                    }
-                    if (options.timestamp) {
-                        //记录时间戳
-                        if (typeof options.timestamp === 'object') {
-                            options.timestamp.response = Date.now();
-                            res.time = options.timestamp;
-                        } else {
-                            res.time = {
-                                send: (options as any).__sendTime as number,
-                                response: Date.now()
-                            };
-                        }
-                    }
-                    this._onComplete(res as any, options);
+                    // 结束
+                    this._complete(res, options);
                 }
             };
 
@@ -228,6 +230,27 @@ export abstract class LifeCycle<
         }
     }
 
+    /**
+     * complete 结束操作 按需注入时间
+     * @param res - result
+     * @param options - all options
+     */
+    private _complete(res: GeneralCallbackResult & ExtraCompleteRes, options: TFullOptions): void {
+        if (options.timestamp) {
+            //记录时间戳
+            if (typeof options.timestamp === 'object') {
+                options.timestamp.response = Date.now();
+                res.time = options.timestamp;
+            } else {
+                res.time = {
+                    send: (options as any).__sendTime as number,
+                    response: Date.now()
+                };
+            }
+        }
+        this._onComplete(res as any, options);
+
+    }
     /**
      * 请求发送失败
      * @param res - 返回参数
