@@ -222,9 +222,9 @@ export abstract class LifeCycle<
                 .resolve(res)
                 .then(
                     // tslint:disable-next-line: no-unsafe-any
-                    (result) => options.transformResponse!(result, options),
-                    (reason: GeneralCallbackResult) => this._onFail(reason, options)
-                );
+                    (result) => options.transformResponse!(result, options)
+                )
+                .catch((reason: GeneralCallbackResult) => this._onFail(reason, options));
         } else {
             return Promise.resolve(res);
         }
@@ -257,10 +257,6 @@ export abstract class LifeCycle<
      * @param options - 全部配置
      */
     private _onFail(res: GeneralCallbackResult, options: TFullOptions): Promise<GeneralCallbackResult> {
-        if (typeof res === 'string') {
-            // tslint:disable-next-line: no-parameter-reassignment
-            res = { errMsg: res };
-        }
         this.Listeners.onRejected.forEach(f => { f(res, options); });
         return Promise.reject(res);
     }
@@ -271,10 +267,6 @@ export abstract class LifeCycle<
      * @param options - 全部配置
      */
     private _onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult & ExtraCompleteRes, options: TFullOptions) {
-        if (typeof res === 'string') {
-            // tslint:disable-next-line: no-parameter-reassignment
-            res = { errMsg: res as string } as any;
-        }
         this.Listeners.onComplete.forEach(f => { f(res, options); });
     }
 
@@ -284,12 +276,6 @@ export abstract class LifeCycle<
      * @param options - 全部配置
      */
     private _onAbort(reason: any, options: TFullOptions): void {
-        if (typeof reason === 'string') {
-            // tslint:disable-next-line: no-parameter-reassignment
-            reason = {
-                errMsg: reason
-            };
-        }
         // tslint:disable-next-line: no-unsafe-any
         this.Listeners.onAbort.forEach(f => { f(reason, options); });
     }
