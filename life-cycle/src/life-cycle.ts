@@ -14,7 +14,7 @@ import { Listeners } from './listeners';
  * @param res 原始结果
  */
 function timeoutMsg(res: GeneralCallbackResult, time?: number) {
-    res.errMsg = res.errMsg ? res.errMsg.replace(':fail abort', `:fail timeout ${time}`) : `network::fail timeout ${time}`;
+    res.errMsg = res.errMsg ? res.errMsg.replace(':fail abort', `:fail timeout ${time}`) : `network:fail timeout ${time}`;
     res.timeout = true;
     return res;
 }
