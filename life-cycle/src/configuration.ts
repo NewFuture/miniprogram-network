@@ -83,6 +83,12 @@ export interface BaseConfiguration<
     timestamp?: boolean | { send?: number; response?: number };
 
     /**
+     * 禁用在线检查功能，离线状态也强制发送请求
+     * 默认，会检查在线状态，离线或者后台时暂停发送
+     */
+    disableOnline?: boolean;
+
+    /**
      * 请求参数预处理
      * 修改数据或者头;返回 wx.request, wx.downloadFile,wx.uploadFile参数 (不包括回调函数)
      * 支持异步返回promise

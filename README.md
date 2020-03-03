@@ -1,8 +1,8 @@
 # [miniprogram-network](https://github.com/NewFuture/miniprogram-network)
 
-> 小程序网络库,提供完整`代码自动完成` 和 `类型检查`,支持`Promise`、自动`重试`、`缓存`、`取消`、`自定义超时`、全局`拦截`、和`事件监听`等……
+> 小程序网络库,提供完整`代码自动完成` 和 `类型检查`,支持`Promise`、自动`重试`、`缓存`、`取消`、`自定义超时`、`自动暂停恢复`、全局`拦截`、和`事件监听`等……
 >
-> Redefine the network API of Wechat MiniProgram, including full `IntelliSense` and `Type Checking`, with `Promise`,`retry`,`Cache`,`CancelToken`,`timeout`, global `interceptors`, `event listeners` and more.
+> Redefine the network API of Wechat MiniProgram, including full `IntelliSense` and `Type Checking`, with `Promise`,`retry`,`Cache`,`CancelToken`,`timeout`,`ensureOnline`, global `interceptors`, `event listeners` and more.
 
 ## Features 主要功能
 
@@ -11,6 +11,7 @@
 * [x] Cache 底层缓存支持(包括并发请求合并)
 * [x] CancelToken 可取消操作
 * [x] Timeout 自定义超时时间
+* [x] 确保网络可用时发送请求,离线和切换到后台时暂停发送请求
 * [x] timestamp 记录耗时统计(需开启配置)
 * [x] 每个请求的原生回调接口支持(`onHeadersReceived`事件)和(`onProgressUpdate`事件)
 * [x] Interceptors 拦截器 `transformSend`/ `transformRresponse`自定义数据拦截
