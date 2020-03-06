@@ -165,7 +165,7 @@ export class CacheOperator<
                 success: options.success ? [options.success] : [],
                 fail: options.fail ? [options.fail] : [],
                 complete: options.complete ? [options.complete] : [],
-                task: {} as WxTask,
+                task: {} as WxTask
             };
             // 微信task同步创建异步调用
             // 防止同步执行fail时 this.callbackListMap[key] 还未赋值

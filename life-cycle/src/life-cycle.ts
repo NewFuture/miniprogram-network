@@ -7,6 +7,7 @@ import {
     WxOptions,
     WxTask
 } from './configuration';
+import { ensureOnline } from './ensure-online';
 import { Listeners } from './listeners';
 
 /**
@@ -128,7 +129,6 @@ export abstract class LifeCycle<
              * * 正数 表示真在计时中(未超时)
              */
             let timeoutHandle: number | undefined;
-
             const cancelToken = options.cancelToken;
             if (cancelToken) {
                 cancelToken.throwIfRequested();
@@ -190,22 +190,28 @@ export abstract class LifeCycle<
                     this._complete(res, options);
                 }
             };
-
-            const task = this.handle(data);
-            if (options.timeout! > 0) {
-                // 计时器 自定义超时
-                // 超时触发 计时器标志置0, 终止操作
-                timeoutHandle = setTimeout(() => { timeoutHandle = 0; task.abort(); }, options.timeout!);
-            }
-            if (options.onHeadersReceived) {
-                task.onHeadersReceived(options.onHeadersReceived); // 响应头回调
-            }
-            if (options.onProgressUpdate && task.onProgressUpdate) {
-                task.onProgressUpdate(options.onProgressUpdate); // 进度回调
-            }
-            if (cancelToken) {
-                cancelToken.promise
-                    .then(reason => { task.abort(); this._onAbort(reason, options); }, reject);
+            const run = () => {
+                const task = this.handle(data);
+                if (options.timeout! > 0) {
+                    // 计时器 自定义超时
+                    // 超时触发 计时器标志置0, 终止操作
+                    timeoutHandle = setTimeout(() => { timeoutHandle = 0; task.abort(); }, options.timeout!);
+                }
+                if (options.onHeadersReceived) {
+                    task.onHeadersReceived(options.onHeadersReceived); // 响应头回调
+                }
+                if (options.onProgressUpdate && task.onProgressUpdate) {
+                    task.onProgressUpdate(options.onProgressUpdate); // 进度回调
+                }
+                if (cancelToken) {
+                    cancelToken.promise
+                        .then(reason => { task.abort(); this._onAbort(reason, options); }, reject);
+                }
+            };
+            if (options.disableOnline) {
+                run();
+            } else {
+                ensureOnline(run, cancelToken);
             }
         });
     }
