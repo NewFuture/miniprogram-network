@@ -273,7 +273,7 @@ export abstract class LifeCycle<
      * @param options - 全部配置
      */
     private _onComplete(res: Partial<SuccessParam<TWxOptions>> & GeneralCallbackResult & ExtraCompleteRes, options: TFullOptions) {
-        this.Listeners.onComplete.forEach(f => { f(res, options); });
+        this.Listeners.onComplete.forEach(f => { f(res as any, options); });
     }
 
     /**

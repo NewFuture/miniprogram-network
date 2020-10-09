@@ -215,7 +215,7 @@ export class Http<
             // tslint:disable-next-line: no-parameter-reassignment
             config = {
                 headers: { 'X-HTTP-Method-Override': 'PATCH' }
-            } as unknown as RequestConfig<TParams, TExt>;
+            } as unknown as RequestConfig<TParams, TExt, TReturn>;
         } else if (!config.headers) {
             config.headers = { 'X-HTTP-Method-Override': 'PATCH' };
         } else {
