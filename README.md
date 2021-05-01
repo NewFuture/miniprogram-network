@@ -49,7 +49,7 @@ Network.patch('items/{id}',{dataKey:'dataValue'},{
         retry:3,// 重试3次
     }).then((item)=>console.log(item))
 
-Network.dowanload('network/','lcoalpath',{
+Network.download('network/','lcoalpath',{
         onProgressUpdate:progressUpdateCallBack,//进度回调
         transformResponse: Network.transformDownloadResponseOkData, //状态码2xx成功,返回本地路径
     }).then(path=>console.log(path))
