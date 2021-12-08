@@ -14,8 +14,8 @@ function arrayRemove<T>(array: T[], value: T): void {
 
 /**
  * 是否为数组中的唯一元素
- * @param array
- * @param value
+ * @param array 数组
+ * @param value 值
  */
 function isEmptyOrOnly<T>(array: T[], value: T): boolean {
     return array.length === 0 || (array.length === 1 && array[0] === value);
