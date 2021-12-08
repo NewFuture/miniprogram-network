@@ -367,16 +367,48 @@ export declare namespace wx {
         | 'CONNECT';
         /** 设置请求的 header，header 中不能设置 Referer。
          *
-         * `content-type` 默认为 `application/json`
+         * `content-type` 默认为 `application/json
          */
         header?: object;
-        /** 请求的参数 */
+        /** 
+         * 请求的参数
+         */
         data?: string | object | ArrayBuffer;
-        /** 接口调用结束的回调函数（调用成功、失败都会执行） */
+        /**
+         * 开启 http2
+         */
+        enableHttp2?: boolean;
+        /**
+         * 开启 quic
+         */
+        enableQuic?: boolean;
+        /**
+         * 开启 缓存
+         */
+        enableCache?: boolean;
+        /**
+         * 开启 HttpDNS
+         */
+        enableHttpDNS?: boolean;
+        /**
+         * HttpDNS 服务商 Id。 HttpDNS 用法详见 移动解析HttpDNS
+         */
+        httpDNSServiceId?: string | boolean;
+        /**
+         * 开启 transfer-encoding chunked。
+         */
+        enableChunked?: boolean;
+        /**
+         *  接口调用结束的回调函数（调用成功、失败都会执行）
+         */
         complete?(res: { errMsg: string }): void;
-        /** 接口调用失败的回调函数 */
+        /**
+         *  接口调用失败的回调函数
+         */
         fail?(res: { errMsg: string }): void;
-        /** 接口调用成功的回调函数 */
+        /**
+         *  接口调用成功的回调函数
+         */
         success?(result: HttpResponse): void;
     }
     interface RequestTask {
