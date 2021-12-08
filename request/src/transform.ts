@@ -24,7 +24,7 @@ export function transformRequestSendDefault<
     } else if (data.responseType === 'json') {
         wxParam.dataType = 'json';
     }
-    return getCommonOptions(wxParam, data, ['data', 'method']);
+    return getCommonOptions(wxParam, data, ['data', 'method', 'enableCache', 'enableChunked', 'enableHttp2', 'enableHttpDNS', 'enableQuic', 'httpDNSServiceId']);
 }
 
 /**
