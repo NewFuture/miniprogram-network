@@ -370,7 +370,7 @@ export declare namespace wx {
          * `content-type` 默认为 `application/json
          */
         header?: object;
-        /** 
+        /**
          * 请求的参数
          */
         data?: string | object | ArrayBuffer;
