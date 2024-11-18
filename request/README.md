@@ -212,7 +212,7 @@ REQUEST.Defaults.retry = 2;//设置网络错误时重试次数
      * 异步返回promise
      * You may modify the data or headers object before it is sent.
      */
-    transformRequest?: (options) => PromiseOrValue<Exclude<wx.options, 'complete' | 'success' | 'fail'>>;
+    transformSend?: (options) => PromiseOrValue<Exclude<wx.options, 'complete' | 'success' | 'fail'>>;
 
     /**
      * 返回数据修改，返回值作为then的输入, throw exception 抛给catch
@@ -241,8 +241,8 @@ REQUEST.request({
     params: null,
     retry: 3,
     responseType: "json",
-    transformRequest: Http.RequestTransformation,
-    transformResponse: Http.ResponseTransformation
+    transformSend: transformRequestSendDefault,
+    transformResponse: transformRequestResponseOkData
 })
 
 // 快速请求配置参数
@@ -254,8 +254,8 @@ REQUEST.post('items', {}, {
     params: null,
     retry: 3,
     responseType: "json",
-    transformRequest: Http.RequestTransformation,
-    transformResponse: Http.ResponseTransformation
+    transformSend: transformRequestSendDefault,
+    transformResponse: transformRequestResponseOkData
 })
 ```
 
@@ -269,8 +269,8 @@ const http = new Http({
     params: null,
     retry: 3,
     responseType: "json",
-    transformRequest: Http.RequestTransformation,
-    transformResponse: Http.ResponseTransformation
+    transformSend: transformRequestSendDefault,
+    transformResponse: transformRequestResponseOkData
 })
 ```
 
